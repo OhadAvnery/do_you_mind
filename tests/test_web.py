@@ -5,10 +5,9 @@ import shutil
 
 import pytest
 import requests
-
 from do_you_mind import run_webserver
 
-
+"""
 _WEBSERVER_ADDRESS = '127.0.0.1', 8000
 _WEBSERVER_URL = 'http://localhost:8000'
 _ROOT_DIR = pathlib.Path(__file__).absolute().parent.parent
@@ -69,3 +68,4 @@ def test_dynamic(webserver):
 def _run_webserver(pipe):
     pipe.send('ready')
     run_webserver(_WEBSERVER_ADDRESS, _DATA_DIR)
+"""
