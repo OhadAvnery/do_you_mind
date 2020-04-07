@@ -1,4 +1,6 @@
 import socket
+import struct
+
 class Connection:
     def __init__(self, socket):
         self.socket = socket
@@ -48,3 +50,20 @@ class Connection:
 
     def close(self):
         self.socket.close()
+
+    def send_message(self, msg):
+        """
+        sends the message to the server, stating with the string's length
+        """
+        msg_len_bytes = struct.pack("<I", len(msg))
+        self.socket.sendall(msg_len_bytes + msg.encode())
+
+    def receive_message(self):
+        msg_len_bytes = self.socket.recv(struct.calcsize("<I"))
+        msg_len = struct.unpack("<I", msg_len_bytes)[0]
+        msg = self.socket.recv(msg_len).decode()
+        if len(msg) < msg_len:
+            raise Exception
+
+        return msg
+

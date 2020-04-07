@@ -18,8 +18,13 @@ def unpack_string(file, str_len):
     return struct.unpack("{:d}s".format(str_len), \
                                          file.read(str_len) )[0].decode()
 
-
 fmt = {'uint64':'Q', 'uint32':'L', 'double':'d'}
 size = {st:struct.calcsize(val) for st,val in fmt.items()}
 
-
+class PackedString:
+    def __init__(self, msg):
+        self.msg = msg
+        self.offset = 0
+    def unpack(self, fmt):
+        self.offset += struct.sizeof(fmt)
+        return struct.unpack_from(fmt, self.msg, self.offset)

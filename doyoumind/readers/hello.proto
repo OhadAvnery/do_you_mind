@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message Hello {
+    enum Gender {
+        MALE = 0;
+        FEMALE = 1;
+        OTHER = 2;
+    }
+    uint64 user_id = 1;
+    string username = 2;
+    uint32 birthday = 3;
+    Gender gender = 4;
+}

@@ -10,6 +10,18 @@ import click
 
 cli = CommandLineInterface()
 
+
+
+def send_hello(connection, path):
+
+@cli.command
+def upload_sample(host, port, path):
+    with Connection.connect(host, port) as connection:
+        pass #need to fix
+
+        send_hello()
+
+
 #@click.command()
 @cli.command
 def upload_thought(address, user, thought):
