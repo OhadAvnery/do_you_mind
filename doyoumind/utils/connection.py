@@ -53,15 +53,21 @@ class Connection:
 
     def send_message(self, msg):
         """
-        sends the message to the server, stating with the string's length
+        sends the message to the server, stating with the string's length.
+        NOTE- it works both if msg has type str and if it has type bytes.
         """
         msg_len_bytes = struct.pack("<I", len(msg))
-        self.socket.sendall(msg_len_bytes + msg.encode())
+        if isinstance(msg, str):
+            msg = msg.encode()
+        self.socket.sendall(msg_len_bytes + msg)
 
     def receive_message(self):
+        """
+        returns a bytes object.
+        """
         msg_len_bytes = self.socket.recv(struct.calcsize("<I"))
-        msg_len = struct.unpack("<I", msg_len_bytes)[0]
-        msg = self.socket.recv(msg_len).decode()
+        msg_len, = struct.unpack("<I", msg_len_bytes)
+        msg = self.socket.recv(msg_len)
         if len(msg) < msg_len:
             raise Exception
 

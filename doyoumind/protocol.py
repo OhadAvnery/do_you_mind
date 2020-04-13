@@ -42,6 +42,9 @@ class Config:
     def __init__(self, fields):
         self.fields = fields 
 
+    def __contains__(self, field):
+        return field in self.fields
+
     def serialize(self):
         """
         turns the Config object into a message string
@@ -50,12 +53,12 @@ class Config:
         num_fields = len(self.fields)
         config_msg += struct.pack('<L', num_fields)
         for field in self.fields:
-            hello_msg += struct.pack('<L', len(field))
-            hello_msg += struct.pack(f'{len(field)}s', len(field))
+            config_msg += struct.pack('<L', len(field))
+            config_msg += struct.pack(f'{len(field)}s', field.encode())
 
         return config_msg
 
-    @classmethod
+    @staticmethod
     def deserialize(msg):
         """
         turns the message string into a Config object
@@ -64,9 +67,11 @@ class Config:
         fields = []
 
         num_fields, = packed_msg.unpack('<L')
+        print("number of fields: ", num_fields)
 
         for _ in range(num_fields):
-            field_len = packed_msg.unpack('<L')
+            field_len, = packed_msg.unpack('<L')
+            print(f"field len: {field_len}")
             field = packed_msg.unpack(f'{field_len}s')
             fields.append(field)
 

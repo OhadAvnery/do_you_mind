@@ -2,24 +2,64 @@ import time
 import struct
 import socket
 #from . import cli
-from .cli import CommandLineInterface
+from cli import CommandLineInterface
 
-from .utils.connection import Connection
+from utils.connection import Connection
+from readers.reader import Reader
+from readers import cortex_pb2
+import protocol
 
 import click
 
 cli = CommandLineInterface()
 
 
+#IDEA: these three functions only work at the connection level (so they're really short), 
+#and don't use any (de)serialization.
+def send_hello(conn, hello_msg):
+    conn.send_message(hello_msg)
+def get_config(conn):
+   return conn.receive_message()
+def send_snapshot(conn, snap_msg):
+    conn.send_message(snap_msg)
 
-def send_hello(connection, path):
+def filter_snapshot(snap, config):
+    """
+    Update the snapshot so it'll only have the fields described in config
+    """
+    if 'translation' not in config:
+        snap.pose.ClearField("translation")
+    if 'rotation' not in config:
+        snap.pose.ClearField("rotation")
+    if 'color_image' not in config:
+        snap.ClearField("color_image")
+    if 'depth_image' not in config:
+        snap.ClearField("depth_image")
+    if 'feelings' not in config:
+        snap.ClearField("feelings")
+
+
+
+
 
 @cli.command
-def upload_sample(host, port, path):
-    with Connection.connect(host, port) as connection:
-        pass #need to fix
+def upload_sample(host, port, path, read_type='protobuf'):
+    with Connection.connect(host, int(port)) as conn:
+        zipped = (path.endswith(".gz"))
+        r = Reader(path, read_type, zipped)
+        print("reading hello")
+        hello = r.read_hello()
+        send_hello(conn, hello.SerializeToString())
+        print("reading config")
+        config_bytes = get_config(conn)
+        print(f"the config bytes that client got: {config_bytes}")
+        config = protocol.Config.deserialize(config_bytes)
+        #config = protocol.Config.deserialize(get_config(conn))
+        for snap in r:
+            filter_snapshot(snap, config)
+            send_snapshot(conn, snap.SerializeToString())
 
-        send_hello()
+
 
 
 #@click.command()

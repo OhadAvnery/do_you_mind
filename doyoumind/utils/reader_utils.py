@@ -26,5 +26,8 @@ class PackedString:
         self.msg = msg
         self.offset = 0
     def unpack(self, fmt):
-        self.offset += struct.sizeof(fmt)
-        return struct.unpack_from(fmt, self.msg, self.offset)
+        #print(f"PackedString.unpack- format is: {fmt}")
+        val = struct.unpack_from(fmt, self.msg, self.offset)
+        self.offset += struct.calcsize(fmt)
+        return val
+        

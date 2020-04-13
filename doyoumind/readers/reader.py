@@ -1,5 +1,6 @@
 from . import binary_reader
 from . import protobuf_reader
+from . import hello_pb2
 
 class Reader:
     def __init__(self, path, format, zipped=True):
@@ -9,6 +10,11 @@ class Reader:
             self.reader = protobuf_reader.Reader(path, zipped)
     
     def read_user(self):
+        return self.reader.read_user()
+
+    #we implement read_hello using read_user,
+    #if they'll become different we'll implement them differently, and use the hello class from hello.proto.
+    def read_hello(self):
         return self.reader.read_user()
 
     def read_snapshot(self):
