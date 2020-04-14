@@ -49,7 +49,22 @@ def upload_sample(host, port, path, read_type='protobuf'):
         r = Reader(path, read_type, zipped)
         print("reading hello")
         hello = r.read_hello()
-        send_hello(conn, hello.SerializeToString())
+        hello_bytes = hello.SerializeToString()
+        for snap in r:
+            print("sending snapshot...")
+            send_hello(conn, hello_bytes)
+            config_bytes = get_config(conn)
+            config = protocol.Config.deserialize(config_bytes)
+            filter_snapshot(snap, config)
+            send_snapshot(conn, snap.SerializeToString())
+            print("done sending snapshot")
+
+        print("bye bitch!")
+
+
+
+
+        """send_hello(conn, hello.SerializeToString())
         print("reading config")
         config_bytes = get_config(conn)
         print(f"the config bytes that client got: {config_bytes}")
@@ -61,7 +76,7 @@ def upload_sample(host, port, path, read_type='protobuf'):
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())
             print("upload_sample: snapshot sent ;)")
-            break
+            break"""
 
 
 

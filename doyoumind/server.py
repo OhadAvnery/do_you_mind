@@ -40,29 +40,28 @@ class Handler(threading.Thread):
         return self.connection.receive_message()
 
     def run(self):
-        hello_msg = self.get_hello()
-        hello = cortex_pb2.User()       
-        hello.ParseFromString(hello_msg)
-       
-        user_id = hello.user_id
+        while True:
+            hello_msg = self.get_hello()
+            hello = cortex_pb2.User()       
+            hello.ParseFromString(hello_msg)
+           
+            user_id = hello.user_id
 
-        config = Config(SUPPORTED_FIELDS)
-        config_msg = config.serialize()
-        print(f"sending config, bytes: {config_msg}, num. fields: {len(config.fields)}")
-        self.send_config(config_msg)
-        snap = cortex_pb2.Snapshot()
-        snap.ParseFromString(self.get_snapshot())
-        print("server/run: done parsing")
+            config = Config(SUPPORTED_FIELDS)
+            config_msg = config.serialize()
+            #print(f"sending config, bytes: {config_msg}, num. fields: {len(config.fields)}")
+            self.send_config(config_msg)
+            snap = cortex_pb2.Snapshot()
+            snap.ParseFromString(self.get_snapshot())
+            #print("server/run: done parsing")
 
-        #example format: 2019-12-04_12-00-00-500000
-        time_epoch = snap.datetime // 1000 #converting milliseconds to seconds
-        time_string = datetime.datetime.fromtimestamp(time_epoch).strftime("%Y-%m-%d_%H-%M-%S.%f")
+            #example format: 2019-12-04_12-00-00-500000
+            time_epoch = snap.datetime // 1000 #converting milliseconds to seconds
+            time_string = datetime.datetime.fromtimestamp(time_epoch).strftime("%Y-%m-%d_%H-%M-%S-%f")
 
-
-        
-        context = Context(self.dir / f"{user_id}" / time_string)
-        main_parser = MainParser(SUPPORTED_FIELDS)
-        main_parser.parse(context, snap)
+            context = Context(self.dir / f"{user_id}" / time_string)
+            main_parser = MainParser(SUPPORTED_FIELDS)
+            main_parser.parse(context, snap)
         #print("server/run: done run")
 
         try:
