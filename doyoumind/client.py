@@ -54,10 +54,14 @@ def upload_sample(host, port, path, read_type='protobuf'):
         config_bytes = get_config(conn)
         print(f"the config bytes that client got: {config_bytes}")
         config = protocol.Config.deserialize(config_bytes)
+        print(f"upload_sample- config is: {config.fields}")
         #config = protocol.Config.deserialize(get_config(conn))
         for snap in r:
+            print("upload_sample: sending snap!!!")
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())
+            print("upload_sample: snapshot sent ;)")
+            break
 
 
 

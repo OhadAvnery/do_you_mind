@@ -30,21 +30,17 @@ class Connection:
 
     def receive(self, size):
         """
-        receives at most size bytes of information
+        receives size bytes of information
         """
 
-        """data = b''
-        while True:
-            temp_data = self.socket.recv(1024)
+        data = b''
+        num_bytes_left = size
+        while num_bytes_left:
+            temp_data = self.socket.recv(num_bytes_left)
             if not temp_data:
                 break
-            data += temp_data"""
-
-
-        #Maybe change this in the future
-        data = self.socket.recv(size)
-        if len(data) < size:
-            raise Exception
+            data += temp_data
+            num_bytes_left -= len(temp_data)
 
         return data
 
@@ -65,9 +61,10 @@ class Connection:
         """
         returns a bytes object.
         """
-        msg_len_bytes = self.socket.recv(struct.calcsize("<I"))
+        #msg_len_bytes = self.socket.recv(struct.calcsize("<I"))
+        msg_len_bytes = self.receive(struct.calcsize("<I"))
         msg_len, = struct.unpack("<I", msg_len_bytes)
-        msg = self.socket.recv(msg_len)
+        msg = self.receive(msg_len)
         if len(msg) < msg_len:
             raise Exception
 
