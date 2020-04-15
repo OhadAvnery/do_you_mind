@@ -8,5 +8,5 @@ def parse_color_image(context, snapshot):
     image = Image.frombytes('RGB', size, snapshot.color_image.data)
     image.save(path) 
 
-parse_color_image.field = 'color_image'
+parse_color_image.fields = ['color_image']
 

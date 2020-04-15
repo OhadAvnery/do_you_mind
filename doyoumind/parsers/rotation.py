@@ -7,4 +7,4 @@ def parse_rotation(context, snapshot):
         z = snapshot.pose.rotation.z,
         w = snapshot.pose.rotation.w,
     )))
-parse_rotation.field = 'rotation'
+parse_rotation.fields = ['rotation']

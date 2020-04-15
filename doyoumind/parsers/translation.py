@@ -6,4 +6,4 @@ def parse_translation(context, snapshot):
         y = snapshot.pose.translation.y,
         z = snapshot.pose.translation.z,
     )))
-parse_translation.field = 'translation'
+parse_translation.fields = ['translation']

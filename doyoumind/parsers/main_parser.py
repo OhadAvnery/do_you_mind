@@ -1,22 +1,31 @@
 import os
+from pathlib import Path
 
-from .color_image import *
+from .__init__ import __parsers__
+"""from .color_image import *
 from .depth_image import *
 from .feelings import *
-from .rotation import *
-from .translation import *
+from .pose import *
+from .location import *"""
 
-#PARSERS_DIR = ""
+
 class MainParser:
     def __init__(self, fields):
         self.fields = fields
         #self.dir = working_dir #working directory
 
+    
     def parse(self, context, snapshot):
-        for field in self.fields:
+        for parse_func in __parsers__:
+            for field in parse_func.fields:
+                if field not in self.fields:
+                    continue
+            parse_func(context, snapshot)
+
+        """for field in self.fields:
             func_name = f'parse_{field}'
             parse_func = globals()[func_name]
-            parse_func(context, snapshot)
+            parse_func(context, snapshot)"""
 
 
 class Context:

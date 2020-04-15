@@ -22,7 +22,7 @@ how to use it in a 'correct' way.
 cli = CommandLineInterface()
 MAX_CONN = 1000
 
-SUPPORTED_FIELDS = ["translation", "color_image"]
+SUPPORTED_FIELDS = ["translation", "rotation", "feelings", "color_image", "depth_image"]
 class Handler(threading.Thread):
     lock = threading.Lock()
     def __init__(self, connection, data_dir):

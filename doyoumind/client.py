@@ -38,28 +38,24 @@ def filter_snapshot(snap, config):
     if 'feelings' not in config:
         snap.ClearField("feelings")
 
-
-
-
-
 @cli.command
 def upload_sample(host, port, path, read_type='protobuf'):
     with Connection.connect(host, int(port)) as conn:
         zipped = (path.endswith(".gz"))
         r = Reader(path, read_type, zipped)
-        print("reading hello")
+        #print("reading hello")
         hello = r.read_hello()
         hello_bytes = hello.SerializeToString()
         for snap in r:
-            print("sending snapshot...")
+            #print("sending snapshot...")
             send_hello(conn, hello_bytes)
             config_bytes = get_config(conn)
             config = protocol.Config.deserialize(config_bytes)
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())
-            print("done sending snapshot")
+            #print("done sending snapshot")
 
-        print("bye bitch!")
+        #print("done!")
 
 
 
