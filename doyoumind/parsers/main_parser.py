@@ -37,7 +37,7 @@ class Context:
     def path(self, filename):
         return self.dir / filename
     def save(self, filename, string):
-        os.makedirs(self.dir, exist_ok=True)
+        
         with open(self.dir / filename, "w+") as f:
             f.write(string)
 

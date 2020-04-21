@@ -60,9 +60,13 @@ class Connection:
     def receive_message(self):
         """
         returns a bytes object.
+        if no message was received, returns None.
         """
-        #msg_len_bytes = self.socket.recv(struct.calcsize("<I"))
+
         msg_len_bytes = self.receive(struct.calcsize("<I"))
+        if not msg_len_bytes:
+            return None
+
         msg_len, = struct.unpack("<I", msg_len_bytes)
         msg = self.receive(msg_len)
         if len(msg) < msg_len:

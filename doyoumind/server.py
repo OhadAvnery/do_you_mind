@@ -40,8 +40,12 @@ class Handler(threading.Thread):
         return self.connection.receive_message()
 
     def run(self):
+        num_snapshot = 1
         while True:
+            #print(f"server: proccessing message {debug_counter}...")
             hello_msg = self.get_hello()
+            if not hello_msg:
+                break
             hello = cortex_pb2.User()       
             hello.ParseFromString(hello_msg)
            
@@ -56,18 +60,18 @@ class Handler(threading.Thread):
             #print("server/run: done parsing")
 
             #example format: 2019-12-04_12-00-00-500000
-            time_epoch = snap.datetime // 1000 #converting milliseconds to seconds
+            time_epoch = snap.datetime / 1000 #converting milliseconds to seconds
             time_string = datetime.datetime.fromtimestamp(time_epoch).strftime("%Y-%m-%d_%H-%M-%S-%f")
-
-            context = Context(self.dir / f"{user_id}" / time_string)
+            snapshot_dir = self.dir / f"{user_id}" / time_string
+            context = Context(snapshot_dir)
+            Handler.lock.acquire()
+            os.makedirs(snapshot_dir, exist_ok=True)
             main_parser = MainParser(SUPPORTED_FIELDS)
             main_parser.parse(context, snap)
+            Handler.lock.release()
+            #print(f"server: done proccessing message {debug_counter}")
+            num_snapshot += 1
         #print("server/run: done run")
-
-        try:
-            pass
-        except Exception as e:
-            print(e)
 
 @cli.command
 def run_server(address, data):

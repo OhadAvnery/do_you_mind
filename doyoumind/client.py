@@ -46,18 +46,19 @@ def upload_sample(host, port, path, read_type='protobuf'):
         #print("reading hello")
         hello = r.read_hello()
         hello_bytes = hello.SerializeToString()
+        num_snapshot = 1
         for snap in r:
-            #print("sending snapshot...")
+            #print(f"client: sending snapshot {debug_counter}...")
             send_hello(conn, hello_bytes)
             config_bytes = get_config(conn)
             config = protocol.Config.deserialize(config_bytes)
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())
-            #print("done sending snapshot")
+            #print(f"client: done sending snapshot {debug_counter}")
+            num_snapshot += 1
 
         #print("done!")
-
-
+ 
 
 
         """send_hello(conn, hello.SerializeToString())

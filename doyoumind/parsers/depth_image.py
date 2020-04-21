@@ -1,8 +1,11 @@
 #from PIL import Image 
-import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
+import touch
+
 from utils.plt_utils import heatmap, annotate_heatmap
+
 
 """def parse_depth_image(context, snapshot):
     path = context.path('depth_image.jpg')
@@ -25,6 +28,7 @@ def parse_depth_image(context, snapshot):
         float_matrix.append(float_vals[w*i : w*(i+1)])
     float_np = np.array(float_matrix)
     im = plt.imshow(float_np)
+    touch.touch(path)
     plt.savefig(path)
 
     """fig, ax = plt.subplots()
