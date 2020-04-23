@@ -1,23 +1,26 @@
 import datetime
-import time
 import struct
 import socket
 import sys
 import threading
+import time
 from pathlib import Path
 import os
+
+from google.protobuf.json_format import MessageToDict
+import numpy as np
+import json
+
 from cli import CommandLineInterface
-from protocol import Config
 from parsers.main_parser import MainParser, Context
+from protocol import Config
+from publisher import publish_mq
 from readers import cortex_pb2
 from utils.connection import Connection
+
 #from readers.reader import read_hello
 
-"""
-NOTE!!!!! -
-my server doesn't use the Listener and Connection classes yet, as I'm still not sure
-how to use it in a 'correct' way.
-"""
+
 
 cli = CommandLineInterface()
 MAX_CONN = 1000
@@ -25,10 +28,21 @@ MAX_CONN = 1000
 SUPPORTED_FIELDS = ["translation", "rotation", "feelings", "color_image", "depth_image"]
 class Handler(threading.Thread):
     lock = threading.Lock()
-    def __init__(self, connection, data_dir):
+    def __init__(self, connection, data_dir, publish):
+        """
+        publish- a function that takes a message and publishes it
+        """
         super().__init__()
         self.connection = connection
         self.dir = Path(data_dir)
+
+        #publish should be a string.
+        #if it's a string like 'rabbitmq://127.0.0.1:5672/',
+        #we turn it to a function. 
+        if isinstance(publish, str):
+            publish = lambda msg: publish_mq(publish, msg)
+
+        self.publish = publish
 
     def get_hello(self):
         return self.connection.receive_message()
@@ -64,17 +78,56 @@ class Handler(threading.Thread):
             time_string = datetime.datetime.fromtimestamp(time_epoch).strftime("%Y-%m-%d_%H-%M-%S-%f")
             snapshot_dir = self.dir / f"{user_id}" / time_string
             context = Context(snapshot_dir)
-            Handler.lock.acquire()
-            os.makedirs(snapshot_dir, exist_ok=True)
-            main_parser = MainParser(SUPPORTED_FIELDS)
-            main_parser.parse(context, snap)
-            Handler.lock.release()
+            snapshot_json = self.snapshot_to_json(snap, context) 
+            self.publish(snapshot_json)
+
+            #main_parser = MainParser(SUPPORTED_FIELDS)
+            #main_parser.parse(context, snap)
+
             #print(f"server: done proccessing message {debug_counter}")
             num_snapshot += 1
         #print("server/run: done run")
 
+
+
+    def snapshot_to_json(self, snapshot, context):
+        """
+        converts the snapshot object to a json string.
+        In order to not make the json file too big, we save the image+depth data into a temp file,
+        and in the json, save the file's path.
+        """
+        Handler.lock.acquire()
+
+        context.make_dir()
+
+        color_image_filename = 'color_image.raw'
+        context.save(color_image_filename, snapshot.color_image.data)
+
+        depth_image_filename = 'depth_image.raw'
+        #create new empty file
+        with open(context.path(depth_image_filename), "wb+") as f:
+            np.save(f, list(snapshot.depth_image.data)) 
+        #save the depth image's float list in it
+        np.save(context.path(depth_image_filename), snapshot.depth_image.data)
+
+        Handler.lock.release()
+
+        snap_dict = MessageToDict(snapshot, preserving_proto_field_name=True)
+
+        """ #google decided to be clever and put the key names in camelCase :(
+        snap_dict['color_image'] = snap_dict['colorImage']
+        del snap_dict['colorImage']
+        snap_dict['depth_image'] = snap_dict['depthImage']
+        del snap_dict['depthImage']"""
+
+        snap_dict['color_image']['data'] = color_image_filename
+        snap_dict['depth_image']['data'] = depth_image_filename
+
+        return json.dumps(snap_dict)
+
+
 @cli.command
-def run_server(address, data):
+def run_server(address, data, publish):
     """
     address - the server's address, given as a string host:port
     data - the data directory in which to write the thoughts
@@ -89,7 +142,7 @@ def run_server(address, data):
     try:
         while True:
             conn, addr = server.accept()
-            handler = Handler(Connection(conn), data)
+            handler = Handler(Connection(conn), data, publish)
             handler.start()
 
     except KeyboardInterrupt:

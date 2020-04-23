@@ -2,17 +2,12 @@ import os
 from pathlib import Path
 
 from .__init__ import __parsers__
-"""from .color_image import *
-from .depth_image import *
-from .feelings import *
-from .pose import *
-from .location import *"""
+
 
 
 class MainParser:
     def __init__(self, fields):
         self.fields = fields
-        #self.dir = working_dir #working directory
 
     
     def parse(self, context, snapshot):
@@ -22,23 +17,22 @@ class MainParser:
                     continue
             parse_func(context, snapshot)
 
-        """for field in self.fields:
-            func_name = f'parse_{field}'
-            parse_func = globals()[func_name]
-            parse_func(context, snapshot)"""
-
-
 class Context:
     def __init__(self, dir_name):
         """
         dir - a PosixPath object
         """
         self.dir = dir_name
+    def make_dir(self):
+        os.makedirs(self.dir, exist_ok=True)
     def path(self, filename):
         return self.dir / filename
-    def save(self, filename, string):
-        
-        with open(self.dir / filename, "w+") as f:
+    def save(self, filename, string=""):
+        """create a new file with the given filename, and put in it the given string.
+        If no string parameter is given, create a new empty file."""
+        open_fmt = 'wb+' if isinstance(string, bytes) else 'w+'        
+        with open(self.dir / filename, open_fmt) as f:
             f.write(string)
+
 
 
