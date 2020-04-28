@@ -1,10 +1,8 @@
 import json
 
 def parse_feelings(context, snapshot):
-    context.save('feelings.json', json.dumps(dict(
-        hunger = snapshot.feelings.hunger,
-        thirst = snapshot.feelings.thirst,
-        exhaustion = snapshot.feelings.exhaustion,
-        happiness = snapshot.feelings.happiness,
-    )))
+    snap_dict = json.loads(snapshot)
+    feelings_dict = snap_dict['feelings']
+    context.save('feelings.json', json.dumps(feelings_dict))
+
 parse_feelings.fields = ['feelings']

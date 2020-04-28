@@ -1,12 +1,23 @@
-from PIL import Image 
+import json 
+import os
+from PIL import Image
 
 def parse_color_image(context, snapshot):
     path = context.path('color_image.jpg')
-    size = snapshot.color_image.width, snapshot.color_image.height
+    snap_dict = json.loads(snapshot)
+    size = snap_dict['color_image']['width'], snap_dict['color_image']['height']
     #image = Image.new('RGB', size)
     #image.putdata(snapshot.color_image.data)
-    image = Image.frombytes('RGB', size, snapshot.color_image.data)
+    raw_file = snap_dict['color_image']['data']
+    with open(raw_file, 'rb') as f:
+        image_data = f.read()
+
+    image = Image.frombytes('RGB', size, image_data)
     image.save(path) 
+
+    os.remove(raw_file)
+
+
 
 parse_color_image.fields = ['color_image']
 

@@ -14,7 +14,7 @@ import json
 from cli import CommandLineInterface
 from parsers.main_parser import MainParser, Context
 from protocol import Config
-from publisher import publish_mq
+from publisher import publish_mq, SUPPORTED_FIELDS
 from readers import cortex_pb2
 from utils.connection import Connection
 
@@ -25,7 +25,7 @@ from utils.connection import Connection
 cli = CommandLineInterface()
 MAX_CONN = 1000
 
-SUPPORTED_FIELDS = ["translation", "rotation", "feelings", "color_image", "depth_image"]
+
 class Handler(threading.Thread):
     lock = threading.Lock()
     def __init__(self, connection, data_dir, publish):
@@ -40,7 +40,7 @@ class Handler(threading.Thread):
         #if it's a string like 'rabbitmq://127.0.0.1:5672/',
         #we turn it to a function. 
         if isinstance(publish, str):
-            publish = lambda msg: publish_mq(publish, msg)
+            publish = lambda msg, context: publish_mq(publish, msg, context)
 
         self.publish = publish
 
@@ -79,10 +79,7 @@ class Handler(threading.Thread):
             snapshot_dir = self.dir / f"{user_id}" / time_string
             context = Context(snapshot_dir)
             snapshot_json = self.snapshot_to_json(snap, context) 
-            self.publish(snapshot_json)
-
-            #main_parser = MainParser(SUPPORTED_FIELDS)
-            #main_parser.parse(context, snap)
+            self.publish(snapshot_json, context)
 
             #print(f"server: done proccessing message {debug_counter}")
             num_snapshot += 1
@@ -104,24 +101,18 @@ class Handler(threading.Thread):
         context.save(color_image_filename, snapshot.color_image.data)
 
         depth_image_filename = 'depth_image.raw'
-        #create new empty file
+        #create new file and save the depth image's float list in it
         with open(context.path(depth_image_filename), "wb+") as f:
             np.save(f, list(snapshot.depth_image.data)) 
-        #save the depth image's float list in it
-        np.save(context.path(depth_image_filename), snapshot.depth_image.data)
+
 
         Handler.lock.release()
 
         snap_dict = MessageToDict(snapshot, preserving_proto_field_name=True)
+        print(snap_dict.keys())
 
-        """ #google decided to be clever and put the key names in camelCase :(
-        snap_dict['color_image'] = snap_dict['colorImage']
-        del snap_dict['colorImage']
-        snap_dict['depth_image'] = snap_dict['depthImage']
-        del snap_dict['depthImage']"""
-
-        snap_dict['color_image']['data'] = color_image_filename
-        snap_dict['depth_image']['data'] = depth_image_filename
+        snap_dict['color_image']['data'] = str(context.path(color_image_filename))
+        snap_dict['depth_image']['data'] = str(context.path(depth_image_filename))
 
         return json.dumps(snap_dict)
 
