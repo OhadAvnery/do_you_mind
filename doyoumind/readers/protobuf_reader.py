@@ -4,7 +4,7 @@ from PIL import Image
 from pathlib import Path
 
 from . import cortex_pb2
-from utils.reader_utils import *
+from ..utils.reader_utils import *
 
 
 #from .utils.reader_utils import *

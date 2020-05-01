@@ -1,6 +1,6 @@
 import struct
-from utils.reader_utils import PackedString
-from readers import hello_pb2
+from .utils.reader_utils import PackedString
+from .readers import hello_pb2
 
 """class Hello:
     def __init__(self, user_id, username, birthdate, gender):

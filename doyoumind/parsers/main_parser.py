@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from constants import SUPPORTED_FIELDS
+from ..constants import SUPPORTED_FIELDS
 from .constants import __parsers__
 
 
@@ -17,22 +17,6 @@ class MainParser:
                     continue
             parse_func(context, snapshot)
 
-class Context:
-    def __init__(self, dir_name):
-        """
-        dir - a PosixPath object
-        """
-        self.dir = dir_name
-    def make_dir(self):
-        os.makedirs(self.dir, exist_ok=True)
-    def path(self, filename):
-        return self.dir / filename
-    def save(self, filename, string=""):
-        """create a new file with the given filename, and put in it the given string.
-        If no string parameter is given, create a new empty file."""
-        open_fmt = 'wb+' if isinstance(string, bytes) else 'w+'        
-        with open(self.dir / filename, open_fmt) as f:
-            f.write(string)
 
 
 

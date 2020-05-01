@@ -6,7 +6,7 @@ import numpy as np
 import os
 import touch
 
-from utils.plt_utils import heatmap, annotate_heatmap
+from ..utils.plt_utils import heatmap, annotate_heatmap
 
 
 def parse_depth_image(context, snapshot):

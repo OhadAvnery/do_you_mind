@@ -2,12 +2,12 @@ import time
 import struct
 import socket
 #from . import cli
-from cli import CommandLineInterface
+from .cli import CommandLineInterface
 
-from utils.connection import Connection
-from readers.reader import Reader
-from readers import cortex_pb2
-import protocol
+from .utils.connection import Connection
+from .readers.reader import Reader
+from .readers import cortex_pb2
+from . import protocol
 
 import click
 

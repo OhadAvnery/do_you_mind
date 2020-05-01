@@ -4,7 +4,7 @@ from PIL import Image
 from pathlib import Path
 
 
-from utils.reader_utils import *
+from ..utils.reader_utils import *
 
 class User:
     def __init__(self, user_id, username, birthdate, gender):

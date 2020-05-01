@@ -11,13 +11,14 @@ from google.protobuf.json_format import MessageToDict
 import numpy as np
 import json
 
-from cli import CommandLineInterface
-from parsers.main_parser import MainParser, Context
-from protocol import Config
-from mq.publisher import publish_by_url
-from readers import cortex_pb2
-from utils.connection import Connection
-from constants import SUPPORTED_FIELDS
+from .cli import CommandLineInterface
+from .parsers.main_parser import MainParser
+from .protocol import Config
+from .mq.publisher import publish_by_url
+from .readers import cortex_pb2
+from .utils.connection import Connection
+from .utils.context import Context 
+from .constants import SUPPORTED_FIELDS
 
 #from readers.reader import read_hello
 
@@ -41,7 +42,7 @@ class Handler(threading.Thread):
         #if it's a string like 'rabbitmq://127.0.0.1:5672/',
         #we turn it to a function. 
         if isinstance(publish, str):
-            self.publish = lambda msg, context: publish_by_url(publish, msg, context)
+            self.publish = lambda msg: publish_by_url(publish, msg)
         else: 
             self.publish = publish
 
@@ -112,6 +113,7 @@ class Handler(threading.Thread):
         snap_dict = MessageToDict(snapshot, preserving_proto_field_name=True)
         print(snap_dict.keys())
 
+        snap_dict['snapshot_dir'] = context.dir_name.absolute.as_posix()
         snap_dict['color_image']['data'] = str(context.path(color_image_filename))
         snap_dict['depth_image']['data'] = str(context.path(depth_image_filename))
 

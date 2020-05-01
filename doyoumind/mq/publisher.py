@@ -1,15 +1,15 @@
 from furl import furl
 import pika
 
-from parsers.main_parser import MainParser, Context
-from constants import SUPPORTED_FIELDS
+#from parsers.main_parser import MainParser, Context
+from ..constants import SUPPORTED_FIELDS
 from .constants import SERVER_EXCHANGE, SAVER_EXCHANGE
-from parsers.constants import __parsers__
+from ..parsers.constants import __parsers__
 
 
 
 
-def publish_by_url(url, msg, context):
+def publish_by_url(url, msg):
     """url: a url of the form 'rabbitmq://127.0.0.1:5672/' """
     print(f"publish_by_url - url: {url}")
     f = furl(url)
@@ -17,11 +17,11 @@ def publish_by_url(url, msg, context):
     print(f"publish_by_url - scheme: {f.scheme}")
     publisher_func = PUBLISHERS[f.scheme]
     print(f"scheme: {f.scheme}, publisher func: {publisher_func}")
-    publisher_func(url, msg, context)
+    publisher_func(url, msg)
     #main_parser = MainParser(SUPPORTED_FIELDS)
     #main_parser.parse(context, msg)
 
-def publish_rabbit_mq(url, msg, context):
+def publish_rabbit_mq(url, msg):
     f = furl(url)
     host, port = f.host, f.port
     params = pika.ConnectionParameters(host=host, port=port)
