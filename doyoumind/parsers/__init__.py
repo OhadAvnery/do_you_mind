@@ -3,10 +3,11 @@ from inspect import getmembers, isfunction
 import os
 from pathlib import Path
 
-__parsers__ = set()
+from .constants import __parsers__
+
 PARSERS_DIR = "/home/user/do_you_mind/doyoumind/parsers"
 PARSERS_DIR_SHORT = PARSERS_DIR.split('/')[-1]
-UNWANTED_FILES = ['__init__.py', 'main_parser.py']
+UNWANTED_FILES = ['__init__.py', 'main_parser.py', 'constants.py']
 
 def collect_parsers():
     my_filename = Path(__file__).name

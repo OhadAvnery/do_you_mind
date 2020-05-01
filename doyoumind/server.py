@@ -14,9 +14,10 @@ import json
 from cli import CommandLineInterface
 from parsers.main_parser import MainParser, Context
 from protocol import Config
-from publisher import publish_mq, SUPPORTED_FIELDS
+from mq.publisher import publish_by_url
 from readers import cortex_pb2
 from utils.connection import Connection
+from constants import SUPPORTED_FIELDS
 
 #from readers.reader import read_hello
 
@@ -40,9 +41,9 @@ class Handler(threading.Thread):
         #if it's a string like 'rabbitmq://127.0.0.1:5672/',
         #we turn it to a function. 
         if isinstance(publish, str):
-            publish = lambda msg, context: publish_mq(publish, msg, context)
-
-        self.publish = publish
+            self.publish = lambda msg, context: publish_by_url(publish, msg, context)
+        else: 
+            self.publish = publish
 
     def get_hello(self):
         return self.connection.receive_message()

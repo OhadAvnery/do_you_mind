@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
 
-from .__init__ import __parsers__
-
+from constants import SUPPORTED_FIELDS
+from .constants import __parsers__
 
 
 class MainParser:

@@ -1,0 +1,1 @@
+SUPPORTED_FIELDS = ["translation", "rotation", "feelings", "color_image", "depth_image"]
