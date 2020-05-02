@@ -1,18 +1,23 @@
+import click
 import time
 import struct
 import socket
-#from . import cli
-from .cli import CommandLineInterface
+
+#from .cli import client
+#from .cli import CommandLineInterface
 
 from .utils.connection import Connection
 from .readers.reader import Reader
 from .readers import cortex_pb2
 from . import protocol
 
-import click
 
-cli = CommandLineInterface()
 
+#cli = CommandLineInterface()
+
+@click.group()
+def main():
+    pass
 
 #IDEA: these three functions only work at the connection level (so they're really short), 
 #and don't use any (de)serialization.
@@ -38,9 +43,15 @@ def filter_snapshot(snap, config):
     if 'feelings' not in config:
         snap.ClearField("feelings")
 
-@cli.command
+#python3 -m doyoumind.client upload_sample --host "127.0.0.1" -p 8000 
+#"/home/user/Downloads/sample.mind.gz"
+
+@main.command()
+@click.option('--host', '-h', default='127.0.0.1', type=str)
+@click.option('--port', '-p', default=8000, type=int)
+@click.argument('path', type=str)
 def upload_sample(host, port, path, read_type='protobuf'):
-    with Connection.connect(host, int(port)) as conn:
+    with Connection.connect(host, port) as conn:
         zipped = (path.endswith(".gz"))
         r = Reader(path, read_type, zipped)
         #print("reading hello")
@@ -57,29 +68,8 @@ def upload_sample(host, port, path, read_type='protobuf'):
             #print(f"client: done sending snapshot {debug_counter}")
             num_snapshot += 1
 
-        #print("done!")
- 
 
-
-        """send_hello(conn, hello.SerializeToString())
-        print("reading config")
-        config_bytes = get_config(conn)
-        print(f"the config bytes that client got: {config_bytes}")
-        config = protocol.Config.deserialize(config_bytes)
-        print(f"upload_sample- config is: {config.fields}")
-        #config = protocol.Config.deserialize(get_config(conn))
-        for snap in r:
-            print("upload_sample: sending snap!!!")
-            filter_snapshot(snap, config)
-            send_snapshot(conn, snap.SerializeToString())
-            print("upload_sample: snapshot sent ;)")
-            break"""
-
-
-
-
-#@click.command()
-@cli.command
+#@main.command
 def upload_thought(address, user, thought):
     """
     uploads the thought to the given address.
@@ -108,22 +98,7 @@ def upload_thought(address, user, thought):
     print('done')
 
 
-"""def main(argv):
-    if len(argv) != 4:
-        print(f'USAGE: {argv[0]} <address> <user_id> <thought>')
-        return 1
-    try:
-        address, user_id, thought = argv[1:]
-        ip_address, port = address.split(":")
-        fixed_address = (ip_address, int(port))
-        upload(fixed_address, int(user_id), thought)
-        print('done')
-
-    except Exception as error:
-        print(f'ERROR: {error}')
-        return 1"""
-
-
 if __name__ == '__main__':
-    cli.main()
+    print(f"client main: {main.commands}")
+    main()
 

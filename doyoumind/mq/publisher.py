@@ -8,8 +8,30 @@ from ..parsers.constants import __parsers__
 
 
 
+class Publisher:
+    def __init__(self, url):
+        f = furl(url)
+        self.url = f
+        self.publish = get_publish_func(f)
 
-def publish_by_url(url, msg):
+
+def setup_rabbitmq_publisher(f):
+    host, port = f.host, f.port
+    params = pika.ConnectionParameters(host=host, port=port)
+    connection = pika.BlockingConnection(params)
+    channel = connection.channel()
+    channel.exchange_declare(exchange=SERVER_EXCHANGE, exchange_type='fanout')
+    for parser in __parsers__:
+        parser_name = parser.__name__
+        channel.queue_declare(queue=parser_name, durable=True)
+        channel.queue_bind(exchange=SERVER_EXCHANGE, queue=parser_name)
+    def publish(msg):
+        channel.basic_publish(exchange=SERVER_EXCHANGE, routing_key='', body=msg)
+        print("published message!")
+    return publish
+
+
+'''def publish_by_url(url, msg):
     """url: a url of the form 'rabbitmq://127.0.0.1:5672/' """
     print(f"publish_by_url - url: {url}")
     f = furl(url)
@@ -23,18 +45,10 @@ def publish_by_url(url, msg):
 
 def publish_rabbit_mq(url, msg):
     f = furl(url)
-    host, port = f.host, f.port
-    params = pika.ConnectionParameters(host=host, port=port)
-    connection = pika.BlockingConnection(params)
-    channel = connection.channel()
-    channel.exchange_declare(exchange=SERVER_EXCHANGE, exchange_type='fanout')
-    for parser_name in __parsers__:
-        channel.queue_declare(queue=parser_name)
-        channel.queue_bind(exchange=SERVER_EXCHANGE, queue=parser_name)
-    #channel.queue_declare(queue=QUEUE_NAME)
-    channel.basic_publish(exchange=SERVER_EXCHANGE, routing_key='', body=msg)
-    print("done publishing!")
+    
+    #channel.queue_declare(queue=QUEUE_NAME)'''
+    
 
 
-PUBLISHERS = {'rabbitmq': publish_rabbit_mq}
+PUBLISHER_SETUPS = {'rabbitmq': publish_rabbit_mq}
 

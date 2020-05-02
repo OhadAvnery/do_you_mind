@@ -6,10 +6,11 @@ import numpy as np
 import os
 import touch
 
-from ..utils.plt_utils import heatmap, annotate_heatmap
+#from ..utils.plt_utils import heatmap, annotate_heatmap
 
 
 def parse_depth_image(context, snapshot):
+    print("invocating parse_depth_image")
     path = context.path('depth_image.jpg')
     snap_dict = json.loads(snapshot)
     w, h = snap_dict['depth_image']['width'], snap_dict['depth_image']['height']
@@ -25,7 +26,7 @@ def parse_depth_image(context, snapshot):
     touch.touch(path)
     plt.savefig(path)
 
-    os.remove(raw_file)
+    #os.remove(raw_file) #return it back later!!!
 
 
     """fig, ax = plt.subplots()

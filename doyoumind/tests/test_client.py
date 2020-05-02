@@ -1,5 +1,5 @@
 import pytest
-from doyoumind.client import upload_sample
+"""from doyoumind.client import upload_sample
 
 import requests
 
@@ -8,4 +8,4 @@ def sample():
     return 5
 
 def test_sample(sample):
-    assert sample==5
+    assert sample==5"""

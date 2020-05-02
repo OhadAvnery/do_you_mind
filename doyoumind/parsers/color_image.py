@@ -3,6 +3,7 @@ import os
 from PIL import Image
 
 def parse_color_image(context, snapshot):
+    print("invocating parse_color_image")
     path = context.path('color_image.jpg')
     snap_dict = json.loads(snapshot)
     size = snap_dict['color_image']['width'], snap_dict['color_image']['height']
@@ -15,7 +16,7 @@ def parse_color_image(context, snapshot):
     image = Image.frombytes('RGB', size, image_data)
     image.save(path) 
 
-    os.remove(raw_file)
+    #os.remove(raw_file) #return it back later!!!!
 
 
 

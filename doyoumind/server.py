@@ -1,3 +1,4 @@
+import click
 import datetime
 import struct
 import socket
@@ -11,8 +12,7 @@ from google.protobuf.json_format import MessageToDict
 import numpy as np
 import json
 
-from .cli import CommandLineInterface
-from .parsers.main_parser import MainParser
+#from .cli import CommandLineInterface
 from .protocol import Config
 from .mq.publisher import publish_by_url
 from .readers import cortex_pb2
@@ -22,9 +22,11 @@ from .constants import SUPPORTED_FIELDS
 
 #from readers.reader import read_hello
 
+@click.group()
+def main():
+    pass
 
-
-cli = CommandLineInterface()
+#cli = CommandLineInterface()
 MAX_CONN = 1000
 
 
@@ -81,7 +83,7 @@ class Handler(threading.Thread):
             snapshot_dir = self.dir / f"{user_id}" / time_string
             context = Context(snapshot_dir)
             snapshot_json = self.snapshot_to_json(snap, context) 
-            self.publish(snapshot_json, context)
+            self.publish(snapshot_json)
 
             #print(f"server: done proccessing message {debug_counter}")
             num_snapshot += 1
@@ -113,24 +115,27 @@ class Handler(threading.Thread):
         snap_dict = MessageToDict(snapshot, preserving_proto_field_name=True)
         print(snap_dict.keys())
 
-        snap_dict['snapshot_dir'] = context.dir_name.absolute.as_posix()
+        snap_dict['snapshot_dir'] = context.dir.absolute().as_posix()
         snap_dict['color_image']['data'] = str(context.path(color_image_filename))
         snap_dict['depth_image']['data'] = str(context.path(depth_image_filename))
 
         return json.dumps(snap_dict)
 
 
-@cli.command
-def run_server(address, data, publish):
+@main.command()
+@click.option('--host', '-h', default='127.0.0.1', type=str)
+@click.option('--port', '-p', default=8000, type=int)
+@click.argument('publish', type=str)
+def run_server(host, port, publish, data="/home/user/test2"):
     """
-    address - the server's address, given as a string host:port
+    host,port - the server's address
     data - the data directory in which to write the thoughts
     """
-    ip_address, port = address.split(":")
-    port = int(port)
+    #ip_address, port = address.split(":")
+    #port = int(port)
     server = socket.socket()
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.bind((ip_address, port))
+    server.bind((host, port))
     server.listen(MAX_CONN)
     
     try:
@@ -146,7 +151,8 @@ def run_server(address, data, publish):
 
 
 if __name__ == '__main__':
-    cli.main()
+    print(f"server main: {main.commands}")
+    main()
     
 
         
