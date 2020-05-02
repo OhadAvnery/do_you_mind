@@ -26,7 +26,7 @@ def parse_depth_image(context, snapshot):
     touch.touch(path)
     plt.savefig(path)
 
-    #os.remove(raw_file) #return it back later!!!
+    os.remove(raw_file) #return it back later!!!
 
 
     """fig, ax = plt.subplots()

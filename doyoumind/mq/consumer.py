@@ -11,6 +11,10 @@ from ..utils.context import context_from_snapshot
 @click.group()
 def main():
     pass
+def callback_from_parser(parser):
+    def callback_func(channel, method, propreties, body):
+        return parser(context_from_snapshot(body), body)
+    return callback_func
 
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -27,8 +31,7 @@ def consume(host, port):
         print(f"consumer- parser: {parser_name}")
         channel.queue_declare(queue=parser_name, durable=True)
         channel.queue_bind(exchange=SERVER_EXCHANGE, queue=parser_name)
-        callback_func = lambda channel, method, properties, body: parser(context_from_snapshot(body), body)
-        channel.basic_consume(queue=parser_name, on_message_callback=callback_func, auto_ack=True)
+        channel.basic_consume(queue=parser_name, on_message_callback=callback_from_parser(parser), auto_ack=True)
 
     channel.start_consuming()
     print("done consuming!")

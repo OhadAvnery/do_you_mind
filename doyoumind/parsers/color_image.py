@@ -16,7 +16,7 @@ def parse_color_image(context, snapshot):
     image = Image.frombytes('RGB', size, image_data)
     image.save(path) 
 
-    #os.remove(raw_file) #return it back later!!!!
+    os.remove(raw_file) 
 
 
 

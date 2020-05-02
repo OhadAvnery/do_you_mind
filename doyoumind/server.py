@@ -14,7 +14,7 @@ import json
 
 #from .cli import CommandLineInterface
 from .protocol import Config
-from .mq.publisher import publish_by_url
+from .mq.publisher import Publisher
 from .readers import cortex_pb2
 from .utils.connection import Connection
 from .utils.context import Context 
@@ -44,7 +44,9 @@ class Handler(threading.Thread):
         #if it's a string like 'rabbitmq://127.0.0.1:5672/',
         #we turn it to a function. 
         if isinstance(publish, str):
-            self.publish = lambda msg: publish_by_url(publish, msg)
+            publisher = Publisher(publish)
+            self.publish = publisher.publish
+            print(f"our publish function: {self.publish}")
         else: 
             self.publish = publish
 
@@ -83,6 +85,7 @@ class Handler(threading.Thread):
             snapshot_dir = self.dir / f"{user_id}" / time_string
             context = Context(snapshot_dir)
             snapshot_json = self.snapshot_to_json(snap, context) 
+            print("server: going to publish...")
             self.publish(snapshot_json)
 
             #print(f"server: done proccessing message {debug_counter}")

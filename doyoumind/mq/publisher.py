@@ -12,10 +12,10 @@ class Publisher:
     def __init__(self, url):
         f = furl(url)
         self.url = f
-        self.publish = get_publish_func(f)
+        self.publish = PUBLISHER_SETUPS[f.scheme](f)
 
 
-def setup_rabbitmq_publisher(f):
+def make_rabbitmq_publisher(f):
     host, port = f.host, f.port
     params = pika.ConnectionParameters(host=host, port=port)
     connection = pika.BlockingConnection(params)
@@ -50,5 +50,5 @@ def publish_rabbit_mq(url, msg):
     
 
 
-PUBLISHER_SETUPS = {'rabbitmq': publish_rabbit_mq}
+PUBLISHER_SETUPS = {'rabbitmq': make_rabbitmq_publisher}
 
