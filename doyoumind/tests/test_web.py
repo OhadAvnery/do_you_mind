@@ -6,7 +6,7 @@ import shutil
 import pytest
 import requests
 
-from doyoumind import run_webserver
+#from doyoumind import run_webserver
 
 """
 _WEBSERVER_ADDRESS = '127.0.0.1', 8000
