@@ -3,6 +3,7 @@ import click
 from .constants import SERVER_EXCHANGE, SAVER_EXCHANGE
 from ..parsers.constants import __parsers__
 from ..utils.context import context_from_snapshot
+from ..constants import SUPPORTED_FIELDS
 
 
 #from ..cli import CommandLineInterface
@@ -27,6 +28,9 @@ def consume(host, port):
     channel.exchange_declare(exchange=SERVER_EXCHANGE, exchange_type='fanout')
 
     for parser in __parsers__:
+        for field in parser.fields:
+                if field not in SUPPORTED_FIELDS:
+                    continue
         parser_name = parser.__name__
         print(f"consumer- parser: {parser_name}")
         channel.queue_declare(queue=parser_name, durable=True)
