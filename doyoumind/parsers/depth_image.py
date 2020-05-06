@@ -26,7 +26,13 @@ def parse_depth_image(context, snapshot):
     touch.touch(path)
     plt.savefig(path)
 
-    os.remove(raw_file) #return it back later!!!
+    os.remove(raw_file)
+    result = {}
+    result['depth_image'] = path.as_posix()
+    result['user_id'] = snap_dict['user_id']
+    result['parser'] = 'depth_image'
+    result['datetime'] = snap_dict['datetime']
+    return json.dumps(result)
 
 
     """fig, ax = plt.subplots()

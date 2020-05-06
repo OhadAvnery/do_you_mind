@@ -16,7 +16,13 @@ def parse_color_image(context, snapshot):
     image = Image.frombytes('RGB', size, image_data)
     image.save(path) 
 
-    os.remove(raw_file) 
+    os.remove(raw_file)
+    result = {}
+    result['color_image'] = path.as_posix()
+    result['user_id'] = snap_dict['user_id']
+    result['parser'] = 'color_image'
+    result['datetime'] = snap_dict['datetime']
+    return json.dumps(result)
 
 
 
