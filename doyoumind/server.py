@@ -14,7 +14,7 @@ import json
 
 from .constants import SUPPORTED_FIELDS
 from .mq.constants import SERVER_EXCHANGE
-from .mq.publisher import Publisher
+from .mq.publisher_parser import PublisherParser
 from .protocol import Config
 from .readers import cortex_pb2
 from .saver.saver import Saver
@@ -51,7 +51,7 @@ class Handler(threading.Thread):
         #if it's a string like 'rabbitmq://127.0.0.1:5672/',
         #we turn it to a function. 
         if isinstance(publish, str):
-            publisher = Publisher(publish, SERVER_EXCHANGE)
+            publisher = PublisherParser(publish)
             self.publish = publisher.publish
             print(f"our publish function: {self.publish}")
         else: 
@@ -76,20 +76,23 @@ class Handler(threading.Thread):
             hello = cortex_pb2.User()       
             hello.ParseFromString(hello_msg)
 
-            saver = Saver(self.database)
-            hello_dict = MessageToDict(hello, preserving_proto_field_name=True)
-            #print(f"server/run- hello_dict: {hello_dict}")
-            saver.save('user', json.dumps(hello_dict))
            
-            user_id = hello.user_id
+            saver = Saver(self.database)
+            hello_dict = MessageToDict(hello, preserving_proto_field_name=True, \
+                including_default_value_fields=True)
+            #weird bug: somehow this isn't an int!!!!! 
+            hello_dict['user_id'] = int(hello_dict['user_id'])
+            #print("server/run:", hello_dict)
+            saver.save('user', json.dumps(hello_dict))
 
+           
+            user_id = hello.user_id #an int
             config = Config(SUPPORTED_FIELDS)
             config_msg = config.serialize()
             #print(f"sending config, bytes: {config_msg}, num. fields: {len(config.fields)}")
             self.send_config(config_msg)
             snap = cortex_pb2.Snapshot()
             snap.ParseFromString(self.get_snapshot())
-            #print("server/run: done parsing")
 
             #example format: 2019-12-04_12-00-00-500000
             time_epoch = snap.datetime / 1000 #converting milliseconds to seconds
@@ -127,15 +130,13 @@ class Handler(threading.Thread):
 
         Handler.lock.release()
 
-        snap_dict = MessageToDict(snapshot, preserving_proto_field_name=True)
-        print(snap_dict.keys())
+        snap_dict = MessageToDict(snapshot, preserving_proto_field_name=True, \
+            including_default_value_fields=True)
 
         snap_dict['user_id'] = user_id
-        
         snap_dict['snapshot_dir'] = context.dir.absolute().as_posix()
         snap_dict['color_image']['data'] = str(context.path(color_image_filename))
         snap_dict['depth_image']['data'] = str(context.path(depth_image_filename))
-        print(f"server- snapshot_to_json: {snap_dict}")
         snap_dict['datetime'] = int(snap_dict['datetime']) / 1000 #convert it to seconds from miliseconds
         return json.dumps(snap_dict)
 
