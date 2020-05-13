@@ -1,6 +1,7 @@
 import json
 
 def parse_pose(context, snapshot):
+    print("invocating parse_pose")
     snap_dict = json.loads(snapshot)
     result = {}
     result['pose'] = snap_dict['pose']

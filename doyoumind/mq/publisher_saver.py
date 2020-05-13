@@ -3,6 +3,7 @@ import json
 import pika
 
 from .constants import SAVER_EXCHANGE
+#from ..parsers import run_parser
 from ..parsers.constants import __parsers__
 from ..utils.context import context_from_snapshot
 

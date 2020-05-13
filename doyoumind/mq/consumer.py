@@ -13,14 +13,7 @@ from ..constants import SUPPORTED_FIELDS
 def main():
     pass
 
-'''def callback_from_parser(parser, publish):
-    def callback_func(channel, method, properties, body):
-        parse_result = parser(context_from_snapshot(body), body)
-        print(f"consumser callback: got result for {parser}")
-        publish(parse_result)
-        print(f"consumser callback: published result of {parser}")
-    return callback_func'''
-
+'''
 def make_rabbitmq_consumer(f, callback, exchange):
     params = pika.ConnectionParameters(host=f.host, port=f.port)
     connection = pika.BlockingConnection(params)
@@ -66,51 +59,10 @@ class Consumer:
         f = furl(url)
         self.url = f
         self.consume = CONSUMER_SETUPS[f.scheme](f, callback, exchange)
-        #self.params = pika.ConnectionParameters(host=f.host, port=f.port)
-        #self.callback = callback
-        #self.exchange = exchange
-        
-        
-        ''' if exchange == SERVER_EXCHANGE:
-            self.exchange_type = 'fanout'
-
-        else: #exchange==SAVER_EXCHANGE
-            self.exchange_type = 'direct'''
-
-    '''def consumer_callback(self, parser, publish):
-        def callback_func(channel, method, properties, body):
-            if self.exchange == SERVER_EXCHANGE:
-                #here, body is the result of the parser
-                body = parser(context_from_snapshot(body), body)
-                print(f"consumser callback: got result for {parser}")
-            publish(body)
-            print(f"consumser callback: published")
-        return callback_func'''
-    #def consume(self):
-        
 
 
-
-'''def consume(host, port, publish):
-    """host- an addrses, port- an int, 
-    publish- a function that publishes the consumed data.
-    """
-    #port = int(port) #in case we sent a string
-    params = pika.ConnectionParameters(host=host, port=port)
-    connection = pika.BlockingConnection(params)
-    channel = connection.channel()
-    channel.exchange_declare(exchange=SERVER_EXCHANGE, exchange_type='fanout')
-
-    for parser in __parsers__:
-        parser_name = parser.__name__
-        print(f"consumer- parser: {parser_name}")
-        channel.queue_declare(queue=parser_name, durable=True)
-        channel.queue_bind(exchange=SERVER_EXCHANGE, queue=parser_name)
-        channel.basic_consume(queue=parser_name, on_message_callback=callback_from_parser(parser, publish), auto_ack=True)
-
-    channel.start_consuming()'''
-
-CONSUMER_SETUPS = PUBLISHER_SETUPS = {'rabbitmq': make_rabbitmq_consumer}
+CONSUMER_SETUPS = {'rabbitmq': make_rabbitmq_consumer}
+'''
 
 @main.command('consume')
 #@click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -121,9 +73,9 @@ def consume_cli(consume_url, publish_url):
     """host- an addrses, port- an int, parameters for connecting with rabbitmq.
     url- a string of the form 'rabbitmq://host:port/' (to publish to)
     """
-    publisher = Publisher(publish_url, SERVER_EXCHANGE)
+    publisher = PublisherSaver(publish_url)
     publish = publisher.publish
-    consumer = Consumer(consume_url, publish, SERVER_EXCHANGE)
+    consumer = Consumer(consume_url, publish)
     consumer.consume()
     #consume(host, port, publish)
 

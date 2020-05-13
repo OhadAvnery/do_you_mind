@@ -1,10 +1,13 @@
-import click
+#import click
 import datetime
 from furl import furl
 import json
 import pymongo
+import threading
 
 from ..mq.consumer_saver import ConsumerSaver
+
+lock = threading.Lock()
 
 class Saver:
     def __init__(self, database_url="mongodb://127.0.0.1:27017"):
@@ -16,6 +19,7 @@ class Saver:
         self.url = f
         self.save = SAVER_SETUPS[f.scheme](f)
 
+'''
 @click.group()
 def main():
     pass
@@ -45,7 +49,7 @@ def run_saver(database, mq):
     consumer = ConsumerSaver(mq, callback)
     print("saver.py: about to consume")
     consumer.consume()
-
+'''
    
 def make_mongodb_saver(f):
     #host, port = f.host, f.port
@@ -87,14 +91,17 @@ def make_mongodb_saver(f):
         data = json.loads(data)
         print(f"saver- save: {data}")
         print(f"saver- save: {data[topic]}")
-        dt = datetime.datetime.fromtimestamp(data['datetime'])
+        #dt = datetime.datetime.fromtimestamp(data['datetime'])
+        dt = data['datetime']
         user_id = data['user_id']
+
         #find if there's a snapshot with the given timestamp. If not, create one.
+        lock.acquire()
         snap = snapshots.find_one({'user_id':user_id,'datetime':dt})
         if not snap:
-            #snap = {'datetime':datetime}
             users.update_one({'user_id':user_id}, {'$push':{'snapshots':dt}})
             snapshots.insert_one({'user_id':user_id, 'datetime':dt})
+        lock.release()
 
         #update entry
         added_entry = {topic:data[topic]}
@@ -107,5 +114,5 @@ def make_mongodb_saver(f):
 
 SAVER_SETUPS = {'mongodb': make_mongodb_saver}
 
-if __name__ == '__main__':
-    main()
+'''if __name__ == '__main__':
+    main()'''
