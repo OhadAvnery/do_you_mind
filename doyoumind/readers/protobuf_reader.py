@@ -3,7 +3,7 @@ import struct
 from PIL import Image
 from pathlib import Path
 
-from . import cortex_pb2
+from . import doyoumind_pb2
 from ..utils.reader_utils import *
 
 
@@ -17,13 +17,9 @@ class Reader:
             self.open_func = lambda p: gzip.open(p, 'rb')
         else:
             self.open_func = lambda p: open(p, 'rb')
-        #self.file = (self.open_func)(path)
-        #self.user = cortex_pb2.User()
-        #with (self.open_func)(self.path) as file:            
-         #   self.user.ParseFromString(file.read())
 
     def read_user(self):
-        user = cortex_pb2.User()
+        user = doyoumind_pb2.User()
         with (self.open_func)(self.path) as file:  
             size = unpack_format(file, '<I')        
             user.ParseFromString(file.read(size))
@@ -31,7 +27,7 @@ class Reader:
         return user
 
     def read_snapshot(self):
-        snap = cortex_pb2.Snapshot()
+        snap = doyoumind_pb2.Snapshot()
         with (self.open_func)(self.path) as file:  
             file.seek(self.offset)   
             size = unpack_format(file, '<I')         

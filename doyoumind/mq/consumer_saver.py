@@ -1,7 +1,6 @@
 from furl import furl
 import pika
 from .constants import SAVER_EXCHANGE
-#from .publisher import Publisher
 from ..parsers.constants import __parsers__
 #from ..utils.context import context_from_snapshot
 

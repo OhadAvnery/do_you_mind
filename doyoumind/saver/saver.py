@@ -1,4 +1,3 @@
-#import click
 import datetime
 from furl import furl
 import json
@@ -19,37 +18,7 @@ class Saver:
         self.url = f
         self.save = SAVER_SETUPS[f.scheme](f)
 
-'''
-@click.group()
-def main():
-    pass
 
-@main.command('save')
-@click.option('--database', '-d', default='mongodb://127.0.0.1:27017', type=str)
-@click.argument('topic', type=str)
-@click.argument('path', type=str)
-def save_cli(database, topic, path):
-    with open(path, 'r') as file:
-        data = file.read()
-    saver = Saver(database)
-    saver.save(topic, data)
-    
-
-
-@main.command('run-saver')
-@click.argument('database', type=str)
-@click.argument('mq', type=str)
-def run_saver(database, mq):
-    #TODO: get data from the message queue
-    saver = Saver(database)
-
-    def callback(topic):
-        return lambda data: saver.save(topic, data)
-
-    consumer = ConsumerSaver(mq, callback)
-    print("saver.py: about to consume")
-    consumer.consume()
-'''
    
 def make_mongodb_saver(f):
     #host, port = f.host, f.port
@@ -63,8 +32,6 @@ def make_mongodb_saver(f):
         user_id = user_data['user_id']
         #print(f"save user- type of user_id: {type(user_id)}")
         #print(f"save user- the data: {user_data}")
-        #user_id = int(user_data['user_id'])
-        #user_data['user_id'] = user_id
         if users.find_one({'user_id':user_id}):
             return
         user_data['snapshots'] = []
@@ -113,6 +80,3 @@ def make_mongodb_saver(f):
     return save
 
 SAVER_SETUPS = {'mongodb': make_mongodb_saver}
-
-'''if __name__ == '__main__':
-    main()'''

@@ -3,17 +3,13 @@ import time
 import struct
 import socket
 
-#from .cli import client
-#from .cli import CommandLineInterface
+
 
 from .utils.connection import Connection
 from .readers.reader import Reader
-from .readers import cortex_pb2
 from . import protocol
 
 
-
-#cli = CommandLineInterface()
 
 @click.group()
 def main():
@@ -43,8 +39,6 @@ def filter_snapshot(snap, config):
     if 'feelings' not in config:
         snap.ClearField("feelings")
 
-#python3 -m doyoumind.client upload_sample --host "127.0.0.1" -p 8000 
-#"/home/user/Downloads/sample.mind.gz"
 
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -69,6 +63,7 @@ def upload_sample(host, port, path, read_type='protobuf'):
             num_snapshot += 1
 
 
+print("CLIENT.PY: TODO- REMOVE UPLOAD_THOUGHT! (do it after implementing the API)")
 #@main.command
 def upload_thought(address, user, thought):
     """

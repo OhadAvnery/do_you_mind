@@ -12,4 +12,4 @@ def parse_pose(context, snapshot):
     #context.save('feelings.json', json.dumps(feelings_dict))
     return json.dumps(result)
 
-parse_pose.fields = ['rotation', 'translation']
+parse_pose.fields = ['pose']

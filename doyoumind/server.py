@@ -16,23 +16,17 @@ from .constants import SUPPORTED_FIELDS
 from .mq.constants import SERVER_EXCHANGE
 from .mq.publisher_parser import PublisherParser
 from .protocol import Config
-from .readers import cortex_pb2
+from .readers import doyoumind_pb2
 from .saver.saver import Saver
 from .utils.connection import Connection
 from .utils.context import Context 
 
 
-
-
-
-
-#from readers.reader import read_hello
-
 @click.group()
 def main():
     pass
 
-#cli = CommandLineInterface()
+
 MAX_CONN = 1000
 
 
@@ -73,7 +67,7 @@ class Handler(threading.Thread):
             hello_msg = self.get_hello()
             if not hello_msg:
                 break
-            hello = cortex_pb2.User()       
+            hello = doyoumind_pb2.User()       
             hello.ParseFromString(hello_msg)
 
            
@@ -91,7 +85,7 @@ class Handler(threading.Thread):
             config_msg = config.serialize()
             #print(f"sending config, bytes: {config_msg}, num. fields: {len(config.fields)}")
             self.send_config(config_msg)
-            snap = cortex_pb2.Snapshot()
+            snap = doyoumind_pb2.Snapshot()
             snap.ParseFromString(self.get_snapshot())
 
             #example format: 2019-12-04_12-00-00-500000
