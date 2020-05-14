@@ -1,71 +1,68 @@
+import flask
+from flask_cors import CORS
 from furl import furl
-#import json
-import pymongo
+import threading
 
-'''class API:
-    def __init__(self, db):
-        self.db = db'''
+from .constants import DRIVERS
 
-db = None
+class API:
+    host = None
+    port = None
+    driver = None
+    def __init__(self, host, port, db_url):
+        print("calling API init")
+        f = furl(db_url)
+        API.host = host
+        API.port = port
+        API.driver = DRIVERS[f.scheme](db_url)
+        #print(f"fucking threads init {threading.currentThread().name}")
+        #print(f"API/init: {API.driver}")
 
-def run_api_server(host='127.0.0.1', port='5000', database_url='mongodb://127.0.0.1:27017'):
-    f = furl(database_url)
-    client = pymongo.MongoClient(host=f.host, port=f.port)
-    db = client.db
 
+
+app = flask.Flask(__name__)
+CORS(app)
+
+def run_api_server(host='127.0.0.1', port=5000, database_url='mongodb://127.0.0.1:27017'):
+    API(host, port, database_url)
+    app.run(host=host, port=port)
+
+@app.route("/users")
 def get_users():
     '''
     returns a list of all users.
     Each entry contains the user id and username.
     '''
-    users_list = list(db.users.find())
-    result = []
-    for user_data in result:
-        user_json = json.loads()
-        user = {'user_id': user_json['user_id'], 'username': user_json['username']}
-        result.append(user)
-    return json.dumps(result)
+    #print(f"thread: {threading.currentThread().name}")
+    return API.driver.get_users()
 
+@app.route("/users/<int:user_id>")
 def get_user(user_id):
     '''
-    returns a users' details (not including the snapshots)s.
+    returns a users' details (not including the snapshots).
     '''
-    user = db.users.find_one({'user_id':user_id})
-    if not user:
-        return None
-    user = user.copy()
-    del user['snapshots']
-    return json.dumps(user)
+    return API.driver.get_user(user_id)
 
+@app.route("/users/<int:user_id>/snapshots")
 def get_snapshots(user_id):
     '''
     return the users' snapshots (only their timestamps).
     '''
-    user = db.users.find_one({'user_id':user_id})
-    if not user:
-        return None
-    return json.dumps(user.snapshots)
+    return API.driver.get_snapshots(user_id)
 
+
+@app.route("/users/<int:user_id>/snapshots/<float:timestamp>")
 def get_snapshot(user_id, timestamp):
     '''
     return the given topics for a snapshot.
     The snapshot is given by the id of its user, and by its timestamp.
-    NOTE: the timestamp is given by a float. (num. of seconds since ...)
+    WARNING: it probably dosen't support snapshots made before 1970
     '''
-    snap = snapshots.find_one({'user_id':user_id,'datetime':timestamp})
-    if not snap:
-        return None
+    return API.driver.get_snapshot(user_id, timestamp)
 
-    non_topic_fields = ['user_id', 'datetime']
-    available_topics = [field for field in snap if field not in non_topic_fields]
-    return json.dumps(available_topics)
-
-
+@app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>")
 def get_result(user_id, timestamp, result_name):
-    snap = snapshots.find_one({'user_id':user_id,'datetime':timestamp})
-    if not snap:
-        return None
-    return json.dumps(s[result_name])
+    return API.driver.get_result(user_id, timestamp, result_name)
 
 
 

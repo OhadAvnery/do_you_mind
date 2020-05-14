@@ -2,40 +2,7 @@ import struct
 from .utils.reader_utils import PackedString
 from .readers import hello_pb2
 
-"""class Hello:
-    def __init__(self, user_id, username, birthdate, gender):
-        self.user_id = user_id
-        self.username = username
-        self.birthdate = birthdate
-        self.gender = gender
 
-    def serialize(self):
-        \"""
-        turns the Hello object into a message string 
-        \"""
-        hello_msg = b''
-        hello_msg += struct.pack('<Q', self.user_id)
-        hello_msg += struct.pack('<L', self.username_length) 
-        hello_msg += struct.pack(f'{self.username_length}s', self.username)
-        hello_msg += struct.pack('<L', self.birthdate)
-        hello_msg += struct.pack('c', self.gender)
-        return hello_msg
-
-
-    @classmethod
-    def deserialize(msg):
-        \"""
-        turns the message string into a Hello object
-        \"""
-        packed_msg = PackedString(msg)
-
-        user_id, = packed_msg.unpack('<Q')
-        username_length, = packed_msg.unpack('<L')
-        username = packed_msg.unpack(f'{username_length}s')
-        birthdate, = packed_msg.unpack('<L')
-        gender, = packed_msg.unpack('c')
-
-        return Hello(user_id, username, birthdate, gender)"""
 
 class Config:
     #field - a list of strings

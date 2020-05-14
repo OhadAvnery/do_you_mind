@@ -94,7 +94,7 @@ class Handler(threading.Thread):
             snapshot_dir = self.dir / f"{user_id}" / time_string
             context = Context(snapshot_dir)
             snapshot_json = self.snapshot_to_json(snap, context, user_id) 
-            print("server: going to publish...")
+            #print(f"server: the snapshot to be published: {snapshot_json}")
             self.publish(snapshot_json)
 
             #print(f"server: done proccessing message {debug_counter}")

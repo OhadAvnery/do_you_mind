@@ -35,8 +35,8 @@ def make_mongodb_saver(f):
         if users.find_one({'user_id':user_id}):
             return
         user_data['snapshots'] = []
-        age_epoch = user_data['birthday']
-        user_data['birthday'] = datetime.datetime.fromtimestamp(age_epoch)
+        #age_epoch = user_data['birthday']
+        #user_data['birthday'] = datetime.datetime.fromtimestamp(age_epoch)
         #print(f"saver- save_user: {user_data}")
         users.insert_one(user_data)
 

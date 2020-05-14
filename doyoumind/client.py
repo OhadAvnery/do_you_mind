@@ -8,6 +8,7 @@ import socket
 from .utils.connection import Connection
 from .readers.reader import Reader
 from . import protocol
+from .constants import ALL_FIELDS
 
 
 
@@ -28,16 +29,19 @@ def filter_snapshot(snap, config):
     """
     Update the snapshot so it'll only have the fields described in config
     """
-    if 'translation' not in config:
-        snap.pose.ClearField("translation")
-    if 'rotation' not in config:
-        snap.pose.ClearField("rotation")
+    for field in ALL_FIELDS:
+        if field not in config:
+            snap.ClearField(field)
+
+    '''
+    if 'pose' not in config:
+        snap.ClearField("pose")
     if 'color_image' not in config:
         snap.ClearField("color_image")
     if 'depth_image' not in config:
         snap.ClearField("depth_image")
     if 'feelings' not in config:
-        snap.ClearField("feelings")
+        snap.ClearField("feelings")'''
 
 
 @main.command()
@@ -94,6 +98,6 @@ def upload_thought(address, user, thought):
 
 
 if __name__ == '__main__':
-    print(f"client main: {main.commands}")
+    #print(f"client main: {main.commands}")
     main()
 
