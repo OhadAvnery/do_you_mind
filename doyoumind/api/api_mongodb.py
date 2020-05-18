@@ -73,3 +73,15 @@ class APIMongoDB:
             return None
         print(f"api_mongodb/get_result: {json.dumps(snap[result_name])}")
         return json.dumps(snap[result_name])
+
+    def get_result_data(self, user_id, timestamp, result_name):
+        '''
+        NOTE: here we can assume that result_name is a topic having data.
+        '''
+        snap = self.db.snapshots.find_one({'user_id':user_id,'datetime':timestamp})
+        if not snap:
+            return None
+        path = snap[result_name]
+        with open(path, 'rb') as f:
+            result = f.read()
+        return result

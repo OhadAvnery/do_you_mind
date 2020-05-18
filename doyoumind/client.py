@@ -33,17 +33,6 @@ def filter_snapshot(snap, config):
         if field not in config:
             snap.ClearField(field)
 
-    '''
-    if 'pose' not in config:
-        snap.ClearField("pose")
-    if 'color_image' not in config:
-        snap.ClearField("color_image")
-    if 'depth_image' not in config:
-        snap.ClearField("depth_image")
-    if 'feelings' not in config:
-        snap.ClearField("feelings")'''
-
-
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
 @click.option('--port', '-p', default=8000, type=int)
@@ -65,37 +54,6 @@ def upload_sample(host, port, path, read_type='protobuf'):
             send_snapshot(conn, snap.SerializeToString())
             #print(f"client: done sending snapshot {debug_counter}")
             num_snapshot += 1
-
-
-print("CLIENT.PY: TODO- REMOVE UPLOAD_THOUGHT! (do it after implementing the API)")
-#@main.command
-def upload_thought(address, user, thought):
-    """
-    uploads the thought to the given address.
-    address- a string of the form ip:port.
-    user- a string representing the user id.
-    thought- the user's thought as string.
-    """
-    n = len(thought)
-    ip_address, port = address.split(":")
-    port = int(port)
-
-    user_id_bytes = struct.pack("Q", int(user))
-    timestamp = struct.pack("Q", int(time.time()))
-    thought_size = struct.pack("I", n)
-    thought_data = struct.pack("{:d}s".format(n), str.encode(thought))
-
-    binary_data = user_id_bytes + timestamp + \
-                  thought_size + thought_data
-
-
-    sock = socket.socket()
-    sock.connect((ip_address, port))
-    conn = Connection(sock)
-    conn.send(binary_data)
-    conn.close()
-    print('done')
-
 
 if __name__ == '__main__':
     #print(f"client main: {main.commands}")

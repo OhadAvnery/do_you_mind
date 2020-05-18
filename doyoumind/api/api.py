@@ -3,7 +3,7 @@ from flask_cors import CORS
 from furl import furl
 import threading
 
-from .constants import DRIVERS
+from .constants import DRIVERS, LARGE_DATA_FIELDS
 
 class API:
     host = None
@@ -62,7 +62,20 @@ def get_snapshot(user_id, timestamp):
 
 @app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>")
 def get_result(user_id, timestamp, result_name):
+    '''
+    return the result of the snapshot's topic's parse.
+    '''
     return API.driver.get_result(user_id, timestamp, result_name)
+
+@app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>/data")
+def get_result_data(user_id, timestamp, result_name):
+    '''
+    for large data fields, returns the actual data of the parser.
+    Returns a 'bytes' object.
+    '''
+    if result_name not in LARGE_DATA_FIELDS:
+        return None
+    return API.driver.get_result_data(user_id, timestamp, result_name)
 
 
 

@@ -8,8 +8,11 @@ from ..api import api
 def main():
     pass
 
-def get_answer(host, port, path):
+def get_answer(host, port, path, answer_type='json'):
     '''
+    connects to the API server at the given host+port,
+    sends a GET request with the given path,
+    and returns the answer either in bytes or in json.
     '''
     f = furl()
     f.set(scheme='http',host=host,port=port,path=path)
@@ -17,7 +20,12 @@ def get_answer(host, port, path):
     print(f"cli.main: out request- {url}")
     answer = requests.get(url)
     print("cli.main: done get")
-    return answer.json()
+    if answer_type == 'json':
+        return answer.json()
+    elif answer_type == 'bytes':
+        return answer.content
+    else:
+        raise NotImplementedError
 
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -66,11 +74,19 @@ def get_snapshot(host, port, user_id, timestamp):
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
 @click.option('--port', '-p', default=5000, type=int)
+@click.option('--save', '-s', default=None, type=str)
 @click.argument('user_id', type=int)
-@click.argument('user_id', type=float)
+@click.argument('timestamp', type=float)
 @click.argument('result_name', type=str)
-def get_result(host, port, user_id, timestamp, result_name):
-    print(get_answer(host, port, f'/users/{user_id}/snapshots/{timestamp}/{result_name}'))
+def get_result(host, port, save, user_id, timestamp, result_name):
+    answer = get_answer(host, port, 
+        f'/users/{user_id}/snapshots/{timestamp}/{result_name}/data', 
+        answer_type='bytes')
+    if save:
+        with open(save, 'wb') as f:
+            f.write(answer)
+    else:
+        print(answer)
 
 if __name__ == '__main__':
     main()
