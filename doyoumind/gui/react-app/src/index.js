@@ -4,8 +4,8 @@ import {BrowserRouter as Router, Switch,
     Route, Link} from "react-router-dom";
 
 import App from './App';
-import UsersPage from './components/UsersPage';
-import UserPage from './components/UserPage';
+import UsersPage from './components/users/UsersPage';
+import UserPage from './components/user/UserPage';
 import './index.css';
 
 const router = 

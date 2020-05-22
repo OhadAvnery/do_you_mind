@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import RandomVideo from './components/RandomVideo';
+import Header from './components/main/Header';
 import './App.css';
 
 var videos = [
@@ -16,11 +17,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          {/*<img src={logo} className="App-logo" alt="logo" />*/}
-          <img className="App-logo" src={`${process.env.PUBLIC_URL}/imgs/logo.png`} width="150" height="150"/>
-          <h2>Do You Mind?</h2>
-        </div>
+        <Header title="Do You Mind?" />
+
+
         <p className="App-intro">
           Welcome to the new generation! <br />
           A tool, that reads your mind and parses it! <br />
@@ -29,7 +28,7 @@ class App extends Component {
         <a href="/users">List of users</a> 
         <br/><br/><br/><br/>
         <h2>Mind music:</h2>
-        <RandomVideo links={videos}/>
+        <RandomVideo links={videos} text='new song'/>
 
       </div>
 
@@ -38,8 +37,5 @@ class App extends Component {
   }
 }
 
-
-      
-//
 
 export default App;

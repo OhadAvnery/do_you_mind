@@ -18,7 +18,7 @@ class RandomVideo extends Component {
     var index = Math.floor(Math.random() * links.length);
     return (       
         <div>
-        <button type="submit" font-size="50px" onClick={refreshPage}>Reload</button>
+        <button type="submit" font-size="50px" onClick={refreshPage}>{this.props.text}</button>
         <br/>
         <iframe height='450' width='800' src={links[index]}></iframe>
         </div>
