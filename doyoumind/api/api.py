@@ -15,8 +15,7 @@ class API:
         API.host = host
         API.port = port
         API.driver = DRIVERS[f.scheme](db_url)
-        #print(f"fucking threads init {threading.currentThread().name}")
-        #print(f"API/init: {API.driver}")
+
 
 
 

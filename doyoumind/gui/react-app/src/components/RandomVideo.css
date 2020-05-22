@@ -1,0 +1,10 @@
+.video-container {
+  /*position: relative;
+  height: 0;
+  padding-bottom: 50%; */
+}
+
+.video {
+  width: 960; 
+  height: 720;
+}

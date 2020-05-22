@@ -32,7 +32,7 @@ class APIMongoDB:
         user = self.db.users.find_one({'user_id':user_id})
         if not user:
             print("api_mongodb/get_user: get rekt buddy")
-            return None
+            return json.dumps(f'user {user_id} not found')
         user = user.copy()
         del user['snapshots'], user['_id']
         #print(f"api_mongodb - get_user- our result: {user}")
@@ -46,9 +46,6 @@ class APIMongoDB:
         print(f"api_mongodb/get_snapshots: {user}")
         if not user:
             return None
-        '''snaps = user.snapshots
-        for snap in snaps:
-            del snap['_id']'''
         return json.dumps(user['snapshots'])
 
     def get_snapshot(self, user_id, timestamp):
