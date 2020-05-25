@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Switch,
 import App from './App';
 import UsersPage from './components/users/UsersPage';
 import UserPage from './components/user/UserPage';
+import SnapshotPage from './components/snapshot/SnapshotPage';
 import './index.css';
 
 const router = 
@@ -16,10 +17,8 @@ const router =
             <Route exact path="/" component={App} />
             <Route exact path="/users" component={UsersPage} />
             <Route exact path="/users/:user_id" component={UserPage} />
-{/* 
-<Route exact path="/users/:user_id/snapshots" component={Snapshots} />
-            <Route exact path="/users/:user_id/snapshots/:snapshot_id" render={(props) => (
-*/}
+            <Route exact path="/users/:user_id/:timestamp" component={SnapshotPage} />
+
         </Switch>
       </div>
 </Router>)

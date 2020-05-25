@@ -30,9 +30,12 @@ class APIMongoDB:
         returns a users' details (not including the snapshots)s.
         '''
         user = self.db.users.find_one({'user_id':user_id})
-        if not user:
+        '''if not user:
             print("api_mongodb/get_user: get rekt buddy")
-            return json.dumps(f'user {user_id} not found')
+            return 404, 'user not found'
+        '''
+        if not user:
+            return None
         user = user.copy()
         del user['snapshots'], user['_id']
         #print(f"api_mongodb - get_user- our result: {user}")
@@ -46,6 +49,7 @@ class APIMongoDB:
         print(f"api_mongodb/get_snapshots: {user}")
         if not user:
             return None
+            #return 404, 'user not found'
         return json.dumps(user['snapshots'])
 
     def get_snapshot(self, user_id, timestamp):

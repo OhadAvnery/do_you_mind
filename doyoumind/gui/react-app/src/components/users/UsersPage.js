@@ -19,6 +19,8 @@ class SingleUser extends Component {
 }
 
 function users_index(users_list) {
+    //sorting the users list by increasing user ID
+    users_list.sort((u1, u2) => u1['user_id']-u2['user_id']);
     var result = [];
     for (var i = 0; i < users_list.length; i++) {
         result.push(<SingleUser user={users_list[i]}/>);
@@ -76,4 +78,5 @@ class UsersPage extends Component {
   }
 }
 
+//export {UsersPage};
 export default UsersPage;

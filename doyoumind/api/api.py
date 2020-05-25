@@ -26,6 +26,11 @@ def run_api_server(host='127.0.0.1', port=5000, database_url='mongodb://127.0.0.
     API(host, port, database_url)
     app.run(host=host, port=port)
 
+def return_if_exists(result):
+    if result:
+        return result
+    flask.abort(404)
+
 @app.route("/users")
 def get_users():
     '''
@@ -40,14 +45,18 @@ def get_user(user_id):
     '''
     returns a users' details (not including the snapshots).
     '''
-    return API.driver.get_user(user_id)
+    return return_if_exists(API.driver.get_user(user_id))
+    '''result = API.driver.get_user(user_id)
+    if not result:
+        flask.abort(404)
+    return result'''
 
 @app.route("/users/<int:user_id>/snapshots")
 def get_snapshots(user_id):
     '''
     return the users' snapshots (only their timestamps).
     '''
-    return API.driver.get_snapshots(user_id)
+    return return_if_exists(API.driver.get_snapshots(user_id))
 
 
 @app.route("/users/<int:user_id>/snapshots/<float:timestamp>")
@@ -57,14 +66,14 @@ def get_snapshot(user_id, timestamp):
     The snapshot is given by the id of its user, and by its timestamp.
     WARNING: it probably dosen't support snapshots made before 1970
     '''
-    return API.driver.get_snapshot(user_id, timestamp)
+    return return_if_exists(API.driver.get_snapshot(user_id, timestamp))
 
 @app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>")
 def get_result(user_id, timestamp, result_name):
     '''
     return the result of the snapshot's topic's parse.
     '''
-    return API.driver.get_result(user_id, timestamp, result_name)
+    return return_if_exists(API.driver.get_result(user_id, timestamp, result_name))
 
 @app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>/data")
 def get_result_data(user_id, timestamp, result_name):
@@ -73,7 +82,7 @@ def get_result_data(user_id, timestamp, result_name):
     Returns a 'bytes' object.
     '''
     if result_name not in LARGE_DATA_FIELDS:
-        return None
+        flask.abort(404)
     return API.driver.get_result_data(user_id, timestamp, result_name)
 
 
