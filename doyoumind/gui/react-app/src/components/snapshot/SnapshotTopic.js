@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {API_ROOT_URL} from '../../constants';
+import {renderTopic} from './render_topic'; 
+import {API_ROOT_URL, BIG_DATA_TOPICS} from '../../constants';
+
 
 
 class SnapshotTopic extends Component {
@@ -9,8 +11,39 @@ class SnapshotTopic extends Component {
     topic = this.props.topic;
     
 
+    mountBigData() {
+    var path = API_ROOT_URL + "/users/" + this.user_id + "/snapshots/" + this.timestamp + "/" + this.topic + "/data";
+
+    fetch(path)
+    .then(async response => {
+        const data = await response.blob();
+        if (!response.ok) {
+                // get error message from body or default to response statusText
+                const error = (data && data.message) || response.statusText;
+                return Promise.reject(error);
+        }
+        
+        var url = URL.createObjectURL(data);
+
+        console.log("mountBigData: got a response");
+        this.setState({ data: url, loaded:true });
+    })   
+    .catch(error => {
+            this.setState({ errorMessage: error.toString() });
+            console.log(error.toString());
+            console.error('There was an error!', error);
+        });  
+    }
+    
+
     componentDidMount() {
     // Runs after the first render() lifecycle
+    if(BIG_DATA_TOPICS.includes(this.topic)) {
+        //console.log(this.topic + " is in mountBigData");
+        this.mountBigData();
+        return;
+    }
+    //console.log(this.topic + " isn't in mountBigData");
     var path = API_ROOT_URL + "/users/" + this.user_id + "/snapshots/" + this.timestamp + "/" + this.topic;
 
     fetch(path)
@@ -33,28 +66,8 @@ class SnapshotTopic extends Component {
         });  
     }
 
-    render_feelings= function(data) {
-        console.log("render_feelings: our topic- "+this.topic);
-        console.log("render_feelings: our object- "+this);
-        return (<div>{data['hunger']}</div>);
-    }
 
-    render_pose= function(data) {
-        console.log("render_pose: our topic- "+this.topic);
-        return null;
-        //return (<div>{String(data['translation']['x'])}</div>);
-    }
-
-    render_color_image= function(data) {
-        return (<div>color_image</div>);
-    }
-
-    render_depth_image= function(data) {
-        return (<div>depth_image</div>);
-    }
-
-    renders = ({'feelings': this.render_feelings, 'pose': this.render_pose, 
-    'color_image': this.render_color_image, 'depth_image': this.render_depth_image}) 
+    
 
     render() {
         if(!this.state.loaded) {
@@ -63,8 +76,7 @@ class SnapshotTopic extends Component {
         console.log("our topic is: "+this.topic);
         //console.log("our render is: "+ String(this.renders[this.topic]));
         //return (this.renders[this.topic](this.state.data));
-        var topic_render = function(data) {return this.renders[this.topic](data);} 
-        return this.topic_render(this.state.data);
+        return renderTopic(this.topic, this.state.data);
     }
 
 }
