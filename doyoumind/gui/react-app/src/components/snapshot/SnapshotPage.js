@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../main/Header';
 import {API_ROOT_URL} from '../../constants';
-import {get_topic} from './get_topic';
+//import {get_topic} from './get_topic';
+import SnapshotTopic from './SnapshotTopic';
 
 
 class SnapshotPage extends Component {
@@ -39,11 +40,9 @@ class SnapshotPage extends Component {
     }
 
     render() {
-    var not_loaded = (<div>Waiting for snapshot's data to load...</div>);
+    //var not_loaded = (<div>Waiting for snapshot's data to load...</div>);
     var topics = this.state.topics;
-    if(!topics) {
-        return not_loaded;
-    }
+    if(!topics) { return (<div>Waiting for snapshot's data to load...</div>); }
 
     var result = [];
     result.push(
@@ -57,11 +56,14 @@ class SnapshotPage extends Component {
     var topic;
     for (var i = 0; i < topics.length; i++) {
         topic = topics[i];
-        data = get_topic(this.user_id, this.timestamp, topic);
+        /*get_topic(this.user_id, this.timestamp, topic, this.state.topics_data);
+        data = this.state.topics_data[topic];
         if(!data) {
-            return not_loaded;
+            return (<div>Waiting for {topic} to load...</div>);
         }
-        result.push(<div>{String(data)}</div>);
+        result.push(<div>{String(data)}</div>);*/
+        console.log("SnapshotPage/render: index- "+i+", about to look at the topic- "+topic)
+        result.push(<SnapshotTopic user_id={this.user_id} timestamp={this.timestamp} topic={topic} />);
     }
 
     return (result);
