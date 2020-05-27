@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {API_ROOT_URL} from '../../constants';
 
-export function snaps_index(snaps_list, user_id) {
+export function snaps_block(snaps_list, user_id) {
    
    //sorting the users list by increasing timestamp
     snaps_list.sort();
     var result = [];
     for (var i = 0; i < snaps_list.length; i++) {
-        result.push(<SingleSnapshot val={i+1} user_id={user_id} timestamp={snaps_list[i]}/>);
+        result.push(<SingleSnapshot user_id={user_id} index={i+1} timestamp={snaps_list[i]}/>);
     }
     return result;
 }
@@ -15,12 +15,13 @@ export function snaps_index(snaps_list, user_id) {
 class SingleSnapshot extends Component {
     render() {
         var timestamp = this.props.timestamp;
-        var val = this.props.val;
+        var index = this.props.index;
         var date = new Date(timestamp*1000);
         var user_id = this.props.user_id;
         return (
         <div>
-        <a href={"/users/"+user_id+"/"+timestamp}> #{val} - {date.toString()}</a>
+        {/** <a href={"/users/"+user_id+"/"+timestamp}> #{val} - {date.toString()}</a> */}
+        <a href={"/users/"+user_id+"/"+timestamp}> #{index} - {date.toString()}</a>
         <br />
         </div>
         );
@@ -64,7 +65,7 @@ class SnapshotsList extends Component {
     }
     return (
       <div className="App">
-        {snaps_index(snaps, this.id)}
+        {snaps_block(snaps, this.id)}
       </div>
     );
     }

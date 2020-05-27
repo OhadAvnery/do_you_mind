@@ -1,6 +1,8 @@
 import flask
 from flask_cors import CORS
 from furl import furl
+#from pathlib import Path
+import json
 import threading
 
 from .constants import DRIVERS, LARGE_DATA_FIELDS
@@ -83,7 +85,17 @@ def get_result_data(user_id, timestamp, result_name):
     '''
     if result_name not in LARGE_DATA_FIELDS:
         flask.abort(404)
-    return API.driver.get_result_data(user_id, timestamp, result_name)
+    path = json.loads(get_result(user_id, timestamp, result_name))
+    print("api.py path:", path)
+    return flask.send_file(path)
+
+
+
+    #path = Path(path)
+    #print("api.py:", path.parent, path.name)
+    #return flask.send_from_directory(path.parent, path.name, mimetype='image/jpg', attachment_filename=f'{result_name}.jpg') 
+    #return flask.send_file(path, mimetype='image/jpg', attachment_filename=f'{result_name}.jpg') 
+    #return API.driver.get_result_data(user_id, timestamp, result_name)
 
 
 

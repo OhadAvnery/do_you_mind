@@ -75,6 +75,7 @@ class APIMongoDB:
         print(f"api_mongodb/get_result: {json.dumps(snap[result_name])}")
         return json.dumps(snap[result_name])
 
+    """
     def get_result_data(self, user_id, timestamp, result_name):
         '''
         NOTE: here we can assume that result_name is a topic having data.
@@ -83,6 +84,6 @@ class APIMongoDB:
         if not snap:
             return None
         path = snap[result_name]
-        with open(path, 'rb') as f:
-            result = f.read()
-        return result
+        return send_file(path, mimetype='image/jpg')
+        #return result
+    """
