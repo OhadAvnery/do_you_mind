@@ -10,6 +10,16 @@ import touch
 
 
 def parse_depth_image(context, snapshot):
+    '''
+    Parses the depth image from the snapshot.
+
+    :param context: the context object representing the folders
+    :type context: utils.Context
+    :param snapshot: the snapshot data to be parsed (in json format)
+    :type snapshot: str
+    :return: the result of the parser (in json format)
+    :rtype: str
+    '''
     print("invocating parse_depth_image")
     path = context.path('depth_image.jpg')
     snap_dict = json.loads(snapshot)

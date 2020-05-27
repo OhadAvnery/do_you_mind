@@ -3,7 +3,17 @@ import os
 from PIL import Image
 
 def parse_color_image(context, snapshot):
-    print("invocating parse_color_image")
+    '''
+    Parses the color image from the snapshot.
+
+    :param context: the context object representing the folders
+    :type context: utils.Context
+    :param snapshot: the snapshot data to be parsed (in json format)
+    :type snapshot: str
+    :return: the result of the parser (in json format)
+    :rtype: str
+    '''
+    #print("invocating parse_color_image")
     path = context.path('color_image.jpg')
     snap_dict = json.loads(snapshot)
     size = snap_dict['color_image']['width'], snap_dict['color_image']['height']

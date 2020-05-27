@@ -10,7 +10,7 @@ function render_pose(data) {
 }
 
 function render_color_image(data) {
-    return(<div><img src={data} /></div>);
+    return(<div><img width="500" height="500" src={data} /></div>);
 }
 
 function render_depth_image(data) {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../main/Header';
 import {API_ROOT_URL} from '../../constants';
-//import {get_topic} from './get_topic';
 import SnapshotTopic from './SnapshotTopic';
 
 

@@ -7,7 +7,7 @@ import sys
 from .constants import __parsers__
 from ..constants import SUPPORTED_FIELDS
 
-#PARSERS_DIR = "/home/user/do_you_mind/doyoumind/parsers"
+#"/home/user/do_you_mind/doyoumind/parsers"
 PARSERS_DIR = os.path.dirname(__file__)
 PARSERS_DIR_SHORT = PARSERS_DIR.split('/')[-1]
 PARSERS_DIR_PARENT = str(Path(PARSERS_DIR).parent)
@@ -17,7 +17,7 @@ UNWANTED_FILES = ['__init__.py', 'constants.py', '__main__.py']
 
 def collect_parsers():
     """
-    only collects the parsers for which we support all of their fields.
+    dynamically collects the parsers for which we support all of their fields.
     """
     sys.path.insert(0, PARSERS_DIR_PARENT)
     my_filename = Path(__file__).name

@@ -7,7 +7,20 @@ from ..parsers.constants import __parsers__
 from ..utils.context import context_from_snapshot
 from ..constants import SUPPORTED_FIELDS
 
-def make_callback(callback, parser):
+def __make_callback(callback, parser):
+    '''
+    Helper function. 
+    Given a semi-callback function of the form callback: parser --> (body --> result),
+    and the given parser function,
+    returns a valid callback function of the form callback: channel, method, properties, body --> result.
+
+    :param callback: the mq driver's url
+    :type callback: str
+    :param callback: a function that takes a parser as input, and returns a callback function.
+    :type callback: function (str-->str)-->(str-->?)
+    :return: a valid callback
+    :rtype: function (str, str, str, str) --> ?
+    '''
     def actual_callback(channel, method, properties, body):
         callback(parser)(body)
     return actual_callback
@@ -17,6 +30,19 @@ def main():
     pass
 
 def make_rabbitmq_consumer_parser(f, callback):
+    """
+    Given a driver url for the server's rabbitmq message queue, 
+    and a callback function of the form parser --> (body --> result),
+    create a consumer function that connects indefinitely to the mq, applying the given callback
+    on every consumed message.
+
+    :param f: the driver's url
+    :type f: furl.furl
+    :param callback: a function that takes a parser as input, and returns a callback function.
+    :type callback: function (str-->str)-->(str-->?)
+    :return: the consume function
+    :rtype: function none-->none
+    """
     params = pika.ConnectionParameters(host=f.host, port=f.port)
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
@@ -26,7 +52,7 @@ def make_rabbitmq_consumer_parser(f, callback):
 
     for parser in __parsers__:
         #the callback should take 4 parameters instead of 1- here we fix it 
-        actual_callback = make_callback(callback, parser)
+        actual_callback = __make_callback(callback, parser)
         parser_name = parser.__name__
         queue_name = f"{exchange}/{parser_name}"
         channel.queue_declare(queue=queue_name, durable=True)
@@ -40,9 +66,15 @@ def make_rabbitmq_consumer_parser(f, callback):
 class ConsumerParser:
     def __init__(self, url, callback):
         """
-        callback- a function that takes a parser as input, and returns a callback function.
-        (this callback function works on ONE parameter- the msg.)
-        exchange- the name of the exchange we're working with.
+        Creates a new ConsumerParser object, that consumes data from the server's mq
+        (connecting to the mq according to the driver url, and applying the given callback
+        on every consumed message on all topics).
+
+        :param url: the mq driver's url
+        (currently only supports the format 'rabbitmq://id:port/')
+        :type url: str
+        :param callback: a function that takes a parser as input, and returns a callback function.
+        :type callback: function (str-->str)-->(str-->?)
         """
         f = furl(url)
         self.url = f
@@ -57,10 +89,15 @@ CONSUMER_PARSER_SETUPS = {'rabbitmq': make_rabbitmq_consumer_parser}
 @click.argument('consume_url', type=str)
 @click.argument('publish_url', type=str)
 def consume_from_server_cli(consume_url, publish_url):
-    """consume_url- a string of the form 'rabbitmq://host:port/' 
-    (to consume the snapshots from)
-    publish_url- a string of the form 'rabbitmq://host:port/' 
-    (to publish the result of the parsers to)
+    """
+    Connects to the server's queue, and indefinitely consumes snapshots from it,
+    parsing them and publishing them to the saver's queue.
+    (currently only supports the format 'rabbitmq://id:port/' as url)
+
+    :param consume_url: the server queue's url
+    :type consume_url: str
+    :param publish_url: the saver queue's url
+    :type publish_url: str
     """
     publisher = PublisherSaver(publish_url)
     publish = publisher.publish #takes parser as parameter and returns another function
@@ -70,5 +107,5 @@ def consume_from_server_cli(consume_url, publish_url):
 
 
 if __name__ == '__main__':
-    print(f"consumer_parser.py yo")
+    #print(f"consumer_parser.py yo")
     main()
