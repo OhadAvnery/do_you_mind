@@ -15,6 +15,8 @@ class ConsumerParserAtomic:
         :type url: str
         :param callback: a function that takes a parser as input, and returns a callback function.
         :type callback: function (str-->str)-->(str-->?)
+        :return: the consumer object
+        :rtype: ConsumerParserAtomic
         """
         f = furl(url)
         self.url = f

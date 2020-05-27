@@ -73,4 +73,3 @@ class Connection:
             raise Exception
 
         return msg
-

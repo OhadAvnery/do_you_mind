@@ -40,7 +40,7 @@ def make_rabbitmq_consumer_parser(f, callback):
     :type f: furl.furl
     :param callback: a function that takes a parser as input, and returns a callback function.
     :type callback: function (str-->str)-->(str-->?)
-    :return: the consume function
+    :returns: the consume function
     :rtype: function none-->none
     """
     params = pika.ConnectionParameters(host=f.host, port=f.port)
@@ -75,6 +75,8 @@ class ConsumerParser:
         :type url: str
         :param callback: a function that takes a parser as input, and returns a callback function.
         :type callback: function (str-->str)-->(str-->?)
+        :return: the ConsumerParser object
+        :rtype: ConsumerParser
         """
         f = furl(url)
         self.url = f

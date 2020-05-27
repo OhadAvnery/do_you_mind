@@ -34,7 +34,19 @@ class Handler(threading.Thread):
     lock = threading.Lock()
     def __init__(self, connection, database, data_dir, publish):
         """
-        publish- a function that takes a message and publishes it
+        Create a new handler.
+
+        :param connection: an object representing the server+client connection.
+        :type connection: utils.connection.Connection
+        :param database: the database's drive url (currently only supports mongodb)
+        :type database: str
+        :param data_dir: the data directory to write the snapshots in
+        :type data_dir: str
+        :param publish: a function that takes a message and publishes it.
+        (or a str, representing a message queue to publish to)
+        :type publish: function/str
+        :returns: handler object
+        :rtype: Handler
         """
         super().__init__()
         self.connection = connection
@@ -61,6 +73,10 @@ class Handler(threading.Thread):
         return self.connection.receive_message()
 
     def run(self):
+        '''
+        runs the server, waiting for connections from clients.
+        '''
+
         num_snapshot = 1
         while True:
             #print(f"server: proccessing message {debug_counter}...")
@@ -105,9 +121,16 @@ class Handler(threading.Thread):
 
     def snapshot_to_json(self, snapshot, context, user_id):
         """
-        converts the snapshot object to a json string.
+        Converts the snapshot object to a json string.
         In order to not make the json file too big, we save the image+depth data into a temp file,
         and in the json, save the file's path.
+
+        :param snapshot: the snapshot read from the client
+        :type snapshot: doyoumind.Snapshot
+        :param context: the snapshot's context
+        :type context: protocol.Context
+        :returns: json string
+        :rtype: str
         """
         Handler.lock.acquire()
 
@@ -134,20 +157,31 @@ class Handler(threading.Thread):
         snap_dict['datetime'] = int(snap_dict['datetime']) / 1000 #convert it to seconds from miliseconds
         return json.dumps(snap_dict)
 
-
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
 @click.option('--port', '-p', default=8000, type=int)
 @click.option('--database', '-db', default='mongodb://127.0.0.1:27017', type=str)
 @click.argument('publish', type=str)
-def run_server(host, port, database, publish, data="/home/user/test2"):
+def run_server(host, port, database, publish, data="/home/user/test"):
     """
-    host,port - the server's address
-    database- the database in which we save the users' data, given as a url.
-    defaults to mongodb.
-    NOTE: this should have the same connection as the run-saver.
-    publish- a function to 
-    data - the data directory in which to write the thoughts.
+    Run the server at the given host+port, listening to clients, reading their snapshots
+    and sending them to consumers.
+    NOTE: the server also directly connects to the database,
+    in order to save the user's details.
+
+    :param host: the server's host, defaults to '127.0.0.1' in the CLI
+    :type host: str, optional
+    :param port: the server's port, defaults to 8000 in the CLI
+    :type port: int, optional
+    :param database: the database's drive url, defaults to 'mongodb://127.0.0.1:27017' in the CLI
+    (currently only supports mongodb)
+    :type database: str, optional
+    :param publish: a function that's activated on any read snapshot.
+    in the API, expects a function object.
+    in the CLI, expects a message queue drive url to publish the snapshots to.
+    :type publish: function/str
+    :param data: the data directory to write the snapshots in, defaults to a test folder.
+    :type data: str, optional
     """
     server = socket.socket()
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

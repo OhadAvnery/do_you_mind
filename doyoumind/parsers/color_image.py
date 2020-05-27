@@ -10,7 +10,7 @@ def parse_color_image(context, snapshot):
     :type context: utils.Context
     :param snapshot: the snapshot data to be parsed (in json format)
     :type snapshot: str
-    :return: the result of the parser (in json format)
+    :returns: the result of the parser (in json format)
     :rtype: str
     '''
     #print("invocating parse_color_image")

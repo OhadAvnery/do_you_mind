@@ -5,8 +5,15 @@ from .readers import hello_pb2
 
 
 class Config:
+    """
+    :param fields: a list of supported fields for the snapshot
+    :type fields: List[str]
+    """
     #field - a list of strings
     def __init__(self, fields):
+        """
+
+        """
         self.fields = fields 
 
     def __contains__(self, field):
