@@ -29,7 +29,7 @@ def __make_callback(callback, parser):
 def main():
     pass
 
-def make_rabbitmq_consumer_parser(f, callback):
+def rabbitmq_consumer(f, callback):
     """
     Given a driver url for the server's rabbitmq message queue, 
     and a callback function of the form parser --> (body --> result),
@@ -80,12 +80,12 @@ class ConsumerParser:
         """
         f = furl(url)
         self.url = f
-        self.consume = CONSUMER_PARSER_SETUPS[f.scheme](f, callback)
+        self.consume = DRIVERS[f.scheme](f, callback)
 
 
 
 
-CONSUMER_PARSER_SETUPS = {'rabbitmq': make_rabbitmq_consumer_parser}
+DRIVERS = {'rabbitmq': rabbitmq_consumer}
 
 @main.command('consume-from-server')
 @click.argument('consume_url', type=str)

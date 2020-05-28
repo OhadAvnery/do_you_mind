@@ -20,7 +20,7 @@ class ConsumerParserAtomic:
         """
         f = furl(url)
         self.url = f
-        self.consume = CONSUMER_PARSER_ATOMIC_SETUPS[f.scheme](f, topic, callback)
+        self.consume = DRIVERS[f.scheme](f, topic, callback)
 
 def __make_callback(callback):
     '''
@@ -40,7 +40,7 @@ def __make_callback(callback):
         callback(body)
     return actual_callback
 
-def make_rabbitmq_consumer_parser_atomic(f, topic, callback):
+def rabbitmq_consumer(f, topic, callback):
     """
     Given a driver url for the server's rabbitmq message queue, 
     and a callback function of the form parser --> (body --> result),
@@ -76,4 +76,4 @@ def make_rabbitmq_consumer_parser_atomic(f, topic, callback):
     return lambda : channel.start_consuming()
 
 
-CONSUMER_PARSER_ATOMIC_SETUPS = {'rabbitmq': make_rabbitmq_consumer_parser_atomic}
+DRIVERS = {'rabbitmq': rabbitmq_consumer}

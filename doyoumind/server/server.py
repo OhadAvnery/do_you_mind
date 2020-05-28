@@ -1,4 +1,3 @@
-import click
 import datetime
 import struct
 import socket
@@ -12,19 +11,15 @@ from google.protobuf.json_format import MessageToDict
 import numpy as np
 import json
 
-from .constants import SUPPORTED_FIELDS
-from .mq.constants import SERVER_EXCHANGE
-from .mq.publisher_parser import PublisherParser
-from .protocol import Config
-from .readers import doyoumind_pb2
-from .saver.saver import Saver
-from .utils.connection import Connection
-from .utils.context import Context 
+from ..constants import SUPPORTED_FIELDS
+from ..mq.constants import SERVER_EXCHANGE
+from ..mq.publisher_parser import PublisherParser
+from ..protocol import Config
+from ..readers import doyoumind_pb2
+from ..saver.saver import Saver
+from ..utils.connection import Connection
+from ..utils.context import Context 
 
-
-@click.group()
-def main():
-    pass
 
 
 MAX_CONN = 1000
@@ -157,11 +152,7 @@ class Handler(threading.Thread):
         snap_dict['datetime'] = int(snap_dict['datetime']) / 1000 #convert it to seconds from miliseconds
         return json.dumps(snap_dict)
 
-@main.command()
-@click.option('--host', '-h', default='127.0.0.1', type=str)
-@click.option('--port', '-p', default=8000, type=int)
-@click.option('--database', '-db', default='mongodb://127.0.0.1:27017', type=str)
-@click.argument('publish', type=str)
+
 def run_server(host, port, database, publish, data="/home/user/test"):
     """
     Run the server at the given host+port, listening to clients, reading their snapshots
@@ -198,15 +189,3 @@ def run_server(host, port, database, publish, data="/home/user/test"):
         sys.exit()
     finally:
         server.close()
-
-
-if __name__ == '__main__':
-    print(f"server main: {main.commands}")
-    main()
-    
-
-        
-
-        
-        
-        

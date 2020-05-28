@@ -13,10 +13,10 @@ class PublisherSaver:
     def __init__(self, url):
         f = furl(url)
         self.url = f
-        self.publish = PUBLISHER_SAVER_SETUPS[f.scheme](f)
+        self.publish = DRIVERS[f.scheme](f)
 
 
-def make_rabbitmq_publisher_saver(f):
+def rabbitmq_publisher(f):
     """
     Creates a new exchange with the given name, and binds it to multiple queues,
     each one representing a different parser.
@@ -24,7 +24,7 @@ def make_rabbitmq_publisher_saver(f):
     for the publisher-->consumer interaction: SERVER_EXCHANGE.
     for the consumer-->saver: SAVER_EXCHANGE.
     """
-    print(f"calling make_rabbitmq_publisher_saver on: {f}")
+    #print(f"calling make_rabbitmq_publisher_saver on: {f}")
 
     #routing_key is either a constant- '', or it depends on the parser's name.
     #in the server's exchange, we don't need a routing key, as everything is direct.
@@ -70,5 +70,5 @@ def publish_rabbit_mq(url, msg):
     
 
 
-PUBLISHER_SAVER_SETUPS = {'rabbitmq': make_rabbitmq_publisher_saver}
+DRIVERS = {'rabbitmq': rabbitmq_publisher}
 

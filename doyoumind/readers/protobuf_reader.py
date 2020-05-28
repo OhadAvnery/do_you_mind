@@ -34,11 +34,5 @@ class Reader:
             snap.ParseFromString(file.read(size))
             self.offset = file.tell()
 
-        """#ugly trick- change the snap's color image to actually be an Image object
-        color_image = snap.color_image
-        snap.color_image = Image.frombytes("RGB", (color_image.width, color_image.height), color_image.data)
-        depth_image = snap.depth_image
-        snap.depth_image = Image.frombytes("L", (depth_image.width, depth_image.height), depth_image.data)"""
-
         return snap
             

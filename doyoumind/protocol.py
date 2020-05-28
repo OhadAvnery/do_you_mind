@@ -6,13 +6,16 @@ from .readers import hello_pb2
 
 class Config:
     """
+    A class representing the snapshot's supported fields.
     :param fields: a list of supported fields for the snapshot
     :type fields: List[str]
+
     """
-    #field - a list of strings
     def __init__(self, fields):
         """
-
+        makes a new Config object with the given fields.
+        :param fields: a list of supported fields for the snapshot
+        :type fields: List[str]
         """
         self.fields = fields 
 
@@ -21,7 +24,9 @@ class Config:
 
     def serialize(self):
         """
-        turns the Config object into a message string
+        turns the Config object into a message string.
+        :returns: a message representing the supported fields
+        :rtype: str
         """
         config_msg = b''
         num_fields = len(self.fields)
@@ -35,7 +40,11 @@ class Config:
     @staticmethod
     def deserialize(msg):
         """
-        turns the message string into a Config object
+        turns the message string into a Config object.
+        :param msg: the string with the supported fields
+        :type msg: str
+        :returns: a Config object with the given fields
+        :rtype: Config
         """
         packed_msg = PackedString(msg)
         fields = []
@@ -51,5 +60,3 @@ class Config:
 
         return Config(fields)
 
-class Snapshot:
-    pass

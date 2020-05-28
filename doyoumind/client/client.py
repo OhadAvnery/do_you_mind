@@ -1,20 +1,18 @@
-import click
+
 import time
 import struct
 import socket
 
 
 
-from .utils.connection import Connection
-from .readers.reader import Reader
-from . import protocol
+from ..utils.connection import Connection
+from ..readers.reader import Reader
+from .. import protocol
 from .constants import ALL_FIELDS
 
 
 
-@click.group()
-def main():
-    pass
+
 
 #IDEA: these three functions only work at the connection level (so they're really short), 
 #and don't use any (de)serialization.
@@ -38,11 +36,6 @@ def filter_snapshot(snap, config):
             snap.ClearField(field)
 
 
-
-@main.command()
-@click.option('--host', '-h', default='127.0.0.1', type=str)
-@click.option('--port', '-p', default=8000, type=int)
-@click.argument('path', type=str)
 def upload_sample(host, port, path, read_type='protobuf'):
     """
     Upload the sample from the file to the server, using the hello-->config-->snapshot protocol.
@@ -73,7 +66,5 @@ def upload_sample(host, port, path, read_type='protobuf'):
             send_snapshot(conn, snap.SerializeToString())
             num_snapshot += 1
 
-if __name__ == '__main__':
-    #print(f"client main: {main.commands}")
-    main()
+
 

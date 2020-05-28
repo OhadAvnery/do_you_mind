@@ -20,14 +20,14 @@ class PublisherSaverAtomic:
     def __init__(self, url, topic):
         f = furl(url)
         self.url = f
-        self.publish = PUBLISHER_SAVER_ATOMIC_SETUPS[f.scheme](f, topic)
+        self.publish = DRIVERS[f.scheme](f, topic)
 
 
-def make_rabbitmq_publisher_saver_atomic(f, topic):
+def rabbitmq_publisher(f, topic):
     """
     publishes the consumed parser result to the saver's queue.
     """
-    print(f"calling make_rabbitmq_publisher_saver_atomic on: {f},{topic}")
+    #print(f"calling make_rabbitmq_publisher_saver_atomic on: {f},{topic}")
 
     exchange = SAVER_EXCHANGE
     params = pika.ConnectionParameters(host=f.host, port=f.port)
@@ -41,7 +41,7 @@ def make_rabbitmq_publisher_saver_atomic(f, topic):
     def publish(msg):
         result = run_parser(topic, msg)
         channel.basic_publish(exchange=exchange, routing_key=parser_name, body=result)
-        print("publisher_saver_atomic published!")
+        #print("publisher_saver_atomic published!")
         #print(f"PUBLISHER: published message on exchange: {exchange} for parser: {parser}. \
         #    Routing key is: {routing_key}. exhange type is: {exchange_type}")
 
@@ -51,5 +51,5 @@ def make_rabbitmq_publisher_saver_atomic(f, topic):
     
 
 
-PUBLISHER_SAVER_ATOMIC_SETUPS = {'rabbitmq': make_rabbitmq_publisher_saver_atomic}
+DRIVERS = {'rabbitmq': rabbitmq_publisher}
 
