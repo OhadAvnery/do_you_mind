@@ -14,9 +14,9 @@ import json
 from ..constants import SUPPORTED_FIELDS
 from ..mq.constants import SERVER_EXCHANGE
 from ..mq.publisher_parser import PublisherParser
-from ..protocol import Config
 from ..readers import doyoumind_pb2
 from ..saver.saver import Saver
+from ..utils.protocol import Config
 from ..utils.connection import Connection
 from ..utils.context import Context 
 

@@ -4,11 +4,11 @@ import struct
 import socket
 
 
-
-from ..utils.connection import Connection
-from ..readers.reader import Reader
-from .. import protocol
 from .constants import ALL_FIELDS
+from ..readers.reader import Reader
+from ..utils.connection import Connection
+from ..utils.protocol import Config
+
 
 
 
@@ -61,7 +61,7 @@ def upload_sample(host, port, path, read_type='protobuf'):
         for snap in r:
             send_hello(conn, hello_bytes)
             config_bytes = get_config(conn)
-            config = protocol.Config.deserialize(config_bytes)
+            config = Config.deserialize(config_bytes)
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())
             num_snapshot += 1

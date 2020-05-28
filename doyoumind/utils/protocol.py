@@ -1,6 +1,6 @@
 import struct
-from .utils.reader_utils import PackedString
-from .readers import hello_pb2
+from .reader_utils import PackedString
+from ..readers import hello_pb2
 
 
 
@@ -9,7 +9,6 @@ class Config:
     A class representing the snapshot's supported fields.
     :param fields: a list of supported fields for the snapshot
     :type fields: List[str]
-
     """
     def __init__(self, fields):
         """

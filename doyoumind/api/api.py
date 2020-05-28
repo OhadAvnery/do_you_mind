@@ -1,7 +1,6 @@
 import flask
 from flask_cors import CORS
 from furl import furl
-#from pathlib import Path
 import json
 import threading
 
@@ -48,10 +47,6 @@ def get_user(user_id):
     returns a users' details (not including the snapshots).
     '''
     return return_if_exists(API.driver.get_user(user_id))
-    '''result = API.driver.get_user(user_id)
-    if not result:
-        flask.abort(404)
-    return result'''
 
 @app.route("/users/<int:user_id>/snapshots")
 def get_snapshots(user_id):
@@ -88,15 +83,3 @@ def get_result_data(user_id, timestamp, result_name):
     path = json.loads(get_result(user_id, timestamp, result_name))
     print("api.py path:", path)
     return flask.send_file(path)
-
-
-
-    #path = Path(path)
-    #print("api.py:", path.parent, path.name)
-    #return flask.send_from_directory(path.parent, path.name, mimetype='image/jpg', attachment_filename=f'{result_name}.jpg') 
-    #return flask.send_file(path, mimetype='image/jpg', attachment_filename=f'{result_name}.jpg') 
-    #return API.driver.get_result_data(user_id, timestamp, result_name)
-
-
-
-#TODO: end connection by client.close()

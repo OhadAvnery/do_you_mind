@@ -21,7 +21,6 @@ class Saver:
 
    
 def make_mongodb_saver(f):
-    #host, port = f.host, f.port
     client = pymongo.MongoClient(host=f.host, port=f.port)
     db = client.db
     users = db.users
@@ -35,8 +34,6 @@ def make_mongodb_saver(f):
         if users.find_one({'user_id':user_id}):
             return
         user_data['snapshots'] = []
-        #age_epoch = user_data['birthday']
-        #user_data['birthday'] = datetime.datetime.fromtimestamp(age_epoch)
         #print(f"saver- save_user: {user_data}")
         users.insert_one(user_data)
 
@@ -50,19 +47,18 @@ def make_mongodb_saver(f):
         If topic=='snapshot': saves a new entry for the snapshot, inside the user.
         (If there's already a snapshot for the user with the same timestamp, it doesn't do anything.)
         """
-        print(f"saver.py/save: about to save {topic}")
+        #print(f"saver.py/save: about to save {topic}")
         if topic == 'user':
             save_user(data)
             return
 
         data = json.loads(data)
-        print(f"saver- save: {data}")
-        print(f"saver- save: {data[topic]}")
-        #dt = datetime.datetime.fromtimestamp(data['datetime'])
-        dt = data['datetime']
+        #print(f"saver- save: {data}")
+        #print(f"saver- save: {data[topic]}")
+        dt = data['datetime'] #we save it as float, not as datetime
         user_id = data['user_id']
 
-        #find if there's a snapshot with the given timestamp. If not, create one.
+        #find if there's already a snapshot with the given timestamp. If not, create one.
         lock.acquire()
         snap = snapshots.find_one({'user_id':user_id,'datetime':dt})
         if not snap:
@@ -75,7 +71,7 @@ def make_mongodb_saver(f):
         snapshots.update_one({'user_id':user_id,'datetime':dt},
             {'$set':added_entry})
 
-        print(f"saver.py/save: done saving {topic}!")
+        #print(f"saver.py/save: done saving {topic}!")
 
     return save
 
