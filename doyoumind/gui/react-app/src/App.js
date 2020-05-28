@@ -5,12 +5,12 @@ import Header from './components/main/Header';
 import './App.css';
 
 var videos = [
-    'http://www.youtube.com/embed/ehB6462JHog', //mind
-    'http://www.youtube.com/embed/49FB9hhoO6c', //where is my mind
-    'http://www.youtube.com/embed/ibZdil-Kbjw', //boingo- grey matter
+    'http://www.youtube.com/embed/ehB6462JHog', //talking heads- mind
+    'http://www.youtube.com/embed/PK-k0kCSJcM', //yoko ono- mind train
+    'http://www.youtube.com/embed/49FB9hhoO6c', //where is my mind?
+    'http://www.youtube.com/embed/7TUPAXliAIM', //prodigy- mindfields
     'http://www.youtube.com/embed/bVYXWVs0Prc', //mind games
     'http://www.youtube.com/embed/BgK_Er7WZVg', //mind mischief
-    'http://www.youtube.com/embed/BhYKN21olBw', //brain damage
 ];
 
 class App extends Component {

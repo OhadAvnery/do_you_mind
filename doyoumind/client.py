@@ -38,20 +38,7 @@ def filter_snapshot(snap, config):
             snap.ClearField(field)
 
 
-"""
-    Upload the sample from the file to the server, using the hello-->config-->snapshot protocol.
-    WARNING: only the protobuf reader has been tested- this may lead to problems
-    when using a binary reader!
 
-    :param host: the server's host, defaults to '127.0.0.1' in the CLI
-    :type host: str, optional
-    :param port: the server's port, defaults to 8000 in the CLI
-    :type port: int, optional
-    :param path: the path for the sample path
-    :type path: str
-    :param read_type: the type of reader for the file, defaults to 'protobuf'
-    :type read_type: str, optional
-    """
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
 @click.option('--port', '-p', default=8000, type=int)

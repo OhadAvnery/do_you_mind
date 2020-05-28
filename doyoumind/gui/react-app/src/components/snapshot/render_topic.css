@@ -1,0 +1,30 @@
+table, th, td {
+  border: 1px solid indigo;
+}
+
+.unavailable {
+    text-align:center;
+}
+
+h2.feelings {
+  color: red;
+}
+
+h2.pose {
+  color: orange;
+}
+
+h2.color_image {
+  color: green;
+}
+
+h2.depth_image {
+  color: blue;
+}
+
+img.color_image {
+    width: 40%;
+    height: 40%;
+}
+img.depth_image {
+}
