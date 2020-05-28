@@ -11,7 +11,7 @@ class SingleUser extends Component {
         var username = user['username'];
         return (
         <div>
-        <a href={"/users/"+user_id}> User {'#'+user_id}'s page- {username}</a>
+        <a href={"/users/"+user_id}> User {'#'+user_id}- {username}</a>
         <br />
         </div>
         );
@@ -71,7 +71,8 @@ class UsersPage extends Component {
     return (
       <div className="App">
         <Header title="Users Page" />
-        Here are all the users: <br/> 
+        <a href="">Go back to the main page</a> <br /> <br />
+        Here are all the users: <br /> 
         {users_index(users_list)}
       </div>
     );

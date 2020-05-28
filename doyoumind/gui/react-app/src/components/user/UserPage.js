@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import Header from '../main/Header';
 import SnapshotsList from './SnapshotsList';
 import {API_ROOT_URL} from '../../constants';
-//import './UserPage.css';
+import './UserPage.css';
 
 function calculate_age(birthday) {
+    /*
+    Given a Date object representing the person's birthday, 
+    return their age.
+    Source: https://stackoverflow.com/a/21984136/8477065
+    */
     var ageDifMs = Date.now() - birthday.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
@@ -49,13 +54,18 @@ class UserPage extends Component {
     //var current_year = Date.now().getFullYear();
     //var age = current_year -date.getFullYear();
     var gender = user_data['gender'];
+    var gender_path = `${process.env.PUBLIC_URL}/imgs/genders/${gender}.png`;
+    console.log('gender_path: '+gender_path);
     return (
       <div className="App">
         <Header title={"User #"+this.id} />
+        <a href="/users">Go back to users page</a><br /><br />
+        <h2>Who is user {'#'+this.id} anyway?</h2>
         USERNAME - {username} <br />
         BIRTHDAY- {date.toDateString()} ({calculate_age(date)} years old)<br />
-        GENDER- {gender} <br />
-
+        GENDER- {gender} 
+        <img class='gender' src={gender_path} alt={gender} title={gender}/><br /> <br/>
+        <h2>And what are his snapshots?</h2>
         {<SnapshotsList user_id={this.id} />} 
 
 
