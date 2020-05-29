@@ -7,9 +7,10 @@ from . import doyoumind_pb2
 from ..utils.reader_utils import *
 
 
-#from .utils.reader_utils import *
-
 class Reader:
+    """An implementation of the reader for files in protobuf format.
+    For full documentation on the functions, see the main Reader class.
+    """
     def __init__(self, path, zipped=True):
         self.offset = 0
         self.path = Path(path)

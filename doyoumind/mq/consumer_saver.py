@@ -5,6 +5,19 @@ from ..parsers.constants import __parsers__
 #from ..utils.context import context_from_snapshot
 
 def __make_callback(callback, topic):
+    '''
+    Helper function. 
+    Given a semi-callback function of the form callback: topic --> (body --> result),
+    and the given topic parsed,
+    returns a valid callback function of the form callback: channel, method, properties, body --> result.
+
+    :param callback: a function that takes a topic as input, and returns a callback function.
+    :type callback: function str-->(str-->?)
+    :param topic: the topic that was parsed
+    :type topic: str
+    :return: a valid callback using the topic
+    :rtype: function (str, str, str, str) --> ?
+    '''
     def actual_callback(channel, method, properties, body):
         callback(topic)(body)
     return actual_callback
@@ -12,6 +25,20 @@ def __make_callback(callback, topic):
 
 
 def rabbitmq_consumer(f, callback):
+    """
+    Given a driver url for the saver's rabbitmq message queue, 
+    and a callback function of the form topic --> (body --> result),
+    create a consumer function that connects indefinitely to the mq, applying the given callback
+    on every consumed message.
+
+    :param f: the driver's url
+    :type f: furl.furl
+    :param callback: a function that takes a topic as input, and returns a callback function.
+    :type callback: function str-->(str-->?)
+    :returns: the consume function
+    :rtype: function none-->none
+    """
+
     #print("consumer_saver.py: setting up a consumer")
     params = pika.ConnectionParameters(host=f.host, port=f.port)
     connection = pika.BlockingConnection(params)
@@ -36,34 +63,22 @@ def rabbitmq_consumer(f, callback):
 class ConsumerSaver:
     def __init__(self, url, callback):
         """
-        callback- a function that takes a parser as input, and returns a callback function.
-        (this callback function works on ONE parameter- the msg.)
+        Creates a new ConsumerSaver object, that consumes data from the saver's mq
+        (connecting to the mq according to the driver url, and applying the given callback
+        on every consumed message on all topics).
+
+        :param url: the mq driver's url
+        (currently only supports the format 'rabbitmq://id:port/')
+        :type url: str
+        :param callback: a function that takes a topic as input, and returns a callback function.
+        :type callback: function str-->(str-->?)
+        :return: the ConsumerSaver object
+        :rtype: ConsumerSaver
         """
-        print("creating ConsumerSaver object")
+        #print("creating ConsumerSaver object")
         f = furl(url)
         self.url = f
         self.consume = DRIVERS[f.scheme](f, callback)
-        print("created ConsumerSaver object")
+        #print("created ConsumerSaver object")
        
-
-
 DRIVERS = {'rabbitmq': rabbitmq_consumer}
-
-'''
-@main.command('consume')
-#@click.option('--host', '-h', default='127.0.0.1', type=str)
-#@click.option('--port', '-p', default=5672, type=int)
-@click.argument('consume_url', type=str)
-@click.argument('publish_url', type=str)
-def consume_cli(consume_url, publish_url):
-
-    publisher = Publisher(publish_url, SERVER_EXCHANGE)
-    publish = publisher.publish
-    consumer = Consumer(consume_url, publish, SERVER_EXCHANGE)
-    consumer.consume()
-
-
-if __name__ == '__main__':
-    print(f"consumer_saver.py yo")
-'''
-

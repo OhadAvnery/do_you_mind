@@ -22,6 +22,9 @@ class Reader:
         :returns: a reader object
         :rtype: Reader
         '''
+        if format=='binary':
+            print("WARNING: binary reader has been deprecated and may"
+                  "not behave well- use protobuf instead!")
         self.reader = DRIVERS[format].Reader(path, zipped)
     
     def read_user(self):

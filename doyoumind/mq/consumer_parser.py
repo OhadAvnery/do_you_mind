@@ -14,11 +14,11 @@ def __make_callback(callback, parser):
     and the given parser function,
     returns a valid callback function of the form callback: channel, method, properties, body --> result.
 
-    :param callback: the mq driver's url
-    :type callback: str
     :param callback: a function that takes a parser as input, and returns a callback function.
     :type callback: function (str-->str)-->(str-->?)
-    :return: a valid callback
+    :param parser: the parsing function
+    :type parser: function str-->str
+    :return: a valid callback using the parser
     :rtype: function (str, str, str, str) --> ?
     '''
     def actual_callback(channel, method, properties, body):

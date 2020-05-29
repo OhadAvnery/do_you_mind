@@ -28,7 +28,7 @@ class Snapshot:
     
 
 class ReaderImage:
-    #img_type- 'd' (for depth) or 'c' (for color)
+    '''img_type- 'd' (for depth) or 'c' (for color)'''
     def __init__(self, width, height, vals, img_type):
         self.height = height
         self.width = width
@@ -37,7 +37,7 @@ class ReaderImage:
 
 class UserFeelings:
     """
-    4 floats between -1 and 1 representing the feelings
+    4 floats between -1 and 1 representing the feelings.
     """
     def __init__(self, hunger, thirst, exhaustion, happiness):
         self.hunger = hunger
@@ -46,14 +46,10 @@ class UserFeelings:
         self.happiness = happiness
 
 class Reader:
-    """Note about formats:
-    'uint64':'Q', 'uint32':'L', 'double':'d', 'char':'c', 'float':'f'
+    """An implementation of the reader for files in binary format.
+    For full documentation on the functions, see the main Reader class.
     """
     def __init__(self, path, zipped=True):
-        
-        #self.user_id = 0
-        #self.username = ""
-        #self.__file = open(path, 'rb')
         self.offset = 0
         self.path = Path(path)
         if zipped:
