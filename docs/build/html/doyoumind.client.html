@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>doyoumind.client package &#8212; Do You Mind? 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="doyoumind-client-package">
+<h1>doyoumind.client package<a class="headerlink" href="#doyoumind-client-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.client.client">
+<span id="doyoumind-client-client-module"></span><h2>doyoumind.client.client module<a class="headerlink" href="#module-doyoumind.client.client" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="doyoumind.client.client.filter_snapshot">
+<code class="sig-prename descclassname">doyoumind.client.client.</code><code class="sig-name descname">filter_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">snap</span></em>, <em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.client.client.filter_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the snapshot so it’ll only have the fields described in config.
+:param snap: the snapshot about to be sent to the server 
+:type snap: doyoumind_pb2.Snapshot
+:param config: the configuration of available topics
+:type config: protocol.Config</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.client.client.get_config">
+<code class="sig-prename descclassname">doyoumind.client.client.</code><code class="sig-name descname">get_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.client.client.get_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.client.client.send_hello">
+<code class="sig-prename descclassname">doyoumind.client.client.</code><code class="sig-name descname">send_hello</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conn</span></em>, <em class="sig-param"><span class="n">hello_msg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.client.client.send_hello" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.client.client.send_snapshot">
+<code class="sig-prename descclassname">doyoumind.client.client.</code><code class="sig-name descname">send_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">conn</span></em>, <em class="sig-param"><span class="n">snap_msg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.client.client.send_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.client.client.upload_sample">
+<code class="sig-prename descclassname">doyoumind.client.client.</code><code class="sig-name descname">upload_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">port</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">read_type</span><span class="o">=</span><span class="default_value">'protobuf'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.client.client.upload_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload the sample from the file to the server, using the hello–&gt;config–&gt;snapshot protocol.
+WARNING: only the protobuf reader has been tested- this may lead to problems
+when using a binary reader!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> (<em>str</em><em>, </em><em>optional</em>) – the server’s host, defaults to ‘127.0.0.1’ in the CLI</p></li>
+<li><p><strong>port</strong> (<em>int</em><em>, </em><em>optional</em>) – the server’s port, defaults to 8000 in the CLI</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – the path for the sample path</p></li>
+<li><p><strong>read_type</strong> (<em>str</em><em>, </em><em>optional</em>) – the type of reader for the file, defaults to ‘protobuf’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.client.constants">
+<span id="doyoumind-client-constants-module"></span><h2>doyoumind.client.constants module<a class="headerlink" href="#module-doyoumind.client.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.client">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-doyoumind.client" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Do You Mind?</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ohad Avnery.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doyoumind.client.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

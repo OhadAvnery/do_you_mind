@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>doyoumind.api package &#8212; Do You Mind? 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="doyoumind-api-package">
+<h1>doyoumind.api package<a class="headerlink" href="#doyoumind-api-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.api.api">
+<span id="doyoumind-api-api-module"></span><h2>doyoumind.api.api module<a class="headerlink" href="#module-doyoumind.api.api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.api.api.API">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">API</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">port</span></em>, <em class="sig-param"><span class="n">db_url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.API" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="doyoumind.api.api.API.driver">
+<code class="sig-name descname">driver</code><em class="property"> = None</em><a class="headerlink" href="#doyoumind.api.api.API.driver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="doyoumind.api.api.API.host">
+<code class="sig-name descname">host</code><em class="property"> = None</em><a class="headerlink" href="#doyoumind.api.api.API.host" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="doyoumind.api.api.API.port">
+<code class="sig-name descname">port</code><em class="property"> = None</em><a class="headerlink" href="#doyoumind.api.api.API.port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.get_result">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">get_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">result_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the result of the snapshot’s topic’s parse.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.get_result_data">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">get_result_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">result_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.get_result_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>for large data fields, returns the actual data of the parser.
+Returns a ‘bytes’ object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.get_snapshot">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">get_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">timestamp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.get_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the given topics for a snapshot.
+The snapshot is given by the id of its user, and by its timestamp.
+WARNING: it probably dosen’t support snapshots made before 1970</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.get_snapshots">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">get_snapshots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.get_snapshots" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the users’ snapshots (only their timestamps).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.get_user">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">get_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a users’ details (not including the snapshots).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.get_users">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a list of all users.
+Each entry contains the user id and username.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.return_if_exists">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">return_if_exists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.return_if_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.api.api.run_api_server">
+<code class="sig-prename descclassname">doyoumind.api.api.</code><code class="sig-name descname">run_api_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">5000</span></em>, <em class="sig-param"><span class="n">database_url</span><span class="o">=</span><span class="default_value">'mongodb://127.0.0.1:27017'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api.run_api_server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.api.api_mongodb">
+<span id="doyoumind-api-api-mongodb-module"></span><h2>doyoumind.api.api_mongodb module<a class="headerlink" href="#module-doyoumind.api.api_mongodb" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.api.api_mongodb.APIMongoDB">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.api.api_mongodb.</code><code class="sig-name descname">APIMongoDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db_url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api_mongodb.APIMongoDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="doyoumind.api.api_mongodb.APIMongoDB.get_result">
+<code class="sig-name descname">get_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">result_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api_mongodb.APIMongoDB.get_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.api.api_mongodb.APIMongoDB.get_snapshot">
+<code class="sig-name descname">get_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">timestamp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api_mongodb.APIMongoDB.get_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the given topics for a snapshot.
+The snapshot is given by the id of its user, and by its timestamp.
+NOTE: the timestamp is given by a float. (num. of seconds since …)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.api.api_mongodb.APIMongoDB.get_snapshots">
+<code class="sig-name descname">get_snapshots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api_mongodb.APIMongoDB.get_snapshots" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the users’ snapshots (only their timestamps).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.api.api_mongodb.APIMongoDB.get_user">
+<code class="sig-name descname">get_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api_mongodb.APIMongoDB.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a users’ details (not including the snapshots)s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.api.api_mongodb.APIMongoDB.get_users">
+<code class="sig-name descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.api.api_mongodb.APIMongoDB.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a list of all users.
+Each entry contains the user id and username.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.api.constants">
+<span id="doyoumind-api-constants-module"></span><h2>doyoumind.api.constants module<a class="headerlink" href="#module-doyoumind.api.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.api">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-doyoumind.api" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Do You Mind?</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ohad Avnery.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doyoumind.api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

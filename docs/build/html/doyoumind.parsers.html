@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>doyoumind.parsers package &#8212; Do You Mind? 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="doyoumind-parsers-package">
+<h1>doyoumind.parsers package<a class="headerlink" href="#doyoumind-parsers-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.parsers.color_image">
+<span id="doyoumind-parsers-color-image-module"></span><h2>doyoumind.parsers.color_image module<a class="headerlink" href="#module-doyoumind.parsers.color_image" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="doyoumind.parsers.color_image.parse_color_image">
+<code class="sig-prename descclassname">doyoumind.parsers.color_image.</code><code class="sig-name descname">parse_color_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">context</span></em>, <em class="sig-param"><span class="n">snapshot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.parsers.color_image.parse_color_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the color image from the snapshot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context</strong> (<em>utils.Context</em>) – the context object representing the folders</p></li>
+<li><p><strong>snapshot</strong> (<em>str</em>) – the snapshot data to be parsed (in json format)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the result of the parser (in json format)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.parsers.constants">
+<span id="doyoumind-parsers-constants-module"></span><h2>doyoumind.parsers.constants module<a class="headerlink" href="#module-doyoumind.parsers.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.parsers.depth_image">
+<span id="doyoumind-parsers-depth-image-module"></span><h2>doyoumind.parsers.depth_image module<a class="headerlink" href="#module-doyoumind.parsers.depth_image" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="doyoumind.parsers.depth_image.parse_depth_image">
+<code class="sig-prename descclassname">doyoumind.parsers.depth_image.</code><code class="sig-name descname">parse_depth_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">context</span></em>, <em class="sig-param"><span class="n">snapshot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.parsers.depth_image.parse_depth_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the depth image from the snapshot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context</strong> (<em>utils.Context</em>) – the context object representing the folders</p></li>
+<li><p><strong>snapshot</strong> (<em>str</em>) – the snapshot data to be parsed (in json format)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the result of the parser (in json format)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.parsers.feelings">
+<span id="doyoumind-parsers-feelings-module"></span><h2>doyoumind.parsers.feelings module<a class="headerlink" href="#module-doyoumind.parsers.feelings" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="doyoumind.parsers.feelings.parse_feelings">
+<code class="sig-prename descclassname">doyoumind.parsers.feelings.</code><code class="sig-name descname">parse_feelings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">context</span></em>, <em class="sig-param"><span class="n">snapshot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.parsers.feelings.parse_feelings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the feelings from the snapshot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context</strong> (<em>utils.Context</em>) – the context object representing the folders</p></li>
+<li><p><strong>snapshot</strong> (<em>str</em>) – the snapshot data to be parsed (in json format)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the result of the parser (in json format)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.parsers.pose">
+<span id="doyoumind-parsers-pose-module"></span><h2>doyoumind.parsers.pose module<a class="headerlink" href="#module-doyoumind.parsers.pose" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="doyoumind.parsers.pose.parse_pose">
+<code class="sig-prename descclassname">doyoumind.parsers.pose.</code><code class="sig-name descname">parse_pose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">context</span></em>, <em class="sig-param"><span class="n">snapshot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.parsers.pose.parse_pose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the pose from the snapshot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context</strong> (<em>utils.Context</em>) – the context object representing the folders</p></li>
+<li><p><strong>snapshot</strong> (<em>str</em>) – the snapshot data to be parsed (in json format)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the result of the parser (in json format)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.parsers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-doyoumind.parsers" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="doyoumind.parsers.collect_parsers">
+<code class="sig-prename descclassname">doyoumind.parsers.</code><code class="sig-name descname">collect_parsers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.parsers.collect_parsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>dynamically collects the parsers for which we support all of their fields.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Do You Mind?</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ohad Avnery.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doyoumind.parsers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

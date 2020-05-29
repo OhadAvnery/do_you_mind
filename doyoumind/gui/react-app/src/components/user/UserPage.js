@@ -46,7 +46,10 @@ class UserPage extends Component {
     //var id = this.props.match.params.user_id;
     var user_data = this.state.user_data;
     if (!user_data) {
-        return (<div>Waiting for user's data to load...</div>);
+        return (
+            <div>Waiting for user's data to load... <br />
+            [if it takes too long, you may have entered a wrong user id!]</div>
+            );
     }
     var username = user_data['username'];
     var birthday = user_data['birthday'];

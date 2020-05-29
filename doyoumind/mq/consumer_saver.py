@@ -60,6 +60,7 @@ def rabbitmq_consumer(f, callback):
 
     return lambda : channel.start_consuming()
 
+
 class ConsumerSaver:
     def __init__(self, url, callback):
         """

@@ -1,4 +1,3 @@
-//import JSON;
 import React, { Component } from 'react';
 import './render_topic.css';
 

@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>doyoumind.mq package &#8212; Do You Mind? 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="doyoumind-mq-package">
+<h1>doyoumind.mq package<a class="headerlink" href="#doyoumind-mq-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.mq.constants">
+<span id="doyoumind-mq-constants-module"></span><h2>doyoumind.mq.constants module<a class="headerlink" href="#module-doyoumind.mq.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.mq.consumer_parser">
+<span id="doyoumind-mq-consumer-parser-module"></span><h2>doyoumind.mq.consumer_parser module<a class="headerlink" href="#module-doyoumind.mq.consumer_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.mq.consumer_parser.ConsumerParser">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.mq.consumer_parser.</code><code class="sig-name descname">ConsumerParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.consumer_parser.ConsumerParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.consumer_parser.rabbitmq_consumer">
+<code class="sig-prename descclassname">doyoumind.mq.consumer_parser.</code><code class="sig-name descname">rabbitmq_consumer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.consumer_parser.rabbitmq_consumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a driver url for the server’s rabbitmq message queue, 
+and a callback function of the form parser –&gt; (body –&gt; result),
+create a consumer function that connects indefinitely to the mq, applying the given callback
+on every consumed message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>furl.furl</em>) – the driver’s url</p></li>
+<li><p><strong>callback</strong> (<em>function</em><em> (</em><em>str--&gt;str</em><em>)</em><em>--&gt;</em><em>(</em><em>str--&gt;?</em><em>)</em>) – a function that takes a parser as input, and returns a callback function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the consume function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function none–&gt;none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.mq.consumer_parser_atomic">
+<span id="doyoumind-mq-consumer-parser-atomic-module"></span><h2>doyoumind.mq.consumer_parser_atomic module<a class="headerlink" href="#module-doyoumind.mq.consumer_parser_atomic" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.mq.consumer_parser_atomic.ConsumerParserAtomic">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.mq.consumer_parser_atomic.</code><code class="sig-name descname">ConsumerParserAtomic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">topic</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.consumer_parser_atomic.ConsumerParserAtomic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.consumer_parser_atomic.rabbitmq_consumer">
+<code class="sig-prename descclassname">doyoumind.mq.consumer_parser_atomic.</code><code class="sig-name descname">rabbitmq_consumer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">topic</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.consumer_parser_atomic.rabbitmq_consumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a driver url for the server’s rabbitmq message queue, 
+and a callback function of the form parser –&gt; (body –&gt; result),
+create a consumer function that connects indefinitely to the mq, applying the given callback
+on every consumed message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>furl.furl</em>) – the driver’s url</p></li>
+<li><p><strong>topic</strong> (<em>str</em>) – name of a topic to be parsed</p></li>
+<li><p><strong>callback</strong> (<em>function str--&gt;none</em>) – a function that takes a parser as input, and returns a callback function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the consume function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function none–&gt;none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.mq.consumer_saver">
+<span id="doyoumind-mq-consumer-saver-module"></span><h2>doyoumind.mq.consumer_saver module<a class="headerlink" href="#module-doyoumind.mq.consumer_saver" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.mq.consumer_saver.ConsumerSaver">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.mq.consumer_saver.</code><code class="sig-name descname">ConsumerSaver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.consumer_saver.ConsumerSaver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.consumer_saver.rabbitmq_consumer">
+<code class="sig-prename descclassname">doyoumind.mq.consumer_saver.</code><code class="sig-name descname">rabbitmq_consumer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.consumer_saver.rabbitmq_consumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a driver url for the saver’s rabbitmq message queue, 
+and a callback function of the form topic –&gt; (body –&gt; result),
+create a consumer function that connects indefinitely to the mq, applying the given callback
+on every consumed message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>furl.furl</em>) – the driver’s url</p></li>
+<li><p><strong>callback</strong> (<em>function str--&gt;</em><em>(</em><em>str--&gt;?</em><em>)</em>) – a function that takes a topic as input, and returns a callback function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the consume function</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function none–&gt;none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.mq.publisher_parser">
+<span id="doyoumind-mq-publisher-parser-module"></span><h2>doyoumind.mq.publisher_parser module<a class="headerlink" href="#module-doyoumind.mq.publisher_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.mq.publisher_parser.PublisherParser">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.mq.publisher_parser.</code><code class="sig-name descname">PublisherParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_parser.PublisherParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A publisher that gets snapshot data from the server,
+and publishes it to all queues on the server’s exchange so it’ll get parsed.
+:param url: the mq driver’s url
+(currently only supports the format ‘rabbitmq://id:port/’)
+:type url: str
+:param publish: the publish function
+:type publish: function str–&gt;?</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.publisher_parser.rabbitmq_publisher">
+<code class="sig-prename descclassname">doyoumind.mq.publisher_parser.</code><code class="sig-name descname">rabbitmq_publisher</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_parser.rabbitmq_publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a driver url for the server’s rabbitmq message queue,
+Bind the server exchange to multiple queues,
+each one representing a different parser.
+Return a function that given a message, publishes it to the exchange using fanout.
+:param f: the driver’s url
+:type f: furl.furl
+:returns: the publish function
+:rtype: function str–&gt;?</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.mq.publisher_saver">
+<span id="doyoumind-mq-publisher-saver-module"></span><h2>doyoumind.mq.publisher_saver module<a class="headerlink" href="#module-doyoumind.mq.publisher_saver" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.mq.publisher_saver.PublisherSaver">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.mq.publisher_saver.</code><code class="sig-name descname">PublisherSaver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_saver.PublisherSaver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A publisher that, given parse results, 
+that gets snapshot results from the server,
+and publishes it to all queues on the server’s exchange so it’ll get parsed.
+:param url: the mq driver’s url
+(currently only supports the format ‘rabbitmq://id:port/’)
+:type url: str
+:param publish: the publish function
+:type publish: function str–&gt;?</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.publisher_saver.rabbitmq_publisher">
+<code class="sig-prename descclassname">doyoumind.mq.publisher_saver.</code><code class="sig-name descname">rabbitmq_publisher</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_saver.rabbitmq_publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new exchange with the given name, and binds it to multiple queues,
+each one representing a different parser.
+Returns a function that given a message, publishes it to the exchange using fanout.
+for the publisher–&gt;consumer interaction: SERVER_EXCHANGE.
+for the consumer–&gt;saver: SAVER_EXCHANGE.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.mq.publisher_saver_atomic">
+<span id="doyoumind-mq-publisher-saver-atomic-module"></span><h2>doyoumind.mq.publisher_saver_atomic module<a class="headerlink" href="#module-doyoumind.mq.publisher_saver_atomic" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.mq.publisher_saver_atomic.PublisherSaverAtomic">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.mq.publisher_saver_atomic.</code><code class="sig-name descname">PublisherSaverAtomic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">topic</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_saver_atomic.PublisherSaverAtomic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.publisher_saver_atomic.rabbitmq_publisher">
+<code class="sig-prename descclassname">doyoumind.mq.publisher_saver_atomic.</code><code class="sig-name descname">rabbitmq_publisher</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">topic</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_saver_atomic.rabbitmq_publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>publishes the consumed parser result to the saver’s queue.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.mq.publisher_saver_atomic.run_parser">
+<code class="sig-prename descclassname">doyoumind.mq.publisher_saver_atomic.</code><code class="sig-name descname">run_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parser_type</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.mq.publisher_saver_atomic.run_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the parser with the given topic on the given data.
+Returns a string, to be later saved in the saver as the value of the topic.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.mq">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-doyoumind.mq" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Do You Mind?</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ohad Avnery.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doyoumind.mq.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

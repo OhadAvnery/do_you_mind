@@ -10,6 +10,16 @@ from ..utils.context import context_from_snapshot
 
 
 class PublisherSaver:
+    '''
+    A publisher that, given parse results, 
+    that gets snapshot results from the server,
+    and publishes it to all queues on the server's exchange so it'll get parsed.
+    :param url: the mq driver's url
+    (currently only supports the format 'rabbitmq://id:port/')
+    :type url: str
+    :param publish: the publish function
+    :type publish: function str-->?
+    '''
     def __init__(self, url):
         f = furl(url)
         self.url = f

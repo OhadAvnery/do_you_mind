@@ -10,7 +10,7 @@ class SnapshotPage extends Component {
     /**topics- list of all the names of the topics.
     topics_data- a dictionary, key=name of topic, value=its data.
     */
-    state = {topics: [], topics_data: {}};
+    state = {topics: null, topics_data: {}};
     user_id = this.props.match.params.user_id;
     timestamp = this.props.match.params.timestamp;
 
@@ -34,7 +34,7 @@ class SnapshotPage extends Component {
     .catch(error => {
             this.setState({ errorMessage: error.toString() });
             console.log(error.toString());
-            //console.error('There was an error!', error);
+            console.error('There was an error!', error);
         });  
 
 
@@ -43,8 +43,17 @@ class SnapshotPage extends Component {
     render() {
     //var not_loaded = (<div>Waiting for snapshot's data to load...</div>);
     var topics = this.state.topics;
+    if(!topics) 
+    { return (
+            <div>Waiting for snapshot's data to load... <br/>
+            [if it takes too long, you may have entered a wrong user id or snapshot timestamp!]</div>
+            ); 
+    }
+
+
     topics.sort((u1, u2) => TOPICS_ORDER[u1]-TOPICS_ORDER[u2]);
-    if(!topics) { return (<div>Waiting for snapshot's data to load...</div>); }
+    
+    console.log("SnapshotPage- our topics are: "+String(topics)+". Does it exist? "+Boolean(topics));
 
     var result = [];
     var date = new Date(this.timestamp*1000);

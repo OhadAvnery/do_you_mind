@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>doyoumind.readers package &#8212; Do You Mind? 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="doyoumind-readers-package">
+<h1>doyoumind.readers package<a class="headerlink" href="#doyoumind-readers-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.readers.binary_reader">
+<span id="doyoumind-readers-binary-reader-module"></span><h2>doyoumind.readers.binary_reader module<a class="headerlink" href="#module-doyoumind.readers.binary_reader" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.readers.binary_reader.Reader">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.binary_reader.</code><code class="sig-name descname">Reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">zipped</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An implementation of the reader for files in binary format.
+For full documentation on the functions, see the main Reader class.</p>
+<dl class="py method">
+<dt id="doyoumind.readers.binary_reader.Reader.read_snapshot">
+<code class="sig-name descname">read_snapshot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.Reader.read_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.readers.binary_reader.Reader.read_user">
+<code class="sig-name descname">read_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.Reader.read_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="doyoumind.readers.binary_reader.ReaderImage">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.binary_reader.</code><code class="sig-name descname">ReaderImage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">img_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.ReaderImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>img_type- ‘d’ (for depth) or ‘c’ (for color)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="doyoumind.readers.binary_reader.Snapshot">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.binary_reader.</code><code class="sig-name descname">Snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">translation</span></em>, <em class="sig-param"><span class="n">rotation</span></em>, <em class="sig-param"><span class="n">color_image</span></em>, <em class="sig-param"><span class="n">depth_image</span></em>, <em class="sig-param"><span class="n">user_feelings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.Snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="doyoumind.readers.binary_reader.User">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.binary_reader.</code><code class="sig-name descname">User</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">birthdate</span></em>, <em class="sig-param"><span class="n">gender</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="doyoumind.readers.binary_reader.UserFeelings">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.binary_reader.</code><code class="sig-name descname">UserFeelings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hunger</span></em>, <em class="sig-param"><span class="n">thirst</span></em>, <em class="sig-param"><span class="n">exhaustion</span></em>, <em class="sig-param"><span class="n">happiness</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.binary_reader.UserFeelings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>4 floats between -1 and 1 representing the feelings.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.readers.doyoumind_pb2">
+<span id="doyoumind-readers-doyoumind-pb2-module"></span><h2>doyoumind.readers.doyoumind_pb2 module<a class="headerlink" href="#module-doyoumind.readers.doyoumind_pb2" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.readers.hello_pb2">
+<span id="doyoumind-readers-hello-pb2-module"></span><h2>doyoumind.readers.hello_pb2 module<a class="headerlink" href="#module-doyoumind.readers.hello_pb2" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.readers.protobuf_reader">
+<span id="doyoumind-readers-protobuf-reader-module"></span><h2>doyoumind.readers.protobuf_reader module<a class="headerlink" href="#module-doyoumind.readers.protobuf_reader" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.readers.protobuf_reader.Reader">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.protobuf_reader.</code><code class="sig-name descname">Reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">zipped</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.protobuf_reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An implementation of the reader for files in protobuf format.
+For full documentation on the functions, see the main Reader class.</p>
+<dl class="py method">
+<dt id="doyoumind.readers.protobuf_reader.Reader.read_snapshot">
+<code class="sig-name descname">read_snapshot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.protobuf_reader.Reader.read_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.readers.protobuf_reader.Reader.read_user">
+<code class="sig-name descname">read_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.protobuf_reader.Reader.read_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.readers.reader">
+<span id="doyoumind-readers-reader-module"></span><h2>doyoumind.readers.reader module<a class="headerlink" href="#module-doyoumind.readers.reader" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.readers.reader.Reader">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.readers.reader.</code><code class="sig-name descname">Reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">zipped</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class representing an objects that reads the client’s sample.
+:param reader: the implemented reader
+:type reader: dynamic</p>
+<dl class="py method">
+<dt id="doyoumind.readers.reader.Reader.read_hello">
+<code class="sig-name descname">read_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.reader.Reader.read_hello" title="Permalink to this definition">¶</a></dt>
+<dd><p>read the ‘hello’ message.
+NOTE: we implement read_hello using read_user,
+since they have the same content exactly.
+if they’ll become different we’ll implement them differently, 
+and use the Hello class from hello.proto.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>hello object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>doyoumind_pb2.User</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.readers.reader.Reader.read_snapshot">
+<code class="sig-name descname">read_snapshot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.reader.Reader.read_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the next snapshot from the sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the snapshot</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>doyoumind_pb2.Snapshot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.readers.reader.Reader.read_user">
+<code class="sig-name descname">read_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.readers.reader.Reader.read_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the next user from the sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the user</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>doyoumind_pb2.User</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.readers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-doyoumind.readers" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Do You Mind?</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ohad Avnery.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doyoumind.readers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

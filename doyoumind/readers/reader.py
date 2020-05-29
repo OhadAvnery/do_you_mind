@@ -13,6 +13,7 @@ class Reader:
     def __init__(self, path, format, zipped=True):
         '''
         Create a new reader object.
+        
         :param path: the path of the sample to read from
         :type path: str
         :param format: the reader's format (binary or protobuf)
@@ -30,7 +31,8 @@ class Reader:
     def read_user(self):
         '''
         Read the next user from the sample.
-        :returns: the user
+
+        :return: the user
         :rtype: doyoumind_pb2.User
         '''
         return self.reader.read_user()
@@ -42,7 +44,8 @@ class Reader:
         since they have the same content exactly.
         if they'll become different we'll implement them differently, 
         and use the Hello class from hello.proto.
-        :returns: hello object
+
+        :return: hello object
         :rtype: doyoumind_pb2.User
         '''
         return self.reader.read_user()
@@ -50,7 +53,8 @@ class Reader:
     def read_snapshot(self):
         '''
         Read the next snapshot from the sample.
-        :returns: the snapshot
+
+        :return: the snapshot
         :rtype: doyoumind_pb2.Snapshot
         '''
         return self.reader.read_snapshot()

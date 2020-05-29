@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>doyoumind.server package &#8212; Do You Mind? 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="doyoumind-server-package">
+<h1>doyoumind.server package<a class="headerlink" href="#doyoumind-server-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-doyoumind.server.server">
+<span id="doyoumind-server-server-module"></span><h2>doyoumind.server.server module<a class="headerlink" href="#module-doyoumind.server.server" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="doyoumind.server.server.Handler">
+<em class="property">class </em><code class="sig-prename descclassname">doyoumind.server.server.</code><code class="sig-name descname">Handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connection</span></em>, <em class="sig-param"><span class="n">database</span></em>, <em class="sig-param"><span class="n">data_dir</span></em>, <em class="sig-param"><span class="n">publish</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.Handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<dl class="py method">
+<dt id="doyoumind.server.server.Handler.get_hello">
+<code class="sig-name descname">get_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.Handler.get_hello" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.server.server.Handler.get_snapshot">
+<code class="sig-name descname">get_snapshot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.Handler.get_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="doyoumind.server.server.Handler.lock">
+<code class="sig-name descname">lock</code><em class="property"> = &lt;unlocked _thread.lock object&gt;</em><a class="headerlink" href="#doyoumind.server.server.Handler.lock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.server.server.Handler.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.Handler.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>runs the server, waiting for connections from clients.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.server.server.Handler.send_config">
+<code class="sig-name descname">send_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_msg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.Handler.send_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="doyoumind.server.server.Handler.snapshot_to_json">
+<code class="sig-name descname">snapshot_to_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">snapshot</span></em>, <em class="sig-param"><span class="n">context</span></em>, <em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.Handler.snapshot_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the snapshot object to a json string.
+In order to not make the json file too big, we save the image+depth data into a temp file,
+and in the json, save the file’s path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>snapshot</strong> (<em>doyoumind.Snapshot</em>) – the snapshot read from the client</p></li>
+<li><p><strong>context</strong> (<em>protocol.Context</em>) – the snapshot’s context</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="doyoumind.server.server.run_server">
+<code class="sig-prename descclassname">doyoumind.server.server.</code><code class="sig-name descname">run_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">port</span></em>, <em class="sig-param"><span class="n">database</span></em>, <em class="sig-param"><span class="n">publish</span></em>, <em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">'/home/user/test'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#doyoumind.server.server.run_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the server at the given host+port, listening to clients, reading their snapshots
+and sending them to consumers.
+NOTE: the server also directly connects to the database,
+in order to save the user’s details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> (<em>str</em><em>, </em><em>optional</em>) – the server’s host, defaults to ‘127.0.0.1’ in the CLI</p></li>
+<li><p><strong>port</strong> (<em>int</em><em>, </em><em>optional</em>) – the server’s port, defaults to 8000 in the CLI</p></li>
+<li><p><strong>database</strong> – the database’s drive url, defaults to ‘mongodb://127.0.0.1:27017’ in the CLI</p></li>
+</ul>
+</dd>
+</dl>
+<p>(currently only supports mongodb)
+:type database: str, optional
+:param publish: a function that’s activated on any read snapshot.
+in the API, expects a function object.
+in the CLI, expects a message queue drive url to publish the snapshots to.
+:type publish: function/str
+:param data: the data directory to write the snapshots in, defaults to a test folder.
+:type data: str, optional</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-doyoumind.server">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-doyoumind.server" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Do You Mind?</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ohad Avnery.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doyoumind.server.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

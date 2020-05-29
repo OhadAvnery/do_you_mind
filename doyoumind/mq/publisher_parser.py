@@ -8,6 +8,15 @@ from ..utils.context import context_from_snapshot
 
 
 class PublisherParser:
+    '''
+    A publisher that gets snapshot data from the server,
+    and publishes it to all queues on the server's exchange so it'll get parsed.
+    :param url: the mq driver's url
+    (currently only supports the format 'rabbitmq://id:port/')
+    :type url: str
+    :param publish: the publish function
+    :type publish: function str-->?
+    '''
     def __init__(self, url):
         f = furl(url)
         self.url = f
@@ -16,14 +25,17 @@ class PublisherParser:
 
 def rabbitmq_publisher(f):
     """
-    Creates a new parsers exchange, and binds it to multiple queues,
+    Given a driver url for the server's rabbitmq message queue,
+    Bind the server exchange to multiple queues,
     each one representing a different parser.
-    Returns a function that given a message, publishes it to the exchange using fanout.
+    Return a function that given a message, publishes it to the exchange using fanout.
+    :param f: the driver's url
+    :type f: furl.furl
+    :returns: the publish function
+    :rtype: function str-->?
     """
     #print(f"calling make_rabbitmq_publisher_parser on: {f}")
     exchange = SERVER_EXCHANGE
-
-    #here, we don't need a routing key, as we're using fanout.
 
 
     params = pika.ConnectionParameters(host=f.host, port=f.port)
