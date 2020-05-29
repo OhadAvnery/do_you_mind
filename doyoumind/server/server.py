@@ -153,7 +153,7 @@ class Handler(threading.Thread):
         return json.dumps(snap_dict)
 
 
-def run_server(host, port, database, publish, data="/home/user/test"):
+def run_server(host, port, database, publish, data="/home/user/snaps"):
     """
     Run the server at the given host+port, listening to clients, reading their snapshots
     and sending them to consumers.
@@ -171,7 +171,7 @@ def run_server(host, port, database, publish, data="/home/user/test"):
     in the API, expects a function object.
     in the CLI, expects a message queue drive url to publish the snapshots to.
     :type publish: function/str
-    :param data: the data directory to write the snapshots in, defaults to a test folder.
+    :param data: the data directory to write the snapshots in, defaults to /home/user/snaps
     :type data: str, optional
     """
     server = socket.socket()

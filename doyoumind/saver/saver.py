@@ -9,10 +9,21 @@ from ..mq.consumer_saver import ConsumerSaver
 lock = threading.Lock()
 
 class Saver:
+    '''
+    An object that connects to the database and saves information about users and snapshots.
+    :param url: the database's driver url
+    :type url: furl.furl
+    :param save: the saver's save function (chosen according to the drive scheme)
+    :type save: function (str,str)-->none
+    '''
     def __init__(self, database_url="mongodb://127.0.0.1:27017"):
         """
-        receives a database url, of the form:
-        'mongodb://host:port'.
+        Constructs a new Saver object, given the database driver.
+        :param url: database driver url, defaults to "mongodb://127.0.0.1:27017"
+        (only supports the mongodb scheme)
+        :type url: str
+        :returns: Saver object
+        :rtype: Saver
         """
         f = furl(database_url)
         self.url = f

@@ -65,16 +65,9 @@ class SnapshotPage extends Component {
       </div>
     );
 
-    var data; 
     var topic;
     for (var i = 0; i < topics.length; i++) {
         topic = topics[i];
-        /*get_topic(this.user_id, this.timestamp, topic, this.state.topics_data);
-        data = this.state.topics_data[topic];
-        if(!data) {
-            return (<div>Waiting for {topic} to load...</div>);
-        }
-        result.push(<div>{String(data)}</div>);*/
         console.log("SnapshotPage/render: index- "+i+", about to look at the topic- "+topic)
         result.push(<SnapshotTopic user_id={this.user_id} timestamp={this.timestamp} topic={topic} />);
     }

@@ -1,0 +1,72 @@
+version: '3.0'
+services:
+  mongodb:
+    image: mongo
+    ports: 
+      - 27017:27017
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - 5672:5672
+  server: 
+    image: doyoumind
+    ports:
+      - 8000:8000
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.server run-server "rabbitmq://rabbitmq:5672/"
+    depends_on: 
+      - rabbitmq
+      - mongodb
+  parse_pose:
+    image: doyoumind
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672/'
+    depends_on: 
+      - rabbitmq
+  parse_feelings:
+    image: doyoumind
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'feelings' 'rabbitmq://rabbitmq:5672/'
+    depends_on: 
+      - rabbitmq
+  parse_color_image:
+    image: doyoumind
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672/'
+    depends_on: 
+      - rabbitmq
+  parse_depth_image:
+    image: doyoumind
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672/'
+    depends_on: 
+      - rabbitmq
+  saver:
+    image: doyoumind
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.saver run-saver 'mongodb://mongodb:27017' 'rabbitmq://rabbitmq:5672/'
+    depends_on: 
+      - rabbitmq
+      - mongodb
+  
+  api:
+    image: doyoumind
+    volumes: 
+      - snaps_data
+    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.api run-server
+    depends_on: 
+      - rabbitmq
+
+  #TODO: gui
+
+
+volumes:
+  snaps_data: 
+
+ 
