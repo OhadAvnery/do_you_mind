@@ -38,7 +38,6 @@ def get_users():
     returns a list of all users.
     Each entry contains the user id and username.
     '''
-    #print(f"thread: {threading.currentThread().name}")
     return API.driver.get_users()
 
 @app.route("/users/<int:user_id>")
@@ -81,5 +80,4 @@ def get_result_data(user_id, timestamp, result_name):
     if result_name not in LARGE_DATA_FIELDS:
         flask.abort(404)
     path = json.loads(get_result(user_id, timestamp, result_name))
-    print("api.py path:", path)
     return flask.send_file(path)

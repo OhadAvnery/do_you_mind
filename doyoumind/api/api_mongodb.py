@@ -16,13 +16,11 @@ class APIMongoDB:
         '''
         
         users_list = list(self.db.users.find())
-        print(f"api_mongodb/get_users: users list- {users_list}")
         result = []
         for user_data in users_list:
             #user_json = json.loads(user_data)
             user = {'user_id': user_data['user_id'], 'username': user_data['username']}
             result.append(user)
-        print(f"api_mongodb/get_users: {result}")
         return json.dumps(result)
 
     def get_user(self, user_id):

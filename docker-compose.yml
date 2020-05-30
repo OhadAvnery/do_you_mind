@@ -13,44 +13,44 @@ services:
     ports:
       - 8000:8000
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.server run-server "rabbitmq://rabbitmq:5672/"
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.server run-server -h '0.0.0.0' -db 'mongodb://mongodb:27017' "rabbitmq://rabbitmq:5672/"
     depends_on: 
       - rabbitmq
       - mongodb
   parse_pose:
     image: doyoumind
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672/'
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.parsers run-parser 'pose' 'rabbitmq://rabbitmq:5672/'
     depends_on: 
       - rabbitmq
   parse_feelings:
     image: doyoumind
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'feelings' 'rabbitmq://rabbitmq:5672/'
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.parsers run-parser 'feelings' 'rabbitmq://rabbitmq:5672/'
     depends_on: 
       - rabbitmq
   parse_color_image:
     image: doyoumind
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672/'
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.parsers run-parser 'color_image' 'rabbitmq://rabbitmq:5672/'
     depends_on: 
       - rabbitmq
   parse_depth_image:
     image: doyoumind
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672/'
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672/'
     depends_on: 
       - rabbitmq
   saver:
     image: doyoumind
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.saver run-saver 'mongodb://mongodb:27017' 'rabbitmq://rabbitmq:5672/'
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.saver run-saver 'mongodb://mongodb:27017' 'rabbitmq://rabbitmq:5672/'
     depends_on: 
       - rabbitmq
       - mongodb
@@ -58,8 +58,10 @@ services:
   api:
     image: doyoumind
     volumes: 
-      - snaps_data
-    command: ./wait_for_it.sh 127.0.0.1:5672 -- python3.8 -m doyoumind.api run-server
+      - snaps_data:/snaps
+    ports:
+      - 5000:5000
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.api run-server -h '0.0.0.0' -d 'mongodb://mongodb:27017'
     depends_on: 
       - rabbitmq
 

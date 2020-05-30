@@ -51,6 +51,7 @@ def upload_sample(host, port, path, read_type='protobuf'):
     :param read_type: the type of reader for the file, defaults to 'protobuf'
     :type read_type: str, optional
     """
+    print("client.py: starting")
     with Connection.connect(host, port) as conn:
         zipped = (path.endswith(".gz"))
         r = Reader(path, read_type, zipped)
@@ -59,8 +60,10 @@ def upload_sample(host, port, path, read_type='protobuf'):
         hello_bytes = hello.SerializeToString()
         num_snapshot = 1
         for snap in r:
+            print("client.py: uploading snapshot")
             send_hello(conn, hello_bytes)
             config_bytes = get_config(conn)
+            print(f"client.py: the config- {config_bytes}")
             config = Config.deserialize(config_bytes)
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())

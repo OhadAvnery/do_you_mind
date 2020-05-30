@@ -25,6 +25,7 @@ class Saver:
         :returns: Saver object
         :rtype: Saver
         """
+        print("saver.py: building a new saver")
         f = furl(database_url)
         self.url = f
         self.save = SAVER_SETUPS[f.scheme](f)
@@ -58,14 +59,14 @@ def make_mongodb_saver(f):
         If topic=='snapshot': saves a new entry for the snapshot, inside the user.
         (If there's already a snapshot for the user with the same timestamp, it doesn't do anything.)
         """
-        #print(f"saver.py/save: about to save {topic}")
+        print(f"saver.py/save: about to save {topic}")
         if topic == 'user':
             save_user(data)
             return
 
         data = json.loads(data)
-        #print(f"saver- save: {data}")
-        #print(f"saver- save: {data[topic]}")
+        print(f"saver- save: {data}")
+        print(f"saver- save: {data[topic]}")
         dt = data['datetime'] #we save it as float, not as datetime
         user_id = data['user_id']
 
@@ -82,7 +83,7 @@ def make_mongodb_saver(f):
         snapshots.update_one({'user_id':user_id,'datetime':dt},
             {'$set':added_entry})
 
-        #print(f"saver.py/save: done saving {topic}!")
+        print(f"saver.py/save: done saving {topic}!")
 
     return save
 

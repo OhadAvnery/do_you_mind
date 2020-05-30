@@ -4,4 +4,5 @@
 .pytest_cache
 .travis.yml
 docs
+snaps
 doyoumind/gui
