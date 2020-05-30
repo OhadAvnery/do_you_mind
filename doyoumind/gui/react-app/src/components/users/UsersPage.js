@@ -71,7 +71,7 @@ class UsersPage extends Component {
     return (
       <div className="App">
         <Header title="Users Page" />
-        <a href="">Go back to the main page</a> <br /> <br />
+        <a href="/">Go back to the main page</a> <br /> <br />
         Here are all the users: <br /> 
         {users_index(users_list)}
       </div>

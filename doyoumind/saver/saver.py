@@ -65,8 +65,8 @@ def make_mongodb_saver(f):
             return
 
         data = json.loads(data)
-        print(f"saver- save: {data}")
-        print(f"saver- save: {data[topic]}")
+        #print(f"saver- save: {data}")
+        #print(f"saver- save: {data[topic]}")
         dt = data['datetime'] #we save it as float, not as datetime
         user_id = data['user_id']
 
@@ -83,7 +83,7 @@ def make_mongodb_saver(f):
         snapshots.update_one({'user_id':user_id,'datetime':dt},
             {'$set':added_entry})
 
-        print(f"saver.py/save: done saving {topic}!")
+        #print(f"saver.py/save: done saving {topic}!")
 
     return save
 

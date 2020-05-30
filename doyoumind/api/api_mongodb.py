@@ -3,6 +3,10 @@ import json
 import pymongo
 
 class APIMongoDB:
+    '''
+    An implementation of the API server with mongodb.
+    (For full documentation of the methods, see the api.api module)
+    '''
     def __init__(self, db_url):
         self.url = furl(db_url)
         self.client = pymongo.MongoClient(host=self.url.host, port=self.url.port)
@@ -28,10 +32,6 @@ class APIMongoDB:
         returns a users' details (not including the snapshots)s.
         '''
         user = self.db.users.find_one({'user_id':user_id})
-        '''if not user:
-            print("api_mongodb/get_user: get rekt buddy")
-            return 404, 'user not found'
-        '''
         if not user:
             return None
         user = user.copy()
@@ -44,7 +44,6 @@ class APIMongoDB:
         return the users' snapshots (only their timestamps).
         '''
         user = self.db.users.find_one({'user_id':user_id})
-        print(f"api_mongodb/get_snapshots: {user}")
         if not user:
             return None
             #return 404, 'user not found'
@@ -60,7 +59,7 @@ class APIMongoDB:
         if not snap:
             return None
 
-        print(f"api_mongodb/get_snapshot: {snap}")
+        #print(f"api_mongodb/get_snapshot: {snap}")
         non_topic_fields = ['user_id', 'datetime', '_id']
         available_topics = [field for field in snap if field not in non_topic_fields]
         return json.dumps(available_topics)
@@ -70,18 +69,5 @@ class APIMongoDB:
         snap = self.db.snapshots.find_one({'user_id':user_id,'datetime':timestamp})
         if not snap:
             return None
-        print(f"api_mongodb/get_result: {json.dumps(snap[result_name])}")
+        #print(f"api_mongodb/get_result: {json.dumps(snap[result_name])}")
         return json.dumps(snap[result_name])
-
-    """
-    def get_result_data(self, user_id, timestamp, result_name):
-        '''
-        NOTE: here we can assume that result_name is a topic having data.
-        '''
-        snap = self.db.snapshots.find_one({'user_id':user_id,'datetime':timestamp})
-        if not snap:
-            return None
-        path = snap[result_name]
-        return send_file(path, mimetype='image/jpg')
-        #return result
-    """
