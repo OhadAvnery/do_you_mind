@@ -3,6 +3,7 @@ import json
 def parse_feelings(context, snapshot):
     '''
     Parses the feelings from the snapshot.
+    (returns a json subobject containing the feelings data)
 
     :param context: the context object representing the folders
     :type context: utils.Context

@@ -5,6 +5,8 @@ from PIL import Image
 def parse_color_image(context, snapshot):
     '''
     Parses the color image from the snapshot.
+    (deletes the raw data file and writes to disk a jpg file representing the color image.
+    Uses PIL. Returns the image's path.)
 
     :param context: the context object representing the folders
     :type context: utils.Context

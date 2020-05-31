@@ -11,6 +11,8 @@ import touch
 def parse_depth_image(context, snapshot):
     '''
     Parses the depth image from the snapshot.
+    (deletes the raw data file and and writes to disk a new jpg file representing the depth image.
+    Uses matplotlib. Returns the image's path.)
 
     :param context: the context object representing the folders
     :type context: utils.Context

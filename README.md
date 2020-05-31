@@ -18,7 +18,7 @@ See [full documentation](https://do-you-mind.readthedocs.io/en/latest).
     $ cd do_you_mind
     ```
 
-2. Run the installation script and activate the virtual environment:
+2. Run the installation script and activate the virtual environment (also building the docker image):
 
     ```sh
     $ ./scripts/install.sh
@@ -37,7 +37,7 @@ See [full documentation](https://do-you-mind.readthedocs.io/en/latest).
 
 ## Usage
 
-The `doyoumind` packages provides the following classes:
+The `doyoumind` package provides the following subpackages:
 
 - `client`
     This package allows the user to stream cognition snapshots to a server.
@@ -60,7 +60,6 @@ The `doyoumind` packages provides the following classes:
       -h/--host '127.0.0.1'             \
       -p/--port 8000                    \
       'snapshot.mind.gz'
-
     ```
 
 
@@ -90,6 +89,52 @@ The `doyoumind` packages provides the following classes:
       -p/--port 8000                 \
       'rabbitmq://127.0.0.1:5672/'
     ```
+- `parsers`
+This package includes parser functions- mini-services that, given a snapshot's raw data, produce a parsed result of it. Each parser produces a different topic (pose, feelings, depth image and color image). For full information about each parser, read their documentation.
+
+    **run_parser-** an API function. Accepts a parser name and some raw data, as consumed from the message queue, and returns the result, as published to the message queue. 
+    example-
+    ```pycon
+    >>> from doyoumind.parsers import run_parser
+    >>> data = … 
+    >>> result = run_parser('pose', data)
+    ```
+    **parse-** a CLI function. Accepts a parser name and a path to some raw data, as consumed from the message queue, and prints the result, as published to the message queue (optionally redirecting it to a file).
+    example-
+    ```sh
+    $ python -m doyoumind.parsers parse 'pose' 'snapshot.raw' > 'pose.result'
+    ```
+
+    **run-parser-** a CLI function. Runs the topic's parser as a service, which works with a message queue indefinitely.
+    example-
+    ```sh
+    $ python -m doyoumind.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:5672/'
+    ```
+
+    **run-all-parsers-** a new CLI function. Runs as a service *all* available parsers (given that the server supports all their required fields), working with a message queue indefinitely.
+    example-
+    ```sh
+    $ python -m doyoumind.parsers run-all-parsers 'rabbitmq://127.0.0.1:5672/'
+    ```
+
+    _**Q: I want to add a new parser. What should I do?**_
+    Glad you asked!
+
+    If you want to parse a new topic, X:
+    -In the 'parsers' package, add a new file called X.py.
+    -In it, add a function called parse_X. This function should take as input a Context object (representing a directory) and snapshot data, and return the parsed data. 
+    The result is a json dictionary, with the keys:
+    'parser': the name of the parsed topic (X).
+    '[X]': the actual result of the parse, to be saved in the database.
+    'user_id': the user's id.
+    -parse_X.fields should be all the snapshot fields required for parsing X.
+
+    When running the pipeline, the new parser will be dynamically added to the program and be parsed in its own topic in the mq.
+
+    In order to make the parse result appear in the GUI, you should also add a new 'render_X' function in the render_topic.js script.
+
+- `saver`
+
 
 
 

@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import sys
 
+from .__main__ import run_parser
 from .constants import __parsers__
 from ..constants import SUPPORTED_FIELDS
 

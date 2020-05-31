@@ -3,6 +3,7 @@ import json
 def parse_pose(context, snapshot):
     '''
     Parses the pose from the snapshot.
+    (returns a json subobject containing the translation+rotation data)
 
     :param context: the context object representing the folders
     :type context: utils.Context
