@@ -30,7 +30,6 @@ def run_saver(database, mq):
         return lambda data: saver.save(topic, data)
 
     consumer = ConsumerSaver(mq, callback)
-    print("saver.py: about to consume")
     consumer.consume()
 
 

@@ -5,8 +5,9 @@
 
 # doyoumind
 
-A package responsible for uploading user snapshots, parsing them and visualising the results. 
-See [full documentation](https://do-you-mind.readthedocs.io/en/latest).
+The project is responsible for uploading user snapshots, parsing them and visualising the results.
+(that is, assuming you already have a brain-reading device. This one's on you; we're developers, not engineers.) 
+For full documentation, [click here.](https://do-you-mind.readthedocs.io/en/latest).
 
 ## Installation
 
@@ -29,7 +30,6 @@ See [full documentation](https://do-you-mind.readthedocs.io/en/latest).
 
 3. There aren't really any tests, but if you'd like to see a green dot, run:
 
-
     ```sh
     $ pytest tests/
     ...
@@ -40,6 +40,7 @@ See [full documentation](https://do-you-mind.readthedocs.io/en/latest).
 The `doyoumind` package provides the following subpackages:
 
 - `client`
+
     This package allows the user to stream cognition snapshots to a server.
     It provides the 'upload_sample' method, whose parameters are:
     -host, port: the server's host and port (usually '127.0.0.1',8000 respectively).
@@ -50,13 +51,13 @@ The `doyoumind` package provides the following subpackages:
 
     API example-
     ```pycon
-    >>> from cortex.client import upload_sample
+    >>> from doyoumind.client import upload_sample
     >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz')
     … # upload path to host:port
     ```
     CLI example-
     ```sh
-    $ python -m cortex.client upload-sample \
+    $ python -m doyoumind.client upload-sample \
       -h/--host '127.0.0.1'             \
       -p/--port 8000                    \
       'snapshot.mind.gz'
@@ -75,7 +76,7 @@ The `doyoumind` package provides the following subpackages:
     -data: the data directory to save the snapshot's data blob's to, defaults to ./snaps.
 
     API example-
-    ```pycon
+    ```python
     >>> from doyoumind.server import run_server
     >>> def print_message(message):
     ...     print(message)
@@ -84,17 +85,16 @@ The `doyoumind` package provides the following subpackages:
     ```
     CLI example-
     ```sh
-    $ python -m cortex.server run-server \
+    $ python -m doyoumind.server run-server \
       -h/--host '127.0.0.1'          \
       -p/--port 8000                 \
       'rabbitmq://127.0.0.1:5672/'
     ```
 - `parsers`
-This package includes parser functions- mini-services that, given a snapshot's raw data, produce a parsed result of it. Each parser produces a different topic (pose, feelings, depth image and color image). For full information about each parser, read their documentation.
-
+    This package includes parser functions- mini-services that, given a snapshot's raw data, produce a parsed result of it. Each parser produces a different topic (pose, feelings, depth image and color image). For full information about each parser, read their documentation.
     **run_parser-** an API function. Accepts a parser name and some raw data, as consumed from the message queue, and returns the result, as published to the message queue. 
     example-
-    ```pycon
+    ```python
     >>> from doyoumind.parsers import run_parser
     >>> data = … 
     >>> result = run_parser('pose', data)
@@ -104,22 +104,18 @@ This package includes parser functions- mini-services that, given a snapshot's r
     ```sh
     $ python -m doyoumind.parsers parse 'pose' 'snapshot.raw' > 'pose.result'
     ```
-
     **run-parser-** a CLI function. Runs the topic's parser as a service, which works with a message queue indefinitely.
     example-
     ```sh
     $ python -m doyoumind.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:5672/'
     ```
-
     **run-all-parsers-** a new CLI function. Runs as a service *all* available parsers (given that the server supports all their required fields), working with a message queue indefinitely.
     example-
     ```sh
     $ python -m doyoumind.parsers run-all-parsers 'rabbitmq://127.0.0.1:5672/'
     ```
-
     _**Q: I want to add a new parser. What should I do?**_
     Glad you asked!
-
     If you want to parse a new topic, X:
     -In the 'parsers' package, add a new file called X.py.
     -In it, add a function called parse_X. This function should take as input a Context object (representing a directory) and snapshot data, and return the parsed data. 
@@ -128,89 +124,101 @@ This package includes parser functions- mini-services that, given a snapshot's r
     '[X]': the actual result of the parse, to be saved in the database.
     'user_id': the user's id.
     -parse_X.fields should be all the snapshot fields required for parsing X.
-
     When running the pipeline, the new parser will be dynamically added to the program and be parsed in its own topic in the mq.
-
     In order to make the parse result appear in the GUI, you should also add a new 'render_X' function in the render_topic.js script.
 
 - `saver`
+    A package that contains a Saver object.
+    The saver connects to a database, accepts a topic name and some data, as consumed from the message queue, and saves it to the database.
+    API example:
+    ```python
+    >>> from doyoumind.saver import Saver
+    >>> saver = Saver(database_url)
+    >>> data = …
+    >>> saver.save('pose', data)
+    ```
+    **save-** the CLI version: accepts a topic name and a path to some raw data, as consumed from the message queue, and saves it to a database (given by a driver url at the flag -d, defaults to 'mongodb://127.0.0.1:27017').
+    Example:
+    ```sh
+    python -m doyoumind.saver save                     \
+      -d/--database 'mongodb://127.0.0.1:27017' \
+     'pose'                                       \
+     'pose.result' 
+    ```
+    **run-saver-** a CLI function. Runs the saver as a service, which works with a message queue indefinitely. The saver then subscribes to all relevant topics its capable of consuming, and saves to the database.
+    Example:
+    ```sh
+    $ python -m doyoumind.saver run-saver  \
+      'mongodb://127.0.0.1:27017' \
+      'rabbitmq://127.0.0.1:5672/'
+    ```
 
+- `API`
+    Allows the user to send GET requests through various API endpoints, getting information from the database.
+    You can build the API server using an API function:
+    ```python
+    >>> from doyoumind.api import run_api_server
+    >>> run_api_server(
+    ...     host = '127.0.0.1',
+    ...     port = 5000,
+    ...     database_url = 'mongodb://127.0.0.1:27017',
+    ... )
+    … # listen on host:port and serve data from database_url
+    ```
+    Or using a CLI function:
+    ```sh
+    $ python -m doyoumind.api run-server \
+      -h/--host '127.0.0.1'       \
+      -p/--port 5000              \
+      -d/--database 'mongodb://127.0.0.1:27017'
+     ```
+     For full information about the API endpoints, see the documentation on api/api.py.
+- `CLI`
+    consumes the API and reflects it. 
+    Examples:
+    ```sh
+    $ python -m doyoumind.cli get-users
+    …
+    $ python -m doyoumind.cli get-user 1
+    …
+    $ python -m doyoumind.cli get-snapshots 1
+    …
+    $ python -m doyoumind.cli get-snapshot 1 1575446887.412
+    …
+    $ python -m doyoumind.cli get-result 1 1575446887.412 'pose'
+    …
+     $ python -m doyoumind.cli get-result 1 1575446887.412 'pose' -s 'foo.json'
+    #using the -s flag in get-result means that instead of printing the result, it saves the data to the given file path
+    ```
+    
+- `GUI`
+    Consumes the API and reflects it, using React.
+    Has various pages showing the list of users, for each user its list of snapshots, and for each snapshot its various parser results in  (hopefully) decent visualisations.
+    It provides the following API:
+    ```python
+    >>> from doyoumind.gui import run_server
+    >>> run_server(
+    ...     host = '127.0.0.1',
+    ...     port = 8080,
+    ...     api_host = '127.0.0.1',
+    ...     api_port = 5000,
+    ... )
+    ```
+    And the following CLI:
+    ```sh
+    $ python -m doyoumind.gui run-server \
+      -h/--host '127.0.0.1'       \
+      -p/--port 8080              \
+      -H/--api-host '127.0.0.1'   \
+      -P/--api-port 5000
+    ```
+    in all four fields, the values shown are the default values given in the CLI.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-The `foobar` package also provides a command-line interface:
-
-```sh
-$ python -m foobar
-foobar, version 0.1.0
-```
-
-All commands accept the `-q` or `--quiet` flag to suppress output, and the `-t`
-or `--traceback` flag to show the full traceback when an exception is raised
-(by default, only the error message is printed, and the program exits with a
-non-zero code).
-
-The CLI provides the `foo` command, with the `run`, `add` and `inc`
-subcommands:
-
-```sh
-$ python -m foobar foo run
-foo
-$ python -m foobar foo inc 1
-2
-$ python -m foobar foo add 1 2
-3
-```
-
-The CLI further provides the `bar` command, with the `run` and `error`
-subcommands.
-
-Curiously enough, `bar`'s `run` subcommand accepts the `-o` or `--output`
-option to write its output to a file rather than the standard output, and the
-`-u` or `--uppercase` option to do so in uppercase letters.
-
-```sh
-$ python -m foobar bar run
-bar
-$ python -m foobar bar run -u
-BAR
-$ python -m foobar bar run -o output.txt
-$ cat output.txt
-BAR
-```
-
-Do note that each command's options should be passed to *that* command, so for
-example the `-q` and `-t` options should be passed to `foobar`, not `foo` or
-`bar`.
-
-```sh
-$ python -m foobar bar run -q # this doesn't work
-ERROR: no such option: -q
-$ python -m foobar -q bar run # this does work
-```
-
-To showcase these options, consider `bar`'s `error` subcommand, which raises an
-exception:
-
-```sh
-$ python -m foobar bar error
-ERROR: something went terribly wrong :[
-$ python -m foobar -q bar error # suppress output
-$ python -m foobar -t bar error # show full traceback
-ERROR: something went terribly wrong :[
-Traceback (most recent call last):
-    ...
-RuntimeError: something went terrible wrong :[
-```
+- `deployment`
+    Finally, all server-side processes (server+message queue+parsers+database+API+GUI) are neatly packed in a docker container. 
+    The docker built has been made inside the install.sh script. If you wish to run the container, you may do it using:
+    ```sh 
+    ./scripts/run_pipeline.sh
+    ```
+    and then use the client, API, CLI and GUI as you normally do, each connecting to its default host+port.
+    *Warning:* if you wish to run the docker, you should first verify that no other processes run on the same port (that means you can't run a rabbitmq process on port 5672, etc).
