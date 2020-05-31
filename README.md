@@ -40,34 +40,70 @@ See [full documentation](https://do-you-mind.readthedocs.io/en/latest).
 The `doyoumind` packages provides the following classes:
 
 - `client`
+    This package allows the user to stream cognition snapshots to a server.
+    It provides the 'upload_sample' method, whose parameters are:
+    -host, port: the server's host and port (usually '127.0.0.1',8000 respectively).
+    -path: the snapshots sample file. (Either uncompressed, or compressed with .gz)
+    -read_type: the type of the sample.
+    this parameter is optional, and defaults to 'protobuf' (so the samples it takes have the form described in readers/doyoumind.proto). 
+    protobuf is also the only format that works for now- there's also a 'binary' format, but it hasn't been fully fleshed out.
 
-    This class encapsulates the concept of `foo`, and returns `"foo"` when run.
-
-    In addition, it provides the `inc` method to increment integers, and the
-    `add` method to sum them.
-
+    API example-
     ```pycon
-    >>> from foobar import Foo
-    >>> foo = Foo()
-    >>> foo.run()
-    'foo'
-    >>> foo.inc(1)
-    2
-    >>> foo.add(1, 2)
-    3
+    >>> from cortex.client import upload_sample
+    >>> upload_sample(host='127.0.0.1', port=8000, path='sample.mind.gz')
+    … # upload path to host:port
+    ```
+    CLI example-
+    ```sh
+    $ python -m cortex.client upload-sample \
+      -h/--host '127.0.0.1'             \
+      -p/--port 8000                    \
+      'snapshot.mind.gz'
+
     ```
 
-- `Bar`
 
-    This class encapsulates the concept of `bar`; it's very similar to `Foo`,
-    except it returns `"bar"` when run.
+- `server`
 
+    This package runs a server at a given host+port, listening to multiple clients, receiving snapshots from them and sending them to various publishers.
+    It provides the 'run_server' method, whose parameters are:
+    -host, port: the host and port to run from (usually '127.0.0.1',8000 respectively).
+    -database: the drive url for the project's database, where the server will send information about new users to. Defaults to 'mongodb://127.0.0.1:27017'. (currently only supports mongodb)
+    -publish: a function that's activated on any received snapshot.
+    could also be a drive URL for a message queue, for which the server publishes all snapshots.
+    (currently only supports rabbitmq)
+    -data: the data directory to save the snapshot's data blob's to, defaults to ./snaps.
+
+    API example-
     ```pycon
-    >>> from foobar import Bar
-    >>> bar = Bar()
-    >>> bar.run()
-    'bar'
+    >>> from doyoumind.server import run_server
+    >>> def print_message(message):
+    ...     print(message)
+    >>> run_server(host='127.0.0.1', port=8000, publish=print_message)
+    … # listen on host:port and pass received messages to publish
     ```
+    CLI example-
+    ```sh
+    $ python -m cortex.server run-server \
+      -h/--host '127.0.0.1'          \
+      -p/--port 8000                 \
+      'rabbitmq://127.0.0.1:5672/'
+    ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 The `foobar` package also provides a command-line interface:
 

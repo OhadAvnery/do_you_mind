@@ -87,7 +87,7 @@ def get_result(host, port, save, user_id, timestamp, result_name):
         with open(save, 'w') as f:
             f.write(json.dumps(answer))
     else:
-        print(type(answer), answer)
+        print(answer)
 
 if __name__ == '__main__':
     main()

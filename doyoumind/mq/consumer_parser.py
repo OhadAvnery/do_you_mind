@@ -24,9 +24,6 @@ def __make_callback(callback, parser):
         callback(parser)(body)
     return actual_callback
 
-@click.group()
-def main():
-    pass
 
 def rabbitmq_consumer(f, callback):
     """

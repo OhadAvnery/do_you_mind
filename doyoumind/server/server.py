@@ -54,7 +54,6 @@ class Handler(threading.Thread):
         if isinstance(publish, str):
             publisher = PublisherParser(publish)
             self.publish = publisher.publish
-            print(f"our publish function: {self.publish}")
         else: 
             self.publish = publish
 
@@ -74,7 +73,6 @@ class Handler(threading.Thread):
 
         num_snapshot = 1
         while True:
-            #print(f"server: proccessing message {debug_counter}...")
             hello_msg = self.get_hello()
             if not hello_msg:
                 break
@@ -85,16 +83,14 @@ class Handler(threading.Thread):
             saver = Saver(self.database)
             hello_dict = MessageToDict(hello, preserving_proto_field_name=True, \
                 including_default_value_fields=True)
-            #weird bug: somehow this isn't an int!!!!! 
+            #somehow this isn't an int, so we fix it
             hello_dict['user_id'] = int(hello_dict['user_id'])
-            #print("server/run:", hello_dict)
             saver.save('user', json.dumps(hello_dict))
 
            
             user_id = hello.user_id #an int
             config = Config(SUPPORTED_FIELDS)
             config_msg = config.serialize()
-            #print(f"sending config, bytes: {config_msg}, num. fields: {len(config.fields)}")
             self.send_config(config_msg)
             snap = doyoumind_pb2.Snapshot()
             snap.ParseFromString(self.get_snapshot())
@@ -105,12 +101,11 @@ class Handler(threading.Thread):
             snapshot_dir = self.dir / f"{user_id}" / time_string
             context = Context(snapshot_dir)
             snapshot_json = self.snapshot_to_json(snap, context, user_id) 
-            #print(f"server: the snapshot to be published: {snapshot_json}")
+
             self.publish(snapshot_json)
 
-            #print(f"server: done proccessing message {debug_counter}")
+
             num_snapshot += 1
-        #print("server/run: done run")
 
 
 
@@ -153,7 +148,7 @@ class Handler(threading.Thread):
         return json.dumps(snap_dict)
 
 
-def run_server(host, port, database, publish, data="snaps"):
+def run_server(host, port, publish, database='mongodb://127.0.0.1:27017', data="snaps"):
     """
     Run the server at the given host+port, listening to clients, reading their snapshots
     and sending them to consumers.
@@ -164,24 +159,21 @@ def run_server(host, port, database, publish, data="snaps"):
     :type host: str, optional
     :param port: the server's port, defaults to 8000 in the CLI
     :type port: int, optional
-    :param database: the database's drive url, defaults to 'mongodb://127.0.0.1:27017' in the CLI
+    :param database: the database's drive url, defaults to 'mongodb://127.0.0.1:27017'
     (currently only supports mongodb)
     :type database: str, optional
     :param publish: a function that's activated on any read snapshot.
     in the API, expects a function object.
     in the CLI, expects a message queue drive url to publish the snapshots to.
     :type publish: function/str
-    :param data: the data directory to write the snapshots in, defaults to /home/user/snaps.
+    :param data: the data directory to write the snapshots in, defaults to ./snaps.
     :type data: str, optional
     """
-    print(f"server.py- current file is: {__file__}")
-    print(f"server.py- data folder: {Path(data).absolute()}")
     server = socket.socket()
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((host, port))
     server.listen(MAX_CONN)
     
-    print("server.py- listening to connections")
     try:
         while True:
             conn, addr = server.accept()
