@@ -3,6 +3,7 @@ from furl import furl
 import pika
 
 from .constants import __parsers__
+from ..mq.consumer_parser import run_all_parsers
 from ..mq.consumer_parser_atomic import ConsumerParserAtomic
 from ..mq.publisher_saver_atomic import PublisherSaverAtomic
 from ..utils.context import context_from_snapshot
@@ -45,4 +46,19 @@ def run_parser_cli(parser_type, url):
     consumer = ConsumerParserAtomic(url, parser_type, publish)
     consumer.consume()
 
-main()
+@main.command('run-all-parsers')
+@click.argument('url', type=str)
+def run_all_parsers_cli(url):
+    """
+    Connects to the message queue, and indefinitely consumes snapshots from it,
+    parsing them using all available parsers and publishing them to the message queue.
+    (currently only supports the format 'rabbitmq://id:port/' as url)
+
+    :param url: the queue's driver url
+    :type url: str
+    """
+    run_all_parsers(url, url)
+
+
+if __name__ == '__main__':
+    main()

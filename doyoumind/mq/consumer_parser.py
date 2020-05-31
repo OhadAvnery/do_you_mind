@@ -1,4 +1,3 @@
-import click
 from furl import furl
 import pika
 from .constants import SERVER_EXCHANGE, SAVER_EXCHANGE
@@ -87,18 +86,16 @@ class ConsumerParser:
 
 DRIVERS = {'rabbitmq': rabbitmq_consumer}
 
-@main.command('consume-from-server')
-@click.argument('consume_url', type=str)
-@click.argument('publish_url', type=str)
-def consume_from_server_cli(consume_url, publish_url):
+
+def run_all_parsers(consume_url, publish_url):
     """
     Connects to the server's queue, and indefinitely consumes snapshots from it,
-    parsing them and publishing them to the saver's queue.
+    parsing them using all available parsers and publishing them to the saver's queue.
     (currently only supports the format 'rabbitmq://id:port/' as url)
 
-    :param consume_url: the server queue's url
+    :param consume_url: the server queue's driver url
     :type consume_url: str
-    :param publish_url: the saver queue's url
+    :param publish_url: the saver queue's driver url
     :type publish_url: str
     """
     publisher = PublisherSaver(publish_url)
@@ -107,7 +104,3 @@ def consume_from_server_cli(consume_url, publish_url):
     consumer.consume()
 
 
-
-if __name__ == '__main__':
-    #print(f"consumer_parser.py yo")
-    main()
