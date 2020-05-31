@@ -57,7 +57,7 @@ class UserPage extends Component {
     //var current_year = Date.now().getFullYear();
     //var age = current_year -date.getFullYear();
     var gender = user_data['gender'];
-    var gender_path = `${process.env.PUBLIC_URL}/imgs/genders/${gender}.png`;
+    var gender_path = `/imgs/genders/${gender}.png`;
     console.log('gender_path: '+gender_path);
     return (
       <div className="App">

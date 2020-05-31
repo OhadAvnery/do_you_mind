@@ -23,7 +23,7 @@ class FeelsImg extends Component {
         var num = this.props.num;
         var n = Math.floor(num*3) + 4; //an int between 1 and 7, inclusive
         if(n===7) {n -= 1;} //handling the odd case where num==1
-        var path = `${process.env.PUBLIC_URL}/imgs/feelings/${n}.png`;
+        var path = `/imgs/feelings/${n}.png`;
         console.log(path);
         return (<img src={path} alt={feels[n]} title={feels[n]}/>);
     }

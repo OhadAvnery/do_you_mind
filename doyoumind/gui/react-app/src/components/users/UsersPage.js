@@ -29,15 +29,6 @@ function users_index(users_list) {
 }
 class UsersPage extends Component {
     state = {users: null};
-
-   /** componentDidMount() {
-    // Runs after the first render() lifecycle
-    var path = API_ROOT_URL + "/users";
-    fetch(path)
-    .then(response => response.json())
-    .then(data => this.setState({ users: data }));
-    }*/
-
     
     componentDidMount() {
     // Runs after the first render() lifecycle
@@ -53,7 +44,6 @@ class UsersPage extends Component {
                 const error = (data && data.message) || response.statusText;
                 return Promise.reject(error);
             }
-            console.log("our path: "+path);
             this.setState({ users: data });
     })   
     .catch(error => {
@@ -79,5 +69,4 @@ class UsersPage extends Component {
   }
 }
 
-//export {UsersPage};
 export default UsersPage;

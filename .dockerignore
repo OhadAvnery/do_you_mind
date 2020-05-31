@@ -5,4 +5,4 @@
 .travis.yml
 docs
 snaps
-doyoumind/gui
+doyoumind/gui/react-app/node_modules

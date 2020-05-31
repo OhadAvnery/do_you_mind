@@ -14,5 +14,4 @@ def run_server_cli(host, port, database, publish):
     run_server(host, port, database, publish)
 
 if __name__ == '__main__':
-    print(f"server main: {main.commands}")
     main()

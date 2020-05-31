@@ -65,7 +65,15 @@ services:
     depends_on: 
       - rabbitmq
 
-  #TODO: gui
+  gui:
+    image: doyoumind
+    volumes: 
+      - snaps_data:/snaps
+    ports:
+      - 8080:8080
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.gui run-server -h '0.0.0.0' -H '0.0.0.0'
+    depends_on: 
+      - rabbitmq
 
 
 volumes:
