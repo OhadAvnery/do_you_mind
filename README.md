@@ -221,14 +221,14 @@ The `doyoumind` package provides the following subpackages:
 
 ## Deployment
 
-    Finally, all server-side processes (server+message queue+parsers+database+API+GUI) are neatly packed in a docker container. 
-    The docker build has been executed inside the install.sh script. If you wish to run the container, you may do it using:
-    ```sh 
-    ./scripts/run_pipeline.sh
-    ```
-    and then use the client, API, CLI and GUI as you normally do, each connecting to its default host+port.
-    *Warning:* if you wish to run the docker, you should first verify that no other processes run on the same host+port pairs (that means you can't run a local rabbitmq process on port 5672, etc).
-    To stop the run, simply execute:
-    ```sh 
-    ./scripts/stop_pipeline.sh
-    ```
+Finally, all server-side processes (server+message queue+parsers+database+API+GUI) are neatly packed in a docker container. 
+The docker build has been executed inside the install.sh script. If you wish to run the container, you may do it using:
+```sh 
+./scripts/run_pipeline.sh
+```
+and then use the client, API, CLI and GUI as you normally do, each connecting to its default host+port.
+*Warning:* if you wish to run the docker, you should first verify that no other processes run on the same host+port pairs (that means you can't run a local rabbitmq process on port 5672, etc).
+To stop the run, simply execute:
+```sh 
+./scripts/stop_pipeline.sh
+```
