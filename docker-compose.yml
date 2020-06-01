@@ -46,6 +46,13 @@ services:
     command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672/'
     depends_on: 
       - rabbitmq
+  parse_depth_image2:
+    image: doyoumind
+    volumes: 
+      - snaps_data:/snaps
+    command: ./wait_for_it.sh rabbitmq:5672 -- python3.8 -m doyoumind.parsers run-parser 'depth_image' 'rabbitmq://rabbitmq:5672/'
+    depends_on: 
+      - rabbitmq
   saver:
     image: doyoumind
     volumes: 
