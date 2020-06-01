@@ -1,13 +1,16 @@
 [![Build Status](https://travis-ci.com/OhadAvnery/do_you_mind.svg?branch=master)](https://travis-ci.com/OhadAvnery/do_you_mind)
 [![Documentation Status](https://readthedocs.org/projects/do-you-mind/badge/?version=latest)](https://do-you-mind.readthedocs.io/en/latest/?badge=latest)
-[![CodeCov](https://i.imgur.com/l7YTBgz.png)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+[![Bauhaus](https://i.imgur.com/l7YTBgz.png)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
 
-# doyoumind
+# Do You Mind?
+![Do_you_mind](https://i.imgur.com/LyniK6m.png?2)
 
 The project is responsible for uploading user snapshots, parsing them and visualising the results.
+
 (that is, assuming you already have a brain-reading device. This one's on you; we're developers, not engineers.) 
-For full documentation, [click here.](https://do-you-mind.readthedocs.io/en/latest)
+
+For full documentation, [click here!](https://do-you-mind.readthedocs.io/en/latest)
 
 ## Installation
 
@@ -93,6 +96,7 @@ The `doyoumind` package provides the following subpackages:
 - `parsers`
 
     This package includes parser functions- mini-services that, given a snapshot's raw data, produce a parsed result of it. Each parser produces a different topic (pose, feelings, depth image and color image). For full information about each parser, read their documentation.
+
     **run_parser-** an API function. Accepts a parser name and some raw data, as consumed from the message queue, and returns the result, as published to the message queue. 
     example-
     ```python
@@ -235,7 +239,7 @@ The docker build has been executed inside the install.sh script. If you wish to 
 ```
 and then use the client, API, CLI and GUI as you normally do, each connecting to its default host+port.
 *Warning:* if you wish to run the docker, you should first verify that no other processes run on the same host+port pairs (that means you can't run a local rabbitmq process on port 5672, etc).
-To stop the run, simply execute:
+To stop the run (and remove all data uploaded in the session), simply execute:
 ```sh 
 ./scripts/stop_pipeline.sh
 ```
