@@ -9,6 +9,8 @@ from ..api import api
 def main():
     pass
 
+INVALID = 'invalid data'
+
 def get_answer(host, port, path):
     '''
     Connects to the API server at the given host+port,
@@ -26,8 +28,11 @@ def get_answer(host, port, path):
     f = furl()
     f.set(scheme='http',host=host,port=port,path=path)
     url = f.url
-    answer = requests.get(url)
-    return answer.json()
+    try:
+        answer = requests.get(url)
+        return answer.json()  
+    except Exception:
+        return INVALID
 
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -83,11 +88,13 @@ def get_snapshot(host, port, user_id, timestamp):
 def get_result(host, port, save, user_id, timestamp, result_name):
     answer = get_answer(host, port, 
         f'/users/{user_id}/snapshots/{timestamp}/{result_name}')
-    if save:
+    if answer==INVALID or not save:
+        print(answer)
+
+    else: #save=True
         with open(save, 'w') as f:
             f.write(json.dumps(answer))
-    else:
-        print(answer)
+
 
 if __name__ == '__main__':
     main()

@@ -7,7 +7,7 @@
 
 The project is responsible for uploading user snapshots, parsing them and visualising the results.
 (that is, assuming you already have a brain-reading device. This one's on you; we're developers, not engineers.) 
-For full documentation, [click here.](https://do-you-mind.readthedocs.io/en/latest).
+For full documentation, [click here.](https://do-you-mind.readthedocs.io/en/latest)
 
 ## Installation
 
@@ -91,6 +91,7 @@ The `doyoumind` package provides the following subpackages:
       'rabbitmq://127.0.0.1:5672/'
     ```
 - `parsers`
+
     This package includes parser functions- mini-services that, given a snapshot's raw data, produce a parsed result of it. Each parser produces a different topic (pose, feelings, depth image and color image). For full information about each parser, read their documentation.
     **run_parser-** an API function. Accepts a parser name and some raw data, as consumed from the message queue, and returns the result, as published to the message queue. 
     example-
@@ -128,6 +129,7 @@ The `doyoumind` package provides the following subpackages:
     In order to make the parse result appear in the GUI, you should also add a new 'render_X' function in the render_topic.js script.
 
 - `saver`
+
     A package that contains a Saver object.
     The saver connects to a database, accepts a topic name and some data, as consumed from the message queue, and saves it to the database.
     API example:
@@ -154,6 +156,7 @@ The `doyoumind` package provides the following subpackages:
     ```
 
 - `API`
+
     Allows the user to send GET requests through various API endpoints, getting information from the database.
     You can build the API server using an API function:
     ```python
@@ -174,6 +177,7 @@ The `doyoumind` package provides the following subpackages:
      ```
      For full information about the API endpoints, see the documentation on api/api.py.
 - `CLI`
+
     consumes the API and reflects it. 
     Examples:
     ```sh
@@ -192,6 +196,7 @@ The `doyoumind` package provides the following subpackages:
     ```
     
 - `GUI`
+
     Consumes the API and reflects it, using React.
     Has various pages showing the list of users, for each user its list of snapshots, and for each snapshot its various parser results in  (hopefully) decent visualisations.
     It provides the following API:
@@ -214,11 +219,12 @@ The `doyoumind` package provides the following subpackages:
     ```
     in all four fields, the values shown are the default values given in the CLI.
 
-- `deployment`
+## Deployment
+
     Finally, all server-side processes (server+message queue+parsers+database+API+GUI) are neatly packed in a docker container. 
-    The docker built has been made inside the install.sh script. If you wish to run the container, you may do it using:
+    The docker build has been executed inside the install.sh script. If you wish to run the container, you may do it using:
     ```sh 
     ./scripts/run_pipeline.sh
     ```
     and then use the client, API, CLI and GUI as you normally do, each connecting to its default host+port.
-    *Warning:* if you wish to run the docker, you should first verify that no other processes run on the same port (that means you can't run a rabbitmq process on port 5672, etc).
+    *Warning:* if you wish to run the docker, you should first verify that no other processes run on the same host+port pairs (that means you can't run a local rabbitmq process on port 5672, etc).
