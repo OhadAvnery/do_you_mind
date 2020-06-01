@@ -116,15 +116,22 @@ The `doyoumind` package provides the following subpackages:
     $ python -m doyoumind.parsers run-all-parsers 'rabbitmq://127.0.0.1:5672/'
     ```
     _**Q: I want to add a new parser. What should I do?**_
+    
     Glad you asked!
+    
     If you want to parse a new topic, X:
+    
     -In the 'parsers' package, add a new file called X.py.
-    -In it, add a function called parse_X. This function should take as input a Context object (representing a directory) and snapshot data, and return the parsed data. 
+    
+    -In it, add a function called parse_X. This function should take as input a Context object (representing a directory) and snapshot data, and return the parsed data.
+
     The result is a json dictionary, with the keys:
     'parser': the name of the parsed topic (X).
     '[X]': the actual result of the parse, to be saved in the database.
     'user_id': the user's id.
+    
     -parse_X.fields should be all the snapshot fields required for parsing X.
+
     When running the pipeline, the new parser will be dynamically added to the program and be parsed in its own topic in the mq.
     In order to make the parse result appear in the GUI, you should also add a new 'render_X' function in the render_topic.js script.
 
