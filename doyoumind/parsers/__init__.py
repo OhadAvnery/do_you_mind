@@ -8,7 +8,7 @@ from .__main__ import run_parser
 from .constants import __parsers__
 from ..constants import SUPPORTED_FIELDS
 
-#"/home/user/do_you_mind/doyoumind/parsers"
+# example: "/home/user/do_you_mind/doyoumind/parsers"
 PARSERS_DIR = os.path.dirname(__file__)
 PARSERS_DIR_SHORT = PARSERS_DIR.split('/')[-1]
 PARSERS_DIR_PARENT = str(Path(PARSERS_DIR).parent)
@@ -26,18 +26,17 @@ def collect_parsers():
         if filename in UNWANTED_FILES or not filename.endswith(".py"):
             continue
         
-        short_filename = filename[:-3] #ignoring the .py suffix
-        #print(f"import_module({PARSERS_DIR_PARENT}.{PARSERS_DIR_SHORT}.{short_filename})")
-        #/home/user/do_you_mind/doyoumind.parsers.feelings
+        short_filename = filename[:-3]  # ignoring the .py suffix
+        # example: /home/user/do_you_mind/doyoumind.parsers.feelings
         parse_module = import_module(f"{PARENT_NAME}.{PARSERS_DIR_SHORT}.{short_filename}")
         print("collect_parsers:", parse_module)
         for obj_name,obj in getmembers(parse_module):
-            #we only need one function from each module.
-            #we only care for the parse_X function, and we check if its supported.
+            # we only need one function from each module.
+            # we only care for the parse_X function, and we check if its supported.
             if isfunction(obj) and obj_name.startswith("parse_"):
                 if all([field in SUPPORTED_FIELDS for field in obj.fields]):
                     __parsers__.add(obj)
-                break 
+                break
 
 
 collect_parsers()

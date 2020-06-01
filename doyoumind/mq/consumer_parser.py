@@ -1,14 +1,12 @@
 from furl import furl
 import pika
-from .constants import SERVER_EXCHANGE, SAVER_EXCHANGE
+from .constants import SERVER_EXCHANGE
 from .publisher_saver import PublisherSaver
 from ..parsers.constants import __parsers__
-from ..utils.context import context_from_snapshot
-from ..constants import SUPPORTED_FIELDS
 
 def __make_callback(callback, parser):
     '''
-    Helper function. 
+    Helper function.
     Given a semi-callback function of the form callback: parser --> (body --> result),
     and the given parser function,
     returns a valid callback function of the form callback: channel, method, properties, body --> result.
@@ -20,8 +18,10 @@ def __make_callback(callback, parser):
     :return: a valid callback using the parser
     :rtype: function (str, str, str, str) --> ?
     '''
+    
     def actual_callback(channel, method, properties, body):
         callback(parser)(body)
+
     return actual_callback
 
 
@@ -47,17 +47,16 @@ def rabbitmq_consumer(f, callback):
     channel.exchange_declare(exchange=exchange, exchange_type='fanout')
 
     for parser in __parsers__:
-        #the callback should take 4 parameters instead of 1- here we fix it 
+        # the callback should take 4 parameters instead of 1- here we fix it 
         actual_callback = __make_callback(callback, parser)
         parser_name = parser.__name__
         queue_name = f"{exchange}/{parser_name}"
         channel.queue_declare(queue=queue_name, durable=True)
         channel.queue_bind(exchange=exchange, queue=queue_name)
         channel.basic_consume(queue=queue_name, on_message_callback=actual_callback, auto_ack=True)
-        print(f"CONSUMER_PARSER: consuming the queue {queue_name}.")
-    
-    return lambda : channel.start_consuming()
-    
+ 
+    return lambda: channel.start_consuming()
+
 
 class ConsumerParser:
     def __init__(self, url, callback):
@@ -79,8 +78,6 @@ class ConsumerParser:
         self.consume = DRIVERS[f.scheme](f, callback)
 
 
-
-
 DRIVERS = {'rabbitmq': rabbitmq_consumer}
 
 
@@ -96,8 +93,6 @@ def run_all_parsers(consume_url, publish_url):
     :type publish_url: str
     """
     publisher = PublisherSaver(publish_url)
-    publish = publisher.publish #takes parser as parameter and returns another function
+    publish = publisher.publish  # takes parser as parameter and returns another function
     consumer = ConsumerParser(consume_url, publish)
     consumer.consume()
-
-

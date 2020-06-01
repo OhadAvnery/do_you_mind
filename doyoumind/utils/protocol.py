@@ -1,7 +1,5 @@
 import struct
 from .reader_utils import PackedString
-from ..readers import hello_pb2
-
 
 
 class Config:
@@ -49,13 +47,9 @@ class Config:
         fields = []
 
         num_fields, = packed_msg.unpack('<L')
-        #print("number of fields: ", num_fields)
-
         for _ in range(num_fields):
             field_len, = packed_msg.unpack('<L')
-            #print(f"field len: {field_len}")
             field, = packed_msg.unpack(f'{field_len}s')
             fields.append(field.decode())
 
         return Config(fields)
-

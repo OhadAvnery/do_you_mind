@@ -2,9 +2,9 @@ import flask
 from flask_cors import CORS
 from furl import furl
 import json
-import threading
 
 from .constants import DRIVERS, LARGE_DATA_FIELDS
+
 
 class API:
     host = None
@@ -18,19 +18,20 @@ class API:
         API.driver = DRIVERS[f.scheme](db_url)
 
 
-
-
 app = flask.Flask(__name__)
 CORS(app)
+
 
 def run_api_server(host='127.0.0.1', port=5000, database_url='mongodb://127.0.0.1:27017'):
     API(host, port, database_url)
     app.run(host=host, port=port)
 
+
 def return_if_exists(result):
     if result:
         return result
     flask.abort(404)
+
 
 @app.route("/users")
 def get_users():
@@ -42,16 +43,18 @@ def get_users():
     '''
     return API.driver.get_users()
 
+
 @app.route("/users/<int:user_id>")
 def get_user(user_id):
     '''
     Returns a users' details (not including its snapshots).
-    :param user_id: user's id 
+    :param user_id: user's id
     :type user_id: int
     :returns: user details
     :rtype: str (json)
     '''
     return return_if_exists(API.driver.get_user(user_id))
+
 
 @app.route("/users/<int:user_id>/snapshots")
 def get_snapshots(user_id):
@@ -80,6 +83,7 @@ def get_snapshot(user_id, timestamp):
     '''
     return return_if_exists(API.driver.get_snapshot(user_id, timestamp))
 
+
 @app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>")
 def get_result(user_id, timestamp, result_name):
     '''
@@ -96,6 +100,7 @@ def get_result(user_id, timestamp, result_name):
     :rtype: str (json)
     '''
     return return_if_exists(API.driver.get_result(user_id, timestamp, result_name))
+
 
 @app.route("/users/<int:user_id>/snapshots/<float:timestamp>/<result_name>/data")
 def get_result_data(user_id, timestamp, result_name):

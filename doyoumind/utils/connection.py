@@ -8,7 +8,7 @@ class Connection:
     all messages sent using Connection start with 
     a declaration of the number of bytes to be sent.
     :param socket: the socket we're communicating over
-    :type sockey: socket.socket
+    :type socket: socket.socket
     '''
     def __init__(self, socket):
         self.socket = socket
@@ -19,9 +19,10 @@ class Connection:
 
         return f'<Connection from {local_addr}:{local_port} to {peer_addr}:{peer_port}>'
 
-    #context methods
+    # context methods
     def __enter__(self):
         return self
+
     def __exit__(self, exception, error, traceback):
         self.close()
 
@@ -33,8 +34,6 @@ class Connection:
         sock = socket.socket()
         sock.connect((host, port))
         return cls(sock)
-
-
 
     def receive(self, size):
         """

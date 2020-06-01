@@ -13,17 +13,19 @@ def unpack_format(file, fmt):
     :rtype: str/List(str)
     '''
     vals = struct.unpack(fmt, file.read(struct.calcsize(fmt)))
-    if len(vals) == 1: #vals is a tuple of the form (x,)
+    if len(vals) == 1:  # vals is a tuple of the form (x,)
         return vals[0]
     else: 
         return vals
 
-def unpack_string(file, str_len):
-    return struct.unpack("{:d}s".format(str_len), \
-                                         file.read(str_len) )[0].decode()
 
-fmt = {'uint64':'Q', 'uint32':'L', 'double':'d'}
-size = {st:struct.calcsize(val) for st,val in fmt.items()}
+def unpack_string(file, str_len):
+    return struct.unpack("{:d}s".format(str_len), file.read(str_len))[0].decode()
+
+
+fmt = {'uint64': 'Q', 'uint32': 'L', 'double': 'd'}
+size = {st:struct.calcsize(val) for st, val in fmt.items()}
+
 
 class PackedString:
     '''
@@ -37,8 +39,8 @@ class PackedString:
     def __init__(self, msg):
         self.msg = msg
         self.offset = 0
+
     def unpack(self, fmt):
         val = struct.unpack_from(fmt, self.msg, self.offset)
         self.offset += struct.calcsize(fmt)
         return val
-        

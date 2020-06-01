@@ -2,6 +2,7 @@ import pytest
 from doyoumind.client import upload_sample
 from ..server import run_server
 
+
 def test_example():
     '''
     This is a dumb test example, 

@@ -2,6 +2,7 @@ import flask
 from flask import Flask
 from werkzeug.routing import BaseConverter
 
+
 def run_server(host, port, api_host, api_port):
     """
     Run the GUI server at the given host+port, consuming data from the given api host+port.
@@ -21,14 +22,14 @@ def run_server(host, port, api_host, api_port):
             self.regex = items[0]
 
     app = Flask(__name__, template_folder="react-app/build", static_folder="react-app/build/static")
-    app.url_map.converters['regex'] = RegexConverter 
+    app.url_map.converters['regex'] = RegexConverter
 
     @app.route("/<regex(r'(.*?)\.(png|PNG|js)$'):file>", methods=["GET"])
     def public(file):
         """FLASK FUNCITON
         Routes to all resources in the react public folder.
         (NOTE: thanks to Adi Dinerstein for helping me out with this part! :) )
-        
+
         :param file: filename from /public
         :type file: str
         """
@@ -37,6 +38,6 @@ def run_server(host, port, api_host, api_port):
     @app.route("/")
     @app.route('/<path:path>')
     def handle_path(path=None):
-        return flask.render_template("index.html", api_host=api_host, api_port=api_port)   
+        return flask.render_template("index.html", api_host=api_host, api_port=api_port)
 
     app.run(host=host, port=port)

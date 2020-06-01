@@ -3,7 +3,6 @@ from furl import furl
 import json
 import requests
 
-from ..api import api
 
 @click.group()
 def main():
@@ -26,13 +25,14 @@ def get_answer(host, port, path):
     :rtype: json (str/dict/list)
     '''
     f = furl()
-    f.set(scheme='http',host=host,port=port,path=path)
+    f.set(scheme='http', host=host, port=port, path=path)
     url = f.url
     try:
         answer = requests.get(url)
         return answer.json()  
     except Exception:
         return INVALID
+
 
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -44,6 +44,7 @@ def get_users(host, port):
     '''
     print(get_answer(host, port, 'users'))
 
+
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
 @click.option('--port', '-p', default=5000, type=int)
@@ -53,6 +54,7 @@ def get_user(host, port, user_id):
     returns a users' details (not including the snapshots).
     '''
     print(get_answer(host, port, f'users/{user_id}'))
+
 
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
@@ -78,6 +80,7 @@ def get_snapshot(host, port, user_id, timestamp):
     '''
     print(get_answer(host, port, f'users/{user_id}/snapshots/{timestamp}'))
 
+
 @main.command()
 @click.option('--host', '-h', default='127.0.0.1', type=str)
 @click.option('--port', '-p', default=5000, type=int)
@@ -87,11 +90,11 @@ def get_snapshot(host, port, user_id, timestamp):
 @click.argument('result_name', type=str)
 def get_result(host, port, save, user_id, timestamp, result_name):
     answer = get_answer(host, port, 
-        f'/users/{user_id}/snapshots/{timestamp}/{result_name}')
-    if answer==INVALID or not save:
+              f'/users/{user_id}/snapshots/{timestamp}/{result_name}')
+    if answer == INVALID or not save:
         print(answer)
 
-    else: #save=True
+    else:  # save == True
         with open(save, 'w') as f:
             f.write(json.dumps(answer))
 

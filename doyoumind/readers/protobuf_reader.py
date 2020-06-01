@@ -22,18 +22,17 @@ class Reader:
     def read_user(self):
         user = doyoumind_pb2.User()
         with (self.open_func)(self.path) as file:  
-            size = unpack_format(file, '<I')        
+            size = unpack_format(file, '<I')    
             user.ParseFromString(file.read(size))
             self.offset = file.tell()
         return user
 
     def read_snapshot(self):
         snap = doyoumind_pb2.Snapshot()
-        with (self.open_func)(self.path) as file:  
-            file.seek(self.offset)   
-            size = unpack_format(file, '<I')         
+        with (self.open_func)(self.path) as file:
+            file.seek(self.offset)
+            size = unpack_format(file, '<I')        
             snap.ParseFromString(file.read(size))
             self.offset = file.tell()
 
         return snap
-            

@@ -2,10 +2,11 @@ import struct
 
 from . import binary_reader
 from . import protobuf_reader
-from . import hello_pb2
 
 
 DRIVERS = {'binary': binary_reader, 'protobuf': protobuf_reader}
+
+
 class Reader:
     '''
     A class representing an objects that reads the client's sample.
@@ -19,7 +20,7 @@ class Reader:
     def __init__(self, path, format, zipped=True):
         '''
         Create a new reader object.
-        
+
         :param path: the path of the sample to read from
         :type path: str
         :param format: the reader's format (binary or protobuf)
@@ -29,13 +30,13 @@ class Reader:
         :returns: a reader object
         :rtype: Reader
         '''
-        if format=='binary':
+        if format == 'binary':
             print("WARNING: binary reader has been deprecated and may"
                   "not behave well- use protobuf instead!")
         self.path = path
         self.zipped = zipped
         self.reader = DRIVERS[format].Reader(path, zipped)
-    
+
     def read_user(self):
         '''
         Read the next user from the sample.
@@ -50,7 +51,7 @@ class Reader:
         read the 'hello' message.
         NOTE: we implement read_hello using read_user,
         since they have the same content exactly.
-        if they'll become different we'll implement them differently, 
+        if they'll become different we'll implement them differently,
         and use the Hello class from hello.proto.
 
         :return: hello object
@@ -67,7 +68,7 @@ class Reader:
         '''
         return self.reader.read_snapshot()
 
-    def __iter__(self): 
+    def __iter__(self):
         return self._snapshots_generator()
 
     def __size(self):

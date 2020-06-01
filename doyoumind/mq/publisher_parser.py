@@ -1,10 +1,8 @@
 from furl import furl
-import json
 import pika
 
-from .constants import SERVER_EXCHANGE, SAVER_EXCHANGE
+from .constants import SERVER_EXCHANGE
 from ..parsers.constants import __parsers__
-from ..utils.context import context_from_snapshot
 
 
 class PublisherParser:
@@ -34,12 +32,8 @@ def rabbitmq_publisher(f):
     :returns: the publish function
     :rtype: function str-->?
     """
-    #print(f"calling make_rabbitmq_publisher_parser on: {f}")
     exchange = SERVER_EXCHANGE
-
-
     params = pika.ConnectionParameters(host=f.host, port=f.port)
-    #print(f"publisher_parser- trying to connect with: {f.host},{f.port}")
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
     channel.exchange_declare(exchange=exchange, exchange_type='fanout')
@@ -47,13 +41,12 @@ def rabbitmq_publisher(f):
         parser_name = parser.__name__
         queue_name = f"{exchange}/{parser_name}"
         channel.queue_declare(queue=queue_name, durable=True)
-        channel.queue_bind(exchange=exchange, queue=queue_name) #no need for routing key
+        channel.queue_bind(exchange=exchange, queue=queue_name)
+
     def publish(msg):
         channel.basic_publish(exchange=exchange, routing_key='', body=msg)
-        #print("publisher published!")
-    return publish
-  
 
+    return publish
 
 
 DRIVERS = {'rabbitmq': rabbitmq_publisher}

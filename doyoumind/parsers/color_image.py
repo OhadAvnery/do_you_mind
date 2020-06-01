@@ -1,11 +1,13 @@
-import json 
+import json
 import os
 from PIL import Image
+
 
 def parse_color_image(context, snapshot):
     '''
     Parses the color image from the snapshot.
-    (deletes the raw data file and writes to disk a jpg file representing the color image.
+    (deletes the raw data file and writes to disk
+    a jpg file representing the color image.
     Uses PIL. Returns the image's path.)
 
     :param context: the context object representing the folders
@@ -15,18 +17,15 @@ def parse_color_image(context, snapshot):
     :returns: the result of the parser (in json format)
     :rtype: str
     '''
-    #print("invocating parse_color_image")
     path = context.path('color_image.jpg')
     snap_dict = json.loads(snapshot)
     size = snap_dict['color_image']['width'], snap_dict['color_image']['height']
-    #image = Image.new('RGB', size)
-    #image.putdata(snapshot.color_image.data)
     raw_file = snap_dict['color_image']['data']
     with open(raw_file, 'rb') as f:
         image_data = f.read()
 
     image = Image.frombytes('RGB', size, image_data)
-    image.save(path) 
+    image.save(path)
 
     os.remove(raw_file)
     result = {}
@@ -37,6 +36,4 @@ def parse_color_image(context, snapshot):
     return json.dumps(result)
 
 
-
 parse_color_image.fields = ['color_image']
-

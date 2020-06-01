@@ -21,13 +21,16 @@ class Context:
         if isinstance(dir_name, str):
             self.dir = Path(dir_name)
             self.dir_string = dir_name
-        else: #if it's a PosixPath
+        else:  # if it's a PosixPath
             self.dir = dir_name
             self.dir_string = dir_name.absolute().as_posix()
+
     def make_dir(self):
         os.makedirs(self.dir, exist_ok=True)
+
     def path(self, filename):
         return self.dir / filename
+
     def save(self, filename, data=""):
         """
         create a new file with the given filename, and write to it the given data.
@@ -40,6 +43,7 @@ class Context:
         open_fmt = 'wb+' if isinstance(data, bytes) else 'w+'        
         with open(self.dir / filename, open_fmt) as f:
             f.write(data)
+
 
 def context_from_snapshot(snapshot):
     """

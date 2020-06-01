@@ -71,9 +71,8 @@ def rabbitmq_consumer(f, topic, callback):
     channel.queue_declare(queue=queue_name, durable=True)
     channel.queue_bind(exchange=exchange, queue=queue_name)
     channel.basic_consume(queue=queue_name, on_message_callback=actual_callback, auto_ack=True)
-    print(f"CONSUMER_PARSER_ATOMIC: consuming the queue {queue_name}.")
     
-    return lambda : channel.start_consuming()
+    return lambda: channel.start_consuming()
 
 
 DRIVERS = {'rabbitmq': rabbitmq_consumer}

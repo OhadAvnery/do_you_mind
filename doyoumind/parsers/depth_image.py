@@ -1,11 +1,9 @@
-#from PIL import Image 
 import json
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 import touch
-
 
 
 def parse_depth_image(context, snapshot):
@@ -45,6 +43,4 @@ def parse_depth_image(context, snapshot):
     return json.dumps(result)
 
 
-
 parse_depth_image.fields = ['depth_image']
-
