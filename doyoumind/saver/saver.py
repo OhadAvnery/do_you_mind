@@ -1,16 +1,16 @@
-import datetime
 from furl import furl
 import json
 import pymongo
 import threading
 
-from ..mq.consumer_saver import ConsumerSaver
 
 lock = threading.Lock()
 
+
 class Saver:
     '''
-    An object that connects to the database and saves information about users and snapshots.
+    An object that connects to the database
+    and saves information about users and snapshots.
     :param url: the database's driver url
     :type url: furl.furl
     :param save: the saver's save function (chosen according to the drive scheme)

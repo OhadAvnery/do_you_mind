@@ -1,29 +1,28 @@
-
-import time
-import struct
-import socket
-
-
 from .constants import ALL_FIELDS
 from ..readers.reader import Reader
 from ..utils.connection import Connection
 from ..utils.protocol import Config
 
 
-
-#IDEA: these three functions only work at the connection level (so they're really short), 
-#and don't use any (de)serialization.
+# IDEA: these three functions only work at the connection level
+# (so they're really short),
+# and don't use any (de)serialization.
 def send_hello(conn, hello_msg):
     conn.send_message(hello_msg)
+
+
 def get_config(conn):
-   return conn.receive_message()
+    return conn.receive_message()
+
+
 def send_snapshot(conn, snap_msg):
     conn.send_message(snap_msg)
+
 
 def filter_snapshot(snap, config):
     """
     Update the snapshot so it'll only have the fields described in config.
-    :param snap: the snapshot about to be sent to the server 
+    :param snap: the snapshot about to be sent to the server
     :type snap: doyoumind_pb2.Snapshot
     :param config: the configuration of available topics
     :type config: protocol.Config
@@ -35,9 +34,10 @@ def filter_snapshot(snap, config):
 
 def upload_sample(host, port, path, read_type='protobuf'):
     """
-    Upload the sample from the file to the server, using the hello-->config-->snapshot protocol.
-    WARNING: only the protobuf reader has been tested- this may lead to problems
-    when using a binary reader!
+    Upload the sample from the file to the server,
+    using the hello-->config-->snapshot protocol.
+    WARNING: only the protobuf reader has been tested-
+    this may lead to problems when using a binary reader!
 
     :param host: the server's host, defaults to '127.0.0.1' in the CLI
     :type host: str, optional
@@ -61,6 +61,3 @@ def upload_sample(host, port, path, read_type='protobuf'):
             filter_snapshot(snap, config)
             send_snapshot(conn, snap.SerializeToString())
             num_snapshot += 1
-
-
-

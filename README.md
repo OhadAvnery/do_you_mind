@@ -183,15 +183,15 @@ The `doyoumind` package provides the following subpackages:
     ```sh
     $ python -m doyoumind.cli get-users
     …
-    $ python -m doyoumind.cli get-user 1
+    $ python -m doyoumind.cli get-user 42
     …
-    $ python -m doyoumind.cli get-snapshots 1
+    $ python -m doyoumind.cli get-snapshots 42
     …
-    $ python -m doyoumind.cli get-snapshot 1 1575446887.412
+    $ python -m doyoumind.cli get-snapshot 42 1575446887.412
     …
-    $ python -m doyoumind.cli get-result 1 1575446887.412 'pose'
+    $ python -m doyoumind.cli get-result 42 1575446887.412 'pose'
     …
-     $ python -m doyoumind.cli get-result 1 1575446887.412 'pose' -s 'foo.json'
+     $ python -m doyoumind.cli get-result 42 1575446887.412 'pose' -s 'foo.json'
     #using the -s flag in get-result means that instead of printing the result, it saves the data to the given file path
     ```
     
@@ -228,3 +228,7 @@ The `doyoumind` package provides the following subpackages:
     ```
     and then use the client, API, CLI and GUI as you normally do, each connecting to its default host+port.
     *Warning:* if you wish to run the docker, you should first verify that no other processes run on the same host+port pairs (that means you can't run a local rabbitmq process on port 5672, etc).
+    To stop the run, simply execute:
+    ```sh 
+    ./scripts/stop_pipeline.sh
+    ```

@@ -1,1 +1,1 @@
-from .client import upload_sample
+from .client import upload_sample  # noqa:F401

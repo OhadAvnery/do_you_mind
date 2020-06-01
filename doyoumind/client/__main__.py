@@ -1,6 +1,7 @@
 import click
 from .client import upload_sample
 
+
 @click.group()
 def main():
     pass
