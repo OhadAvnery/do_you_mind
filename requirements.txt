@@ -28,7 +28,7 @@ numpy==1.18.2
 orderedmultidict==1.0.1
 packaging==19.2
 pika==1.1.0
-Pillow==7.0.0
+Pillow==9.0.1
 pluggy==0.13.0
 protobuf==3.11.3
 public==2019.4.13
